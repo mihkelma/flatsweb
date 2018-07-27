@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public class UserDaoImp implements UserDao {
@@ -15,10 +16,8 @@ public class UserDaoImp implements UserDao {
     private EntityManager em;
 
     @Override
-    public User findUserByUsername(String username) {
-        //TODO: find out, how this is done in other repositories
+    public User getUserByUsername(String username) {
         User user;
-        System.out.println("Userdao - finduserbyusername");
         try {
             user = em.createQuery("SELECT u FROM User u WHERE lower(u.username)  = lower(:username)", User.class)
                     .setParameter("username", username)
@@ -36,11 +35,11 @@ public class UserDaoImp implements UserDao {
     @Transactional
     public void save(User user) {
 
-        if (findUserByUsername(user.getUsername()) == null) {
-            em.persist(user);
-        } else {
-            em.merge(user);
-        }
+//        if (getUserByUsername(user.getUsername()) == null) {
+//            em.persist(user);
+//        } else {
+//            em.merge(user);
+//        }
 
         em.persist(user);
     }
@@ -48,5 +47,18 @@ public class UserDaoImp implements UserDao {
     @Override
     public void delete(String username) {
 
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+
+        List<User> tmp;
+        try {
+            tmp = em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        }
+        catch (Exception e) {
+            tmp = null;
+        }
+        return tmp;
     }
 }

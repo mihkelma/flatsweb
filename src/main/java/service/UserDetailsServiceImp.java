@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
@@ -19,7 +21,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userDao.findUserByUsername(username);
+        User user = userDao.getUserByUsername(username);
         org.springframework.security.core.userdetails.User.UserBuilder builder = null;
         if (user != null) {
             System.out.println("Load userbyusername, user not null" + user.getUsername().toString());
