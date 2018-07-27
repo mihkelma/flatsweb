@@ -1,10 +1,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title> Spring 4 Security + Thymeleaf Integration Example </title>
+    <title>nop</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-<h3> Spring 4 Security + Thymeleaf Integration Example </h3>
-<p th:if="${param.error}">
+<h3></h3>
+<p class="error" th:if="${param.error}">
     Invalid username or password
 </p>
 <form th:action="@{/login}" method="POST">

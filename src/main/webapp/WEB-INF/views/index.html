@@ -1,9 +1,19 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <title>nop</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-<h2>${message}</h2>
+<div sec:authorize="hasRole('ADMIN')">
+  <a href="/users">User</a>
+</div>
+<h2 th:text="${message}"></h2>
 <form action="/logout" method="post">
   <input value="Logout" type="submit">
 </form>

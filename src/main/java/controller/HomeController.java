@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.security.Principal;
 
 @Controller
-public class MyController {
+public class HomeController {
 
     @GetMapping("/")
     public String index(Model model, Principal principal) {
@@ -17,6 +17,11 @@ public class MyController {
 
     @GetMapping("/login")
     public String login() {
+        return "login";
+    }
+
+    @GetMapping("/users")
+    public String getUsers() {
         return "login";
     }
 
