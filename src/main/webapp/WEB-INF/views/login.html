@@ -11,9 +11,8 @@
 </head>
 <body>
 <h3></h3>
-<p class="error" th:if="${param.error}">
-    Invalid username or password
-</p>
+<div th:if="${info}" th:text=${info}></div>
+<div class="error" th:if="${param.error}">Invalid username or password</div>
 <form th:action="@{/login}" method="POST">
     User Name : <input type="text" name="username"/> <br/><br/>
     Password: <input type="password" name="password"/> <br/><br/>

@@ -17,4 +17,14 @@ public class UserService {
         List<User> tmp = userDao.findAllUsers();
         return tmp;
     }
+
+    public User getUserByUsername(String username) {
+        User user;
+        user = userDao.getUserByUsername(username);
+        return user;
+    }
+
+    public void save(User user) {
+        userDao.save(user);
+    }
 }

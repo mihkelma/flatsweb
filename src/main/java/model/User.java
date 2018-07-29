@@ -16,16 +16,21 @@ public class User {
     @Column(name = "USERNAME")
     private String username;
 
-    @Column(name = "PASSWORD", nullable = false)
+    private String firstName;
+
+    private String lastName;
+
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "ENABLED", nullable = false)
+    @Column(name = "ENABLED")
     private boolean enabled;
+
+    private String confirmationToken;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Authorities> authorities = new HashSet<>();
 
-    //TODO: Getter and Setter methods
     public String getUsername() {
         return username;
     }
@@ -56,5 +61,29 @@ public class User {
 
     public void setAuthorities(Set<Authorities> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getConfirmationToken() {
+        return confirmationToken;
+    }
+
+    public void setConfirmationToken(String confirmationToken) {
+        this.confirmationToken = confirmationToken;
     }
 }
