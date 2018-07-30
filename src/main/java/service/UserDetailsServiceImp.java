@@ -24,7 +24,6 @@ public class UserDetailsServiceImp implements UserDetailsService {
         User user = userDao.getUserByUsername(username);
         org.springframework.security.core.userdetails.User.UserBuilder builder = null;
         if (user != null) {
-            System.out.println("Load userbyusername, user not null" + user.getUsername().toString());
             builder = org.springframework.security.core.userdetails.User.withUsername(username);
             builder.disabled(!user.isEnabled());
             builder.password(user.getPassword());

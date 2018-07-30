@@ -9,4 +9,6 @@ public interface UserDao {
     void save(User user);
     void delete(String username);
     List<User> findAllUsers();
+
+    User getUserByToken(String token);
 }

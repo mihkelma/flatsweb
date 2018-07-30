@@ -2,23 +2,17 @@ package controller;
 
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import service.UserDetailsServiceImp;
 import service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -27,12 +21,9 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @GetMapping("/")
     public String index(Model model, Principal principal) {
-        model.addAttribute("message", "You are logged in as " + principal.getName());
+        model.addAttribute("message", "Kasutaja: " + principal.getName());
         return "index";
     }
 
@@ -58,36 +49,48 @@ public class HomeController {
     //public String processRegistration(Model model, BindingResult bindingResult, @RequestParam Map requestParams) {
     public String processRegistration(Model model, @Valid User user, BindingResult bindingResult) {
         // Lookup user in database by e-mail
-        //System.out.println("Finding user: " + requestParams.get("username").toString());
         User userExists = userService.getUserByUsername(user.getUsername());
 
         if (userExists != null) {
-            System.out.println("User found");
-            model.addAttribute("error", "Oops! Try different ");
+            model.addAttribute("error", "Ohoo! Email on juba kasutusel!");
             bindingResult.reject("email");
         }
 
         if (bindingResult.hasErrors()) {
-            System.out.println("Bindingresult had errors");
             return "register";
         } else {
-            System.out.println("Saving user");
-            User user2 = new User();
-            user2.setUsername(user.getUsername());
-            user2.setFirstName(user.getFirstName());
-            user2.setLastName(user.getLastName());
-            user2.setEnabled(false);
+            //user needs to confirm email, before using the account
+            user.setEnabled(false);
 
             // Generate random 36-character string token for confirmation link
-            user2.setConfirmationToken(UUID.randomUUID().toString());
+            user.setConfirmationToken(UUID.randomUUID().toString());
 
-            System.out.println("Saving user with password: " + user.getPassword());
-            user2.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
-            userService.save(user2);
-            model.addAttribute("info", "Confirmation has been sent");
+            //TODO: Add email sending with token
+            
+            userService.save(user);
+            model.addAttribute("info", "Konto aktiveerimiseks ava palun meie saadetud email");
         }
         return "login";
+    }
+
+    @GetMapping("/confirm")
+    public String processConfimration(Model model, @RequestParam("token") String token) {
+        User user = userService.getUserByToken(token);
+
+        if (user == null) { // No token found in DB
+            model.addAttribute("error", "Oops! This is an invalid confirmation link.");
+        } else { // Token found
+            model.addAttribute("info", "Kasutaja aktiveeritud, palun logi sisse");
+
+            // Set user to enabled
+            user.setEnabled(true);
+
+            // Save user
+            userService.save(user);
+        }
+
+        return "login";
+
     }
 
 }
