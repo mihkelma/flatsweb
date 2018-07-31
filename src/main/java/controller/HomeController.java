@@ -1,25 +1,30 @@
 package controller;
 
+import model.Role;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import service.RoleService;
 import service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class HomeController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @GetMapping("/")
     public String index(Model model, Principal principal) {
@@ -65,8 +70,12 @@ public class HomeController {
             // Generate random 36-character string token for confirmation link
             user.setConfirmationToken(UUID.randomUUID().toString());
 
+            //TODO: user.setRoles(Arrays.asList("ROLE_USER"));
+            Role newRole = roleService.getRoleByRoleName("ROLE_USER");
+            user.setRoles(new HashSet<>(Arrays.asList(newRole)));
+
             //TODO: Add email sending with token
-            
+
             userService.save(user);
             model.addAttribute("info", "Konto aktiveerimiseks ava palun meie saadetud email");
         }
@@ -78,15 +87,14 @@ public class HomeController {
         User user = userService.getUserByToken(token);
 
         if (user == null) { // No token found in DB
-            model.addAttribute("error", "Oops! This is an invalid confirmation link.");
+            model.addAttribute("error", "Oih! See link on kehtetu.");
         } else { // Token found
-            model.addAttribute("info", "Kasutaja aktiveeritud, palun logi sisse");
-
             // Set user to enabled
             user.setEnabled(true);
-
             // Save user
             userService.save(user);
+            //Send notification to the view
+            model.addAttribute("info", "Kasutaja on aktiveeritud, palun logi sisse");
         }
 
         return "login";

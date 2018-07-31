@@ -3,7 +3,6 @@ package service;
 import dao.UserDao;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +13,6 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
         List<User> tmp = userDao.findAllUsers();
@@ -29,7 +26,6 @@ public class UserService {
     }
 
     public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 

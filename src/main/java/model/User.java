@@ -1,17 +1,13 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
-
 public class User {
+    //Initially based on https://www.boraji.com/spring-mvc-5-spring-security-5-hibernate-5-example
+
     @Id
     @Column(name = "USERNAME")
     private String username;
@@ -28,8 +24,10 @@ public class User {
 
     private String confirmationToken;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Authorities> authorities = new HashSet<>();
+
+    @ManyToMany(cascade=CascadeType.MERGE)
+    @JoinTable(name="users_roles", joinColumns=@JoinColumn(name="username"), inverseJoinColumns=@JoinColumn(name="role_id"))
+    private Set<Role> roles;
 
     public String getUsername() {
         return username;
@@ -55,12 +53,12 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Set<Authorities> getAuthorities() {
-        return authorities;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setAuthorities(Set<Authorities> authorities) {
-        this.authorities = authorities;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public String getFirstName() {
