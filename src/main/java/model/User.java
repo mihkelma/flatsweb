@@ -24,7 +24,7 @@ public class User {
 
     private String confirmationToken;
 
-
+    //Merge - issue: https://stackoverflow.com/questions/13370221/jpa-hibernate-detached-entity-passed-to-persist
     @ManyToMany(cascade=CascadeType.MERGE)
     @JoinTable(name="users_roles", joinColumns=@JoinColumn(name="username"), inverseJoinColumns=@JoinColumn(name="role_id"))
     private Set<Role> roles;

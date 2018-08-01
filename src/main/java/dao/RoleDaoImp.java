@@ -20,7 +20,6 @@ public class RoleDaoImp implements RoleDao {
             role = em.createQuery("SELECT r FROM Role r WHERE lower(r.role)  = lower(:roleName)", Role.class)
                     .setParameter("roleName", roleName)
                     .getSingleResult();
-            System.out.println("Role = " + role.getRole());
         }
         catch (NoResultException e) {
             role = null;

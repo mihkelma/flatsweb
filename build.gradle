@@ -49,6 +49,23 @@ dependencies {
     // https://mvnrepository.com/artifact/javax.validation/validation-api
     compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
+    // https://mvnrepository.com/artifact/com.sun.mail/javax.mail
+    compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
+
+    // https://mvnrepository.com/artifact/javax.activation/activation
+    //compile group: 'javax.activation', name: 'activation', version: '1.1.1'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+    //compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.0.3.RELEASE'
+
+
+
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-support
+    compile group: 'org.springframework', name: 'spring-support', version: '2.0.8'
+
+
+
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -73,6 +75,31 @@ public class AppConfig {
         properties.setProperty(C3P0_MAX_STATEMENTS, env.getProperty("hibernate.c3p0.max_statements"));
 
         return properties;
+    }
+
+    @Bean
+    public JavaMailSender mailSender() {
+
+        JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        Properties mailProperties = new Properties();
+
+        sender.setHost("smtp.gmail.com");               // for gmail use smtp.gmail.com
+        sender.setPort(587);
+        sender.setUsername("priitpat@gmail.com");
+        sender.setPassword("8eQ8vese");
+
+
+        mailProperties.put("mail.smtp.auth", "true");
+        mailProperties.put("mail.debug", "true");
+        mailProperties.put("mail.smtp.starttls.enable", "true");
+        mailProperties.put("mail.smtp.port", "465");
+        mailProperties.put("mail.smtp.socketFactory.port", "465");
+        mailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        mailProperties.put("mail.smtp.socketFactory.fallback", "false");
+        mailProperties.put("mail.debug", "false");      // When true, prints out everything on screen
+
+        sender.setJavaMailProperties(mailProperties);
+        return sender;
     }
 
 }

@@ -27,7 +27,6 @@ public class UserDaoImp implements UserDao {
             user = em.createQuery("SELECT u FROM User u WHERE lower(u.username)  = lower(:username)", User.class)
                     .setParameter("username", username)
                     .getSingleResult();
-            System.out.println("User =" + user.getUsername());
         }
         catch (NoResultException e) {
             user = null;
@@ -41,7 +40,6 @@ public class UserDaoImp implements UserDao {
     public void save(User user) {
         if (getUserByUsername(user.getUsername()) == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            System.out.println("Password was: " + user.getPassword());
             em.persist(user);
         } else {
             em.merge(user);
