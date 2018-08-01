@@ -57,7 +57,6 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    //public String processRegistration(Model model, BindingResult bindingResult, @RequestParam Map requestParams) {
     public String processRegistration(Model model, @Valid User user, BindingResult bindingResult, HttpServletRequest request) {
         // Lookup user in database by e-mail
         User userExists = userService.getUserByUsername(user.getUsername());
@@ -102,10 +101,13 @@ public class HomeController {
 
     @GetMapping("/confirm")
     public String processConfimration(Model model, @RequestParam("token") String token) {
+        if (token == null) {
+            model.addAttribute("error", "Oi! See link on kehtetu.");
+        }
         User user = userService.getUserByToken(token);
 
         if (user == null) { // No token found in DB
-            model.addAttribute("error", "Oih! See link on kehtetu.");
+            model.addAttribute("error", "Oi! See link on kehtetu.");
         } else { // Token found
             // Set user to enabled
             user.setEnabled(true);

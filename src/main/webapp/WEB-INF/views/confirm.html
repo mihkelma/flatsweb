@@ -11,8 +11,8 @@
 </head>
 <body>
 <h3></h3>
-<div th:if="${info}" th:text=${info}></div>
-<div class="error" th:if="${param.error}">Invalid username or password</div>
+<div th:if="${info}" th:text="${info}"></div>
+<div class="error" th:if="${error}" th:text="${error}"></div>
 <a href="/login">Logi sisse</a>
 </body>
 </html>

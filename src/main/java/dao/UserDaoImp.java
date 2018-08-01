@@ -68,7 +68,7 @@ public class UserDaoImp implements UserDao {
     public User getUserByToken(String token) {
         User user;
         try {
-            user = em.createQuery("SELECT u FROM User u WHERE u.confirmationToken  = :token", User.class)
+            user = em.createQuery("SELECT u FROM User u WHERE u.confirmationToken  = :token AND u.enabled = false", User.class)
                     .setParameter("token", token)
                     .getSingleResult();
         }
