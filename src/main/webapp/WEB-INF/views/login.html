@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="et" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>flats.ee</title>
     <meta charset="utf-8">
@@ -30,7 +30,7 @@
         .form-signin input {
             font-family: "Roboto", sans-serif;
             width: 100%;
-            margin: 0 0 15px;
+            margin: 15px 0 0;
             padding: 15px;
             outline: 0;
             box-sizing: border-box;
@@ -88,13 +88,13 @@
 
 <form class="form-signin" th:action="@{/login}" method="post">
     <div class="center">
-        <img class="mb-4" src="flats.png" alt="" width="64" height="64">
+        <img class="mb-4" src="/images/flats.png" alt="" width="64" height="64">
         <h1 class="h3 mb-3 font-weight-normal">Logi sisse</h1>
     </div>
-    <div th:if="${param.error}" th:class="error">Viga andmete sisestamisel!</div>
+    <div th:if="${param.error}" th:class="error">Sisselogimine ebaõnnestus.</div>
     <div th:class="info" th:if="${info}" th:text="${info}"></div>
-    <input id="inputEmail" class="form-control" name="username" placeholder="Email">
-    <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password">
+    <input id="inputEmail" class="form-control border-gray" name="username" placeholder="Email">
+    <input type="password" id="inputPassword" class="form-control border-gray" name="password" placeholder="Password">
     <button class="btn btn-lg btn-primary btn-block" type="submit">Logi sisse</button>
     <div><a href="/register">Registreeri</a></div>
 </form>

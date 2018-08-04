@@ -2,10 +2,12 @@ package config;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,6 +16,8 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -88,7 +92,6 @@ public class AppConfig {
         sender.setUsername("priitpat@gmail.com");
         sender.setPassword("8eQ8vese");
 
-
         mailProperties.put("mail.smtp.auth", "true");
         mailProperties.put("mail.debug", "true");
         mailProperties.put("mail.smtp.starttls.enable", "true");
@@ -97,9 +100,31 @@ public class AppConfig {
         mailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         mailProperties.put("mail.smtp.socketFactory.fallback", "false");
         mailProperties.put("mail.debug", "false");      // When true, prints out everything on screen
-
         sender.setJavaMailProperties(mailProperties);
         return sender;
+    }
+
+
+    @Bean(name = "messageSource")
+    public MessageSource messageSource()
+    {
+        ReloadableResourceBundleMessageSource bean = new ReloadableResourceBundleMessageSource();
+        bean.setBasename("classpath:ValidationMessages");
+        bean.setDefaultEncoding("UTF-8");
+        return bean;
+    }
+
+    @Bean(name = "validator")
+    public LocalValidatorFactoryBean validator()
+    {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource());
+        return bean;
+    }
+
+    public Validator getValidator()
+    {
+        return validator();
     }
 
 }

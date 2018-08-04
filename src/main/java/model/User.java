@@ -1,6 +1,8 @@
 package model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -10,16 +12,21 @@ public class User {
 
     @Id
     @Column(name = "USERNAME")
+    @NotEmpty(message="{register.error.emailRequired}")
     private String username;
 
+    @Column(name = "FULLNAME")
+    @NotEmpty(message="{register.error.fullNameRequired}")
     private String fullName;
 
     @Column(name = "PASSWORD")
+    @Size(min=5, message="{register.error.passwordRequired}")
     private String password;
 
     @Column(name = "ENABLED")
     private boolean enabled;
 
+    @Column(name = "CONFIRMATIONTOKEN")
     private String confirmationToken;
 
     //Merge - issue: https://stackoverflow.com/questions/13370221/jpa-hibernate-detached-entity-passed-to-persist

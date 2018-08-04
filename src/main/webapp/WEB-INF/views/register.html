@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="et" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>flats.ee</title>
     <meta charset="utf-8">
@@ -31,7 +31,7 @@
         .form-signin input {
             font-family: "Roboto", sans-serif;
             width: 100%;
-            margin: 0 0 15px;
+            margin: 15px 0 0;
             padding: 15px;
             outline: 0;
             box-sizing: border-box;
@@ -55,11 +55,11 @@
             padding: 15px;
             color: #FFFFFF;
             background-color: #3ED291; // rohekas
-        background-color: #3495FA; //erksam sinine
-        background-color: #2E7CF8; //tumedam sinine
-        background-color: #99EBEC; //pastelsem roheline
-        background-color: #2BD9DB; //erksam roheline
-        font-size: 14px;
+            background-color: #3495FA; //erksam sinine
+            background-color: #2E7CF8; //tumedam sinine
+            background-color: #99EBEC; //pastelsem roheline
+            background-color: #2BD9DB; //erksam roheline
+            font-size: 14px;
             -webkit-transition: all 0.3 ease;
             transition: all 0.3 ease;
             cursor: pointer;
@@ -83,18 +83,23 @@
             font-weight: bold;
             color: #3ED291;
         }
+        .inputError {
+            margin: 0;
+            color: #FF6245;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
 <form class="form-signin" autocomplete="off" th:action="@{/register}" th:object="${user}" method="post">
     <div class="center">
-        <img class="mb-4" src="flats.png" alt="" width="64" height="64">
+        <img class="mb-4" src="/images/flats.png" alt="" width="64" height="64">
         <h1 class="h3 mb-3 font-weight-normal">Loo kasutaja</h1>
     </div>
     <div class="error" th:if="${error}" th:text="${error}"></div>
     <div class="info" th:if="${info}" th:text="${info}"></div>
     <input id="inputEmail" class="form-control border-gray" name="username" th:field="*{username}" placeholder="Email">
-    <input id="inputName" class="form-control border-gray" name="fullName" th:field="*{fullName}" placeholder="Nimi" >
+    <input id="inputName" class="form-control border-gray" name="fullName" th:field="*{fullName}" placeholder="Nimi">
     <input type="password" id="inputPassword" class="form-control border-gray" name="password" th:field="*{password}" placeholder="Salasõna">
     <button class="btn btn-lg btn-primary btn-block" type="submit">Registreeri</button>
     <div>Oled juba kasutaja? <a href="/login">Logi sisse</a></div>
