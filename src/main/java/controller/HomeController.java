@@ -33,14 +33,12 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model, Principal principal) {
-        System.out.println("Login ok");
         model.addAttribute("message", "Kasutaja: " + principal.getName());
         return "index";
     }
 
     @GetMapping("/login")
     public String login() {
-        System.out.println("Login get");
         return "login";
     }
 
@@ -63,6 +61,7 @@ public class HomeController {
         User userExists = userService.getUserByUsername(user.getUsername());
         //System.out.println("User: " + user.getUsername() + ", " + user.getFullName());
 
+        //TODO: if user parameters are empty, show error on web
         if (userExists != null) {
             model.addAttribute("error", "Sisestatud email on juba registreeritud!");
             bindingResult.reject("email");
@@ -104,6 +103,8 @@ public class HomeController {
 
     @GetMapping("/confirm")
     public String processConfirmation(Model model, @RequestParam("token") String token) {
+        //TODO: add custom access denied handler if not param available
+        //TODO: add option to enter the token on the web page
         if (token == null) {
             model.addAttribute("error", "See link on kehtetu.");
         }
