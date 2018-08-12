@@ -3,6 +3,8 @@ package model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,6 +35,9 @@ public class User {
     @ManyToMany(cascade=CascadeType.MERGE)
     @JoinTable(name="users_roles", joinColumns=@JoinColumn(name="username"), inverseJoinColumns=@JoinColumn(name="role_id"))
     private Set<Role> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contract> contracts = new ArrayList<>();
 
     public String getUsername() {
         return username;
@@ -80,5 +85,15 @@ public class User {
 
     public void setConfirmationToken(String confirmationToken) {
         this.confirmationToken = confirmationToken;
+    }
+
+    public void addContract(Contract contract) {
+        contracts.add(contract);
+        contract.setUser(this);
+    }
+
+    public void removeContract(Contract contract) {
+        contracts.remove(contract);
+        contract.setUser(null);
     }
 }

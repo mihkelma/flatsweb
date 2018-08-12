@@ -1,0 +1,21 @@
+<html lang="et" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>flats.ee</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        body, table, input, button {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div sec:authorize="hasRole('ADMIN')">
+    <a href="/users">User</a>
+</div>
+<h2 th:text="${message}"></h2>
+<form th:action="@{/logout}" method="POST">
+    <input value="Logout" type="submit">
+</form>
+</body>
+</html>
