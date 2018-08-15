@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Montserrat|Open+Sans:300|Oswald|Raleway:500|Roboto:300" rel="stylesheet">
+    <style type="text/css">
+        body {
+            background-color: #f8f9fa;
+            font-family: "Roboto", sans-serif;
+        }
+        .ccard {
+            background-color: #fff !important;
+        }
+        .btn:focus,.btn:active {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+    <title>flats.ee</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-light mb-4">
+    <a class="navbar-brand text-secondary" href="#">flats.ee</a>
+    <img th:src="@{/images/flats.png}" />
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link text-secondary" href="#">Objektid<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-secondary" href="#">Lepingud</a>
+            </li>
+        </ul>
+        <a class="" href="/logout">Logi välja</a>
+    </div>
+</nav>
+
+<div class="container mb-3">
+    <h4 class="d-inline">Lisa objekt
+    </h4>
+</div>
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-sm-6 shadow rounded ccard">
+            <form class="mb-3 mt-3" th:action="@{/units/add}" method="post">
+                <div class="form-group row">
+                    <label for="inputType" class="col-sm-3 col-form-label col-form-label-sm">Tüüp</label>
+                    <div class="col-sm-9">
+                        <select id="inputType" class="form-control form-control-sm">
+                            <option selected value="1">Korter</option>
+                            <option value="2">Tuba</option>
+                            <option value="3">Garaaz</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="propertyAddress" class="col-sm-3 col-form-label col-form-label-sm">Aadress</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="propertyAddress" placeholder="Suur-Karja 18-70">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="propertyCity" class="col-sm-3 col-form-label col-form-label-sm">Linn / Asula</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="propertyCity" placeholder="Tallinn">
+                    </div>
+                </div>
+                <div class="form-group row" id="propertyRoomDiv" style="display:none;">
+                    <label for="propertyRoom" class="col-sm-3 col-form-label col-form-label-sm">Toa number</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="propertyRoom" placeholder="3">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="propertySize" class="col-sm-3 col-form-label col-form-label-sm">Üldpind</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="propertySize" placeholder="78.60">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="purchasePrice" class="col-sm-3 col-form-label col-form-label-sm">Ostuhind</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="purchasePrice" placeholder="3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a href="#" class="btn btn-outline-primary btn-sm" type="submit">Salvesta</a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</main>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#inputType').change(function () {
+            var val = $(this).find('option:selected').val();
+            console.log(val);
+            if (val == 2) {
+                $('#propertyRoomDiv').show();
+            } else {
+                $('#propertyRoomDiv').hide();
+            }
+
+        });
+    });
+
+</script>
+</body>
+</html>
