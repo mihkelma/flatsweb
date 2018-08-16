@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body class="text-center">
+<th:block th:fragment="footer">
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">&copy; Units.ee
+                <span sec:authorize="isAuthenticated()" style="display: inline-block;">
+                    | Logged user: <span sec:authentication="name"></span> |
+                    Roles: <span sec:authentication="principal.authorities"></span> |
+                </span>
+            </span>
+        </div>
+    </footer>
+
+    <script type="text/javascript" th:src="@{/js/jquery.min.js/}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+</th:block>
+</body>
+</html>

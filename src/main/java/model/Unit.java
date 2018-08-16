@@ -23,7 +23,7 @@ public class Unit {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "type")
+    @JoinColumn(name = "unittype")
     private UnitType unitType;
 
     public Long getId() {
