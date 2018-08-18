@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import service.UnitService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import java.sql.Date;
+import java.util.List;
 
 @Controller
 public class UnitController {
@@ -20,15 +22,22 @@ public class UnitController {
 
     @GetMapping("/units")
     public String units(Authentication auth, Model model) {
-        model.addAttribute("units", unitService.getAllUserUnits(auth.getName()));
+        List<Unit> tmp = unitService.getAllUserUnits(auth.getName());
+        model.addAttribute("units", tmp);
         return "units/index";
+    }
+
+    @GetMapping("/units/{id}")
+    public String getUnitById(@PathVariable Long id, Authentication auth, Model model) {
+        Unit tmp = unitService.getUnitById(id ,auth.getName());
+        model.addAttribute("unit", tmp);
+        return "units/view";
     }
 
     //Get new contract form page
     @GetMapping("/units/add")
     public String addUnitForm(Model model) {
         Unit tmp = new Unit();
-        System.out.println("Leping: " +tmp.toString());
         model.addAttribute("unit", tmp);
         return "units/add";
     }
@@ -36,8 +45,8 @@ public class UnitController {
     //Save contract
     @PostMapping("/units")
     public String addUnit(@Valid Unit unit, Authentication auth) {
-        System.out.println("UnitController save:" + unit.getId());
         if (unit != null) {
+            System.out.println("Kontroller salvestab: " + unit.getId());
             unitService.saveUnit(unit, auth.getName());
             return "redirect:/units";
         }

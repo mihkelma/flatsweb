@@ -93,7 +93,7 @@
     </div>
     <div th:if="${param.error}" th:class="error">Sisselogimine ebaõnnestus.</div>
     <div th:class="info" th:if="${info}" th:text="${info}"></div>
-    <input id="inputEmail" class="form-control border-gray" name="username" placeholder="Email">
+    <input id="inputEmail" class="form-control border-gray" name="username" placeholder="Email" autofocus>
     <input type="password" id="inputPassword" class="form-control border-gray" name="password" placeholder="Password">
     <button class="btn btn-lg btn-primary btn-block" type="submit">Logi sisse</button>
     <div><a href="/register">Registreeri</a></div>

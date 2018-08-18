@@ -43,9 +43,9 @@
                     <small th:if="${info}" th:text="${info}">In case alert is needed</small>
                 </div>
                 <div class="form-group row">
-                    <label for="inputType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
+                    <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
                     <div class="col-sm-6">
-                        <select id="inputType" class="form-control form-control-sm">
+                        <select id="unitType" class="form-control form-control-sm" th:field="*{unitType}">
                             <option selected value="1">Korter</option>
                             <option value="2">Tuba</option>
                             <option value="3">Garaaz</option>
@@ -65,9 +65,9 @@
                     </div>
                 </div>
                 <div class="form-group row" id="propertyRoomDiv" style="display:none;">
-                    <label for="propertyRoom" class="col-sm-2 col-form-label col-form-label-sm">Toa number</label>
+                    <label for="propertyRooms" class="col-sm-2 col-form-label col-form-label-sm">Toa number</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control form-control-sm" id="propertyRoom" th:field="*{room}" placeholder="3">
+                        <input type="text" class="form-control form-control-sm" id="propertyRooms" th:field="*{rooms}" placeholder="3">
                     </div>
                 </div>
                 <div class="form-group row">

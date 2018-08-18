@@ -14,16 +14,18 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/units">Units <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/units">Objektid<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="/contracts">Contracts</a>
+                    <a class="nav-link disabled" href="/contracts">Lepingud</a>
                 </li>
             </ul>
 
             <ul class="navbar-nav px-3">
                 <li class="nav-item text-nowrap">
-                    <a class="text-primary" href="/logout">Logi välja</a>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-link">Logi välja</button>
+                    </form>
                 </li>
             </ul>
         </div>

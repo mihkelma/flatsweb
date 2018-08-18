@@ -34,7 +34,7 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model, Principal principal) {
         model.addAttribute("message", "Kasutaja: " + principal.getName());
-        return "units/index";
+        return "redirect:/units";
     }
 
     @GetMapping("/login")

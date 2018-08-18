@@ -19,7 +19,7 @@ public class UnitDaoImp implements UnitDao {
     public List<Unit> getAllUserUnits(String username) {
         List<Unit> units;
         units = em.createQuery("SELECT u FROM Unit u " +
-                "LEFT JOIN FETCH u.user WHERE lower(u.user.username) = lower(:username) ", Unit.class)
+                "LEFT JOIN FETCH u.user WHERE lower(u.user.username) = lower(:username)" , Unit.class)
                 .setParameter("username", username)
                 .getResultList();
         if (units.isEmpty()) return null;
@@ -31,8 +31,9 @@ public class UnitDaoImp implements UnitDao {
         try {
             Unit unit;
             unit = em.createQuery("SELECT u FROM Unit u " +
-                    "WHERE lower(u.user.username) = lower(:username)", Unit.class)
+                    "WHERE u.id = :id AND lower(u.user.username) = lower(:username)", Unit.class)
                     .setParameter("username", username)
+                    .setParameter("id", id)
                     .getSingleResult();
             return unit;
         } catch (NoResultException e) {
@@ -43,6 +44,7 @@ public class UnitDaoImp implements UnitDao {
     @Override
     @Transactional
     public void saveUnit(Unit unit, String username) {
+        System.out.println("Salvestan unit: " + unit.getId());
         if (unit.getId() != null) { //existing unit
             em.merge(unit);
         } else {                        //new unit

@@ -23,7 +23,10 @@ public class UnitService {
 
     @Transactional
     public void saveUnit(Unit unit, String username) {
-        System.out.println("UnitService save:" +unit.getId()+"\n");
+        System.out.println("Unit: " + unit.getUnitType());
+        if (unit.getUnitType().equals("1")) unit.setUnitType("Korter");
+        else if (unit.getUnitType().equals("2")) unit.setUnitType("Tuba");
+        else if (unit.getUnitType().equals("3")) unit.setUnitType("Garaaz");
         unitDao.saveUnit(unit, username);
     }
 

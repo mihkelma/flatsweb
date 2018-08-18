@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Montserrat|Open+Sans:300|Oswald|Raleway:500|Roboto:300" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 5rem;
+            background-color: #f8f9fa;
+            font-family: "Roboto", sans-serif;
+        }
+        .ccard {
+            background-color: #fff !important;
+            border: 1px solid rgba(0,0,0,.125);
+            border-radius: .25rem;
+        }
+        .btn:focus,.btn:active {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+    <title>flats.ee</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <main role="main" class="container" th:object="${unit}">
+        <div class="mb-3">
+            <h4 class="d-inline" th:text="*{unitType}">Objekt</h4>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 shadow rounded ccard p-3">
+                <h4 >Andmed</h4>
+                <div class="text-danger" role="alert">
+                    <small th:if="${info}" th:text="${info}">Veateade!</small>
+                </div>
+                <form class="mb-3 mt-3" th:action="@{/units}"  method="post">
+                    <div class="form-group row">
+                        <input type="hidden" th:field="*{id}" />
+                        <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
+                        <div class="col-sm-6">
+                            <select id="unitType" class="form-control form-control-sm" th:field="*{unitType}">
+                                <option selected value="1">Korter</option>
+                                <option value="2">Tuba</option>
+                                <option value="3">Garaaz</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="propertyAddress" class="col-sm-2 col-form-label col-form-label-sm">Aadress</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="propertyAddress" th:field="*{address}" placeholder="Suur-Karja 18-70">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="propertyCity" class="col-sm-2 col-form-label col-form-label-sm">Linn / Asula</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="propertyCity" th:field="*{city}" placeholder="Tallinn">
+                        </div>
+                    </div>
+                    <div class="form-group row" id="propertyRoomDiv" style="display:none;">
+                        <label for="propertyRooms" class="col-sm-2 col-form-label col-form-label-sm">Tubade arv</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="propertyRooms" th:field="*{rooms}" placeholder="3">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="propertySize" class="col-sm-2 col-form-label col-form-label-sm">Üldpind</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="propertySize" th:field="*{size}" placeholder="78.60">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="purchasePrice" class="col-sm-2 col-form-label col-form-label-sm">Ostuhind</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="purchasePrice" th:field="*{price}" placeholder="3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button th:type="submit" class="btn btn-outline-primary btn-sm" >Salvesta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Second section -->
+        <div class="mt-5 mb-3">
+            <h4 class="d-inline" th:text="*{unitType}">Lepingud</h4>
+            <a th:href="@{/units/{id}/contracts/add(id= *{id})}" class="d-inline float-right btn btn-outline-primary btn-sm">+ Lisa leping</a>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 shadow rounded ccard p-3">
+                <form class="mb-3 mt-3" th:action="@{/units/1/contracts}"  method="post">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Lepingu nr</th>
+                            <th scope="col">Olek</th>
+                            <th scope="col">Klient</th>
+                            <th scope="col">Kehtivus</th>
+                            <th scope="col">Arve kuupäev</th>
+                            <th scope="col">Üür</th>
+                            <th scope="col">Allkirjastatud</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">L123123113</th>
+                            <td>Kehtiv</td>
+                            <td>Otto Kapp</td>
+                            <td>271 päeva</td>
+                            <td>5</td>
+                            <td>360.00</td>
+                            <td>14 Aug 2017</td>
+                            <td><a href="/contracts/1" class="btn btn-outline-primary btn-sm">Vaata</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#inputType').change(function () {
+                var val = $(this).find('option:selected').val();
+                console.log(val);
+                if (val == 2) {
+                    $('#propertyRoomDiv').show();
+                } else {
+                    $('#propertyRoomDiv').hide();
+                }
+
+            });
+        });
+
+    </script>
+</div>
+</body>
+</html>

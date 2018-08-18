@@ -26,12 +26,13 @@ public class ContractController {
     }
 
     //Get new contract form page
-    @GetMapping("/contracts/new")
-    public String addContractForm(Model model) {
+    @GetMapping("/units/{id}/contracts/add")
+    public String addContractForm(@PathVariable Long id, Model model) {
         Contract tmp = new Contract();
         System.out.println("Leping: " +tmp.toString());
         model.addAttribute("contract", tmp);
-        return "contracts/addcontract";
+        model.addAttribute("unitId", id);
+        return "contracts/add";
     }
 
     //Get view contract page

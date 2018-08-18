@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -13,18 +14,17 @@ public class Unit {
     private Long id;
     private String address;
     private String city;
-    private String room;
+    private Integer rooms;
     private Float size;
     private Float price;
     private String status;
+    private String unitType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "unittype")
-    private UnitType unitType;
+
 
     public Long getId() {
         return id;
@@ -50,12 +50,12 @@ public class Unit {
         this.city = city;
     }
 
-    public String getRoom() {
-        return room;
+    public Integer getRooms() {
+        return rooms;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public void setRooms(Integer rooms) {
+        this.rooms = rooms;
     }
 
     public Float getSize() {
@@ -90,11 +90,11 @@ public class Unit {
         this.user = user;
     }
 
-    public UnitType getUnitType() {
+    public String getUnitType() {
         return unitType;
     }
 
-    public void setUnitType(UnitType unitType) {
+    public void setUnitType(String unitType) {
         this.unitType = unitType;
     }
 }
