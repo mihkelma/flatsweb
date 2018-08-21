@@ -38,38 +38,132 @@
     <main role="main" class="container">
         <div class="row">
             <div class="col-sm-12 shadow rounded ccard">
-                <form class="mb-3 mt-3" th:action="@{/contracts}" th:object="${contract}" method="post">
+                <form class="mb-3 mt-3" th:action="@{/units/{id}/contracts(id=${unitId})}" th:object="${contract}" method="post">
+                    <h4>Lepingu andmed</h4>
                     <div class="alert text-danger" role="alert">
                         <small th:if="${info}" th:text="${info}">In case alert is needed</small>
                     </div>
                     <div class="form-group row">
-                        <label for="propertyAddress" class="col-sm-2 col-form-label col-form-label-sm">Lepingu number</label>
+                        <label for="contractNumber" class="col-sm-2 col-form-label col-form-label-sm">Lepingu number</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="propertyAddress" th:field="*{contractNumber}" placeholder="L12312312">
+                            <input type="text" class="form-control form-control-sm" id="contractNumber" th:field="*{contractNumber}" disabled>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="propertyCity" class="col-sm-2 col-form-label col-form-label-sm">Omaniku nimia</label>
+                        <label for="contractObjectAddress" class="col-sm-2 col-form-label col-form-label-sm">Objekti aadress<sup>(a)</sup></label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="propertyCity" th:field="*{ownerName}" placeholder="Peeter Pakiraam">
-                        </div>
-                    </div>
-                    <div class="form-group row" id="propertyRoomDiv" style="display:none;">
-                        <label for="propertyRooms" class="col-sm-2 col-form-label col-form-label-sm">Omaniku email</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="propertyRooms" th:field="*{ownerEmail}" placeholder="peeter@pakiraam.ee">
+                            <input type="text" class="form-control form-control-sm" id="contractObjectAddress" th:field="*{contractObjectAddress}" disabled>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="propertySize" class="col-sm-2 col-form-label col-form-label-sm">Omaniku reg.kood/ isikukood</label>
+                        <label for="contractObjectRoom" class="col-sm-2 col-form-label col-form-label-sm">Toa number<sup>(a)</sup></label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="propertySize" th:field="*{ownerCode}" placeholder="38232322122">
+                            <input type="text" class="form-control form-control-sm" id="contractObjectRoom" th:field="*{contractObjectRoom}" placeholder="1">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="purchasePrice" class="col-sm-2 col-form-label col-form-label-sm">Üüritasu</label>
+                        <label for="isVATRequired" class="col-sm-2 col-form-label col-form-label-sm">Käibemaksukohustuslane<sup>(a)</sup></label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="purchasePrice" th:field="*{price}" placeholder="300.00">
+                            <input type="checkbox" id="isVATRequired" th:field="*{VATRequired}" th:checked="*{VATRequired}"/>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label for="price" class="col-sm-2 col-form-label col-form-label-sm">Üüritasu<sup>(a)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="price" th:field="*{price}" placeholder="300.00">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="contractTerm" class="col-sm-2 col-form-label col-form-label-sm">Kehtivusaeg</label>
+                        <div class="col-sm-6">
+                            <input type="date" class="form-control form-control-sm" id="contractTerm" th:field="*{contractTerm}" placeholder="15-04-2018">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="invoiceSendDate" class="col-sm-2 col-form-label col-form-label-sm">Arve kuupäev<sup>(a)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="invoiceSendDate" th:field="*{invoiceSendDate}" placeholder="10">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="ownerName" class="col-sm-2 col-form-label col-form-label-sm">Omaniku nimi<sup>(a)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="ownerName" th:field="*{ownerName}" placeholder="Peeter Pakiraam">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ownerCode" class="col-sm-2 col-form-label col-form-label-sm">Omaniku reg.kood/ isikukood<sup>(A)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="ownerCode" th:field="*{ownerCode}" placeholder="38232322122">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ownerAddress" class="col-sm-2 col-form-label col-form-label-sm">Omaniku aadress</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="ownerAddress" th:field="*{ownerAddress}" placeholder="Tõnismäe 79-20, Tallinn">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ownerPhone" class="col-sm-2 col-form-label col-form-label-sm">Omaniku telefon</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="ownerPhone" th:field="*{ownerPhone}" placeholder="5500391">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ownerEmail" class="col-sm-2 col-form-label col-form-label-sm">Omaniku email<sup>(A)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="ownerEmail" th:field="*{ownerEmail}" placeholder="peeter@pakiraam.ee">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ownerBankAccount" class="col-sm-2 col-form-label col-form-label-sm">Omaniku pangakonto nr<sup>(A)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="ownerBankAccount" th:field="*{ownerBankAccount}" placeholder="EE192200221100150862">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ownerBank" class="col-sm-2 col-form-label col-form-label-sm">Omaniku pank<sup>(A)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="ownerBank" th:field="*{ownerBankName}" placeholder="Swedbank AS">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="customerName" class="col-sm-2 col-form-label col-form-label-sm">Kliendi nimi<sup>(A)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="customerName" th:field="*{customerName}" placeholder="Klient Kuusikult">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="customerCode" class="col-sm-2 col-form-label col-form-label-sm">Kliendi reg.kood/ isikukood</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="customerCode" th:field="*{customerCode}" placeholder="38232322122">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="customerAddress" class="col-sm-2 col-form-label col-form-label-sm">Kliendi aadress<sup>(A)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="customerAddress" th:field="*{customerAddress}" placeholder="Sõpruse pst 178-11, Tallinn">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="customerPhone" class="col-sm-2 col-form-label col-form-label-sm">Kliendi telefon</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="customerPhone" th:field="*{customerPhone}" placeholder="55332211">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="customerEmail" class="col-sm-2 col-form-label col-form-label-sm">Kliendi email<sup>(A)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="customerEmail" th:field="*{customerEmail}" placeholder="klient@kuusikult.ee">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="customerRefNumber" class="col-sm-2 col-form-label col-form-label-sm">Viitenumber<sup>(A)</sup></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="customerRefNumber" th:field="*{customerRefNumber}" placeholder="123121111">
                         </div>
                     </div>
                     <div class="form-group">
@@ -87,21 +181,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#inputType').change(function () {
-                var val = $(this).find('option:selected').val();
-                console.log(val);
-                if (val == 2) {
-                    $('#propertyRoomDiv').show();
-                } else {
-                    $('#propertyRoomDiv').hide();
-                }
-
-            });
-        });
-
-    </script>
 </div>
 </body>
 </html>

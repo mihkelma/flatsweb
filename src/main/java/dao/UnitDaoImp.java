@@ -31,6 +31,7 @@ public class UnitDaoImp implements UnitDao {
         try {
             Unit unit;
             unit = em.createQuery("SELECT u FROM Unit u " +
+                    "LEFT JOIN FETCH u.contracts uc " +
                     "WHERE u.id = :id AND lower(u.user.username) = lower(:username)", Unit.class)
                     .setParameter("username", username)
                     .setParameter("id", id)

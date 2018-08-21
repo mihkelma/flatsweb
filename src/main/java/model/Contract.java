@@ -1,9 +1,13 @@
 package model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,14 +17,17 @@ public class Contract {
     @Id
     @SequenceGenerator(name = "my_seq", sequenceName = "seq1", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq")
-    private Long id;
+    private Long id;                    //TODO
     private String ownerName;
     private String customerName;
-    private Date created;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @Temporal(TemporalType.DATE)
+    private Date created;               //TODO
     private Integer invoiceSendDate;
     private BigDecimal price;
     private String contractNumber;
-    private Date modified;
+    @Temporal(TemporalType.DATE)
+    private Date modified;              //TODO
     private String ownerCode;
     private String ownerAddress;
     private String ownerPhone;
@@ -32,13 +39,15 @@ public class Contract {
     private String customerPhone;
     private String customerEmail;
     private String customerRefNumber;
-    private Integer contractTerm;
-    private BigDecimal vatValue;
-    private Date contractSigned;
-    private Date contractTerminated;
+    @Temporal(TemporalType.DATE)
+    private Date contractTerm;
+    private Boolean VATRequired;
+    @Temporal(TemporalType.DATE)
+    private Date contractSigned;        //TODO
     private String contractObjectAddress;
     private String contractObjectRoom;
-
+    @Transient
+    private static Integer baseId = 1;
 
     //TODO: add, merge, remove Invoices
     //@OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -49,12 +58,38 @@ public class Contract {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "unit")
+    private Unit unit;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="contracttype")
     private ContractType contractType;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="contractstatus")
-    private Status contractStatus;
+    public Contract() {
+        // L0818XXXX1
+        this.contractNumber = genContractNumber();
+    }
+
+    public String genContractNumber() {
+        //Contract starts with "L"
+        StringBuilder tmp = new StringBuilder("L");
+        //Get month and year "MMyy"
+        long millis=System.currentTimeMillis();
+        Date now = new Date(millis);
+        SimpleDateFormat sDate = new SimpleDateFormat("MMyy");
+        tmp.append(sDate.format(now));
+        //Add zeros
+        if (baseId < 10) tmp.append("00000" + baseId);
+        else if (baseId < 100) tmp.append("0000" + baseId);
+        else if (baseId < 1000) tmp.append("000" + baseId);
+        else if (baseId < 10000) tmp.append("00" + baseId);
+        else if (baseId < 100000) tmp.append("0" +baseId);
+        else if (baseId < 1000000) tmp.append(baseId);
+        //increase the baseId for next constructor
+        baseId++;
+        String cNum = tmp.toString();
+        return cNum;
+    }
 
     public Long getId() {
         return id;
@@ -200,28 +235,20 @@ public class Contract {
         this.customerRefNumber = customerRefNumber;
     }
 
-    public Integer getContractTerm() {
+    public Date getContractTerm() {
         return contractTerm;
     }
 
-    public void setContractTerm(Integer contractTerm) {
+    public void setContractTerm(Date contractTerm) {
         this.contractTerm = contractTerm;
     }
 
-    public Status getContractStatus() {
-        return contractStatus;
+    public Boolean getVATRequired() {
+        return VATRequired;
     }
 
-    public void setContractStatus(Status contractStatus) {
-        this.contractStatus = contractStatus;
-    }
-
-    public BigDecimal getVatValue() {
-        return vatValue;
-    }
-
-    public void setVatValue(BigDecimal vatValue) {
-        this.vatValue = vatValue;
+    public void setVATRequired(Boolean VATRequired) {
+        this.VATRequired = VATRequired;
     }
 
     public Date getContractSigned() {
@@ -230,14 +257,6 @@ public class Contract {
 
     public void setContractSigned(Date contractSigned) {
         this.contractSigned = contractSigned;
-    }
-
-    public Date getContractTerminated() {
-        return contractTerminated;
-    }
-
-    public void setContractTerminated(Date contractTerminated) {
-        this.contractTerminated = contractTerminated;
     }
 
     public String getContractObjectAddress() {
@@ -278,5 +297,13 @@ public class Contract {
 
     public void setContractType(ContractType contractType) {
         this.contractType = contractType;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }

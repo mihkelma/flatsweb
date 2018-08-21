@@ -58,20 +58,23 @@
 </div>
 <main role="main" class="container">
     <div class="card-columns">
-        <div class="card shadow" th:each="unit : ${units}">
+        <div class="card shadow" th:each="unit, iStat : ${units}">
             <div class="card-body">
                 <h5 class="card-title">
                     <span class="d-inline"><a th:href="'/units/' + ${unit.id}" th:text="${unit.unitType}">Objekti tüüp</a></span>
-                    <a href="#" class="float-right" data-container="body" data-toggle="popover" data-placement="bottom" data-popover-content="#a2">...</a>
+                    <a href="#" class="float-right" data-container="body" data-toggle="popover" data-placement="bottom" th:data-popover-content="'#a' + ${iStat.index}">...</a>
+                    <div th:id="'a' + ${iStat.index}" class="hidden">
+                        <div class="popover-body">
+                            <p><a th:href="'/units/' + ${unit.id}">Vaata detaile</a></p>
+                            <p><a th:href="'/units/delete/' + ${unit.id}">Kustuta</a></p>
+                        </div>
+                    </div>
+
+
                 </h5>
 
-                <div id="a2" class="hidden">
-                    <div class="popover-body">
-                        <p><a th:href="'/units/' + ${unit.id}">Vaata detaile</a></p>
-                        <p><a th:href="'/units/delete/' + ${unit.id}">Kustuta</a></p>
-                    </div>
-                </div>
                 <p class="card-text mb-1"><small th:text="'Aadress: ' + ${unit.address}">Aadress: Papikese 6-9, Tallinn</small></p>
+                <p class="card-text mb-1"><small th:text="'Aadress: ' + ${unit.id}">Aadress: Papikese 6-9, Tallinn</small></p>
                 <p class="card-text mb-1"><small th:text="'Üldpind: ' + ${unit.size}">Suurus: 117.50m2</small></p>
                 <p class="card-text mb-1"><small th:text="'Toa number: ' + ${unit.rooms}">Tube: 2</small></p>
                 <p class="card-text mb-1"><small th:text="'Ostuhind: ' + ${unit.price}">Ostuhind: 100000.00</small></p>

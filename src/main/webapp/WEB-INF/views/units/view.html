@@ -91,12 +91,12 @@
         </div>
         <!-- Second section -->
         <div class="mt-5 mb-3">
-            <h4 class="d-inline" th:text="*{unitType}">Lepingud</h4>
+            <h4 class="d-inline">Lepingud</h4>
             <a th:href="@{/units/{id}/contracts/add(id= *{id})}" class="d-inline float-right btn btn-outline-primary btn-sm">+ Lisa leping</a>
         </div>
         <div class="row">
             <div class="col-sm-12 shadow rounded ccard p-3">
-                <form class="mb-3 mt-3" th:action="@{/units/1/contracts}"  method="post">
+                <form class="mb-3 mt-3" th:action="@{/units/{id}/contracts(id= *{id})}"  method="post">
                     <table class="table">
                         <thead>
                         <tr>
@@ -111,14 +111,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row">L123123113</th>
-                            <td>Kehtiv</td>
-                            <td>Otto Kapp</td>
-                            <td>271 päeva</td>
-                            <td>5</td>
-                            <td>360.00</td>
-                            <td>14 Aug 2017</td>
+                        <tr th:each="contract : ${unit.contracts}">
+                            <th scope="row" th:text="${contract.contractNumber}">L123123113</th>
+                            <!--<td th:text="${contract.status}">Kehtiv</td>-->
+                            <td th:text="${contract.customerName}">Otto Kapp</td>
+                            <td th:text="${contract.contractTerm}">271 päeva</td>
+                            <td th:text="${contract.invoiceSendDate}">5</td>
+                            <td th:text="${contract.price}">360.00</td>
+                            <td th:text="${contract.contractObjectAddress}">Tehnika 27-11-1</td>
                             <td><a href="/contracts/1" class="btn btn-outline-primary btn-sm">Vaata</a></td>
                         </tr>
                         </tbody>
@@ -133,21 +133,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#inputType').change(function () {
-                var val = $(this).find('option:selected').val();
-                console.log(val);
-                if (val == 2) {
-                    $('#propertyRoomDiv').show();
-                } else {
-                    $('#propertyRoomDiv').hide();
-                }
-
-            });
-        });
-
-    </script>
 </div>
 </body>
 </html>

@@ -34,7 +34,7 @@ public class UnitController {
         return "units/view";
     }
 
-    //Get new contract form page
+    //Get new unit form page
     @GetMapping("/units/add")
     public String addUnitForm(Model model) {
         Unit tmp = new Unit();
@@ -45,8 +45,9 @@ public class UnitController {
     //Save contract
     @PostMapping("/units")
     public String addUnit(@Valid Unit unit, Authentication auth) {
+        //TODO: 1) Update will give error (A collection with cascade=”all-delete-orphan” was no longer referenced by the owning entity instance)
+        //TODO: 2) add validation and error handling
         if (unit != null) {
-            System.out.println("Kontroller salvestab: " + unit.getId());
             unitService.saveUnit(unit, auth.getName());
             return "redirect:/units";
         }

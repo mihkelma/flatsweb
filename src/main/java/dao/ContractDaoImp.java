@@ -1,6 +1,7 @@
 package dao;
 
 import model.Contract;
+import model.Unit;
 import model.User;
 import org.springframework.stereotype.Repository;
 
@@ -45,16 +46,18 @@ public class ContractDaoImp implements ContractDao {
 
     @Override
     @Transactional
-    public void saveContract(Contract contract, String username) {
+    public void saveContract(Contract contract, Long cid, String username) {
         System.out.println("Contract saving with id:" +contract.getId());
         if (contract.getId() != null) { //existing contract
-            User user = em.find(User.class, username);
+            //User user = em.find(User.class, username);
             //TODO: merging without setting Invoices does not work (needs fix)
             //contract.setInvoices(new ArrayList<Invoice>());
             em.merge(contract);
         } else {                        //new contract
             User user = em.find(User.class, username);
+            Unit unit = em.find(Unit.class, cid);
             contract.setUser(user);
+            contract.setUnit(unit);
             em.persist(contract);
         }
     }
