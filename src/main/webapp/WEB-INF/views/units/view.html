@@ -89,43 +89,7 @@
                 </form>
             </div>
         </div>
-        <!-- Second section -->
-        <div class="mt-5 mb-3">
-            <h4 class="d-inline">Lepingud</h4>
-            <a th:href="@{/units/{id}/contracts/add(id= *{id})}" class="d-inline float-right btn btn-outline-primary btn-sm">+ Lisa leping</a>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 shadow rounded ccard p-3">
-                <form class="mb-3 mt-3" th:action="@{/units/{id}/contracts(id= *{id})}"  method="post">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">Lepingu nr</th>
-                            <th scope="col">Olek</th>
-                            <th scope="col">Klient</th>
-                            <th scope="col">Kehtivus</th>
-                            <th scope="col">Arve kuupäev</th>
-                            <th scope="col">Üür</th>
-                            <th scope="col">Allkirjastatud</th>
-                            <th scope="col"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="contract : ${unit.contracts}">
-                            <th scope="row" th:text="${contract.contractNumber}">L123123113</th>
-                            <!--<td th:text="${contract.status}">Kehtiv</td>-->
-                            <td th:text="${contract.customerName}">Otto Kapp</td>
-                            <td th:text="${contract.contractTerm}">271 päeva</td>
-                            <td th:text="${contract.invoiceSendDate}">5</td>
-                            <td th:text="${contract.price}">360.00</td>
-                            <td th:text="${contract.contractObjectAddress}">Tehnika 27-11-1</td>
-                            <td><a href="/contracts/1" class="btn btn-outline-primary btn-sm">Vaata</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div>
+
     </main>
 
     <!-- Optional JavaScript -->

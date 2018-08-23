@@ -1,5 +1,6 @@
 package dao;
 
+import model.Contract;
 import model.Unit;
 import model.User;
 import org.springframework.stereotype.Repository;
@@ -31,7 +32,7 @@ public class UnitDaoImp implements UnitDao {
         try {
             Unit unit;
             unit = em.createQuery("SELECT u FROM Unit u " +
-                    "LEFT JOIN FETCH u.contracts uc " +
+                    //"//LEFT JOIN FETCH u.contracts uc " +
                     "WHERE u.id = :id AND lower(u.user.username) = lower(:username)", Unit.class)
                     .setParameter("username", username)
                     .setParameter("id", id)
@@ -46,12 +47,14 @@ public class UnitDaoImp implements UnitDao {
     @Transactional
     public void saveUnit(Unit unit, String username) {
         System.out.println("Salvestan unit: " + unit.getId());
+        User user = em.find(User.class, username);
+        unit.setUser(user);
         if (unit.getId() != null) { //existing unit
+            System.out.println("Merging unit!");
             em.merge(unit);
-        } else {                        //new unit
-            User user = em.find(User.class, username);
+        } else {            //new unit
+            System.out.println("New unit");
             unit.setStatus("Active");
-            unit.setUser(user);
             em.persist(unit);
         }
     }

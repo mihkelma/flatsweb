@@ -306,4 +306,15 @@ public class Contract {
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contract )) return false;
+        return id != null && id.equals(((Contract) o).id);
+    }
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 }

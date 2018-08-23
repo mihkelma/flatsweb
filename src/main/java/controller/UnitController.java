@@ -30,6 +30,7 @@ public class UnitController {
     @GetMapping("/units/{id}")
     public String getUnitById(@PathVariable Long id, Authentication auth, Model model) {
         Unit tmp = unitService.getUnitById(id ,auth.getName());
+        System.out.println("Unit siin: " + tmp.getId().toString());
         model.addAttribute("unit", tmp);
         return "units/view";
     }
@@ -37,8 +38,7 @@ public class UnitController {
     //Get new unit form page
     @GetMapping("/units/add")
     public String addUnitForm(Model model) {
-        Unit tmp = new Unit();
-        model.addAttribute("unit", tmp);
+        model.addAttribute("unit", new Unit());
         return "units/add";
     }
 
