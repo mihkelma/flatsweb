@@ -15,10 +15,12 @@ public class ContractService {
     @Autowired
     private ContractDao contractDao;
 
-
-
     public List<Contract> getAllUserContracts(String username) {
         return contractDao.getUserContracts(username);
+    }
+
+    public List<Contract> getContractsByUnitId(Long cid, String username) {
+        return contractDao.getContractsByUnitId(cid, username);
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package controller;
 
+import model.Contract;
 import model.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -8,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import service.ContractService;
 import service.UnitService;
 
+import javax.sound.midi.Soundbank;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import java.sql.Date;
@@ -19,6 +22,8 @@ import java.util.List;
 public class UnitController {
     @Autowired
     private UnitService unitService;
+    @Autowired
+    private ContractService contractService;
 
     @GetMapping("/units")
     public String units(Authentication auth, Model model) {
@@ -30,8 +35,10 @@ public class UnitController {
     @GetMapping("/units/{id}")
     public String getUnitById(@PathVariable Long id, Authentication auth, Model model) {
         Unit tmp = unitService.getUnitById(id ,auth.getName());
-        System.out.println("Unit siin: " + tmp.getId().toString());
+        List<Contract> clist = contractService.getContractsByUnitId(id, auth.getName());
+        System.out.println("Lepingud: " + clist.get(0).getContractNumber());
         model.addAttribute("unit", tmp);
+        model.addAttribute("contracts", clist);
         return "units/view";
     }
 

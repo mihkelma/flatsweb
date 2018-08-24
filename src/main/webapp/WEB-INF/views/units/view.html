@@ -31,61 +31,100 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-    <main role="main" class="container" th:object="${unit}">
-        <div class="mb-3">
-            <h4 class="d-inline" th:text="*{unitType}">Objekt</h4>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 shadow rounded ccard p-3">
-                <h4 >Andmed</h4>
-                <div class="text-danger" role="alert">
-                    <small th:if="${info}" th:text="${info}">Veateade!</small>
+    <main role="main" class="container">
+        <div th:object="${unit}">
+            <div class="mb-3">
+                <h4 class="d-inline" th:text="*{unitType}">Objekt</h4>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 shadow rounded ccard p-3">
+                    <h4 >Andmed</h4>
+                    <div class="text-danger" role="alert">
+                        <small th:if="${info}" th:text="${info}">Veateade!</small>
+                    </div>
+                    <form class="mb-3 mt-3" th:action="@{/units}"  method="post">
+                        <div class="form-group row">
+                            <input type="hidden" th:field="*{id}" />
+                            <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
+                            <div class="col-sm-6">
+                                <select id="unitType" class="form-control form-control-sm" th:field="*{unitType}">
+                                    <option selected value="1">Korter</option>
+                                    <option value="2">Tuba</option>
+                                    <option value="3">Garaaz</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="propertyAddress" class="col-sm-2 col-form-label col-form-label-sm">Aadress</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="propertyAddress" th:field="*{address}" placeholder="Suur-Karja 18-70">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="propertyCity" class="col-sm-2 col-form-label col-form-label-sm">Linn / Asula</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="propertyCity" th:field="*{city}" placeholder="Tallinn">
+                            </div>
+                        </div>
+                        <div class="form-group row" id="propertyRoomDiv" style="display:none;">
+                            <label for="propertyRooms" class="col-sm-2 col-form-label col-form-label-sm">Tubade arv</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="propertyRooms" th:field="*{rooms}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="propertySize" class="col-sm-2 col-form-label col-form-label-sm">Üldpind</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="propertySize" th:field="*{size}" placeholder="78.60">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="purchasePrice" class="col-sm-2 col-form-label col-form-label-sm">Ostuhind</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="purchasePrice" th:field="*{price}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button th:type="submit" class="btn btn-outline-primary btn-sm" >Salvesta</button>
+                        </div>
+                    </form>
                 </div>
-                <form class="mb-3 mt-3" th:action="@{/units}"  method="post">
-                    <div class="form-group row">
-                        <input type="hidden" th:field="*{id}" />
-                        <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
-                        <div class="col-sm-6">
-                            <select id="unitType" class="form-control form-control-sm" th:field="*{unitType}">
-                                <option selected value="1">Korter</option>
-                                <option value="2">Tuba</option>
-                                <option value="3">Garaaz</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="propertyAddress" class="col-sm-2 col-form-label col-form-label-sm">Aadress</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="propertyAddress" th:field="*{address}" placeholder="Suur-Karja 18-70">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="propertyCity" class="col-sm-2 col-form-label col-form-label-sm">Linn / Asula</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="propertyCity" th:field="*{city}" placeholder="Tallinn">
-                        </div>
-                    </div>
-                    <div class="form-group row" id="propertyRoomDiv" style="display:none;">
-                        <label for="propertyRooms" class="col-sm-2 col-form-label col-form-label-sm">Tubade arv</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="propertyRooms" th:field="*{rooms}" placeholder="3">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="propertySize" class="col-sm-2 col-form-label col-form-label-sm">Üldpind</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="propertySize" th:field="*{size}" placeholder="78.60">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="purchasePrice" class="col-sm-2 col-form-label col-form-label-sm">Ostuhind</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="purchasePrice" th:field="*{price}" placeholder="3">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button th:type="submit" class="btn btn-outline-primary btn-sm" >Salvesta</button>
-                    </div>
+            </div>
+        </div>
+        <!-- Second section -->
+        <div class="mt-5 mb-3">
+            <h4 class="d-inline">Lepingud</h4>
+            <a th:href="@{/units/{id}/contracts/add(id= *{id})}" class="d-inline float-right btn btn-outline-primary btn-sm">+ Lisa leping</a>
+        </div>
+        <div class="row" th:object="${clist}">
+            <div class="col-sm-12 shadow rounded ccard p-3">
+                <form class="mb-3 mt-3"   method="post">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Lepingu nr</th>
+                            <th scope="col">Olek</th>
+                            <th scope="col">Klient</th>
+                            <th scope="col">Kehtivus</th>
+                            <th scope="col">Arve kuupäev</th>
+                            <th scope="col">Üür</th>
+                            <th scope="col">Allkirjastatud</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="contract : ${contracts}">
+                            <th scope="row" th:text="${contract.contractNumber}">L123123113</th>
+                            <!--<td th:text="${contract.status}">Kehtiv</td>-->
+                            <td th:text="${contract.customerName}">Otto Kapp</td>
+                            <td th:text="${contract.contractTerm}">271 päeva</td>
+                            <td th:text="${contract.invoiceSendDate}">5</td>
+                            <td th:text="${contract.price}">360.00</td>
+                            <td th:text="${contract.contractObjectAddress}">Tehnika 27-11-1</td>
+                            <td><a href="/contracts/1" class="btn btn-outline-primary btn-sm">Vaata</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </form>
             </div>
         </div>

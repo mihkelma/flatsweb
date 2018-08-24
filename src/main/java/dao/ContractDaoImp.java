@@ -29,6 +29,22 @@ public class ContractDaoImp implements ContractDao {
     }
 
     @Override
+    public List<Contract> getContractsByUnitId(Long cid, String username) {
+        try {
+            List<Contract> tmp;
+            tmp = em.createQuery("SELECT c FROM Contract c " +
+                    "LEFT JOIN FETCH c.unit " +
+                    "WHERE c.unit.id = :cid AND lower(c.user.username) = lower(:username)", Contract.class)
+                    .setParameter("cid", cid)
+                    .setParameter("username", username)
+                    .getResultList();
+            return tmp;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
     public Contract getContractById(Long id, String username) {
         try {
             Contract tmp;
