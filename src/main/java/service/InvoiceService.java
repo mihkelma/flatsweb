@@ -23,4 +23,8 @@ public class InvoiceService {
     public void saveInvoice(Invoice invoice, Long cid, String username) {
         invoiceDao.saveInvoice(invoice, cid, username);
     }
+
+    public Invoice getInvoiceById(Long id, String username) {
+        return invoiceDao.getInvoiceById(id, username);
+    }
 }

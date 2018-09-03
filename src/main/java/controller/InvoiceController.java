@@ -7,6 +7,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -35,22 +36,12 @@ public class InvoiceController {
 
     @GetMapping("/contracts/{id}/invoices/add")
     public String addInvoiceForm(@PathVariable Long id, ModelMap model, Authentication auth) {
-        System.out.println("Add form start");
         Invoice inv = new Invoice();
         List<InvoiceRow> irl = new ArrayList<>();
         InvoiceRow ir = new InvoiceRow();
         irl.add(ir);
-        System.out.println("Add form create row");
-        if (inv.getDateCreated() == null) {
-            Date today = new Date(Calendar.getInstance().getTime().getTime());
-            inv.setDateCreated(today);
-        }
-        System.out.println("Add form setting status");
-        //Set the status always to 0 - draft, when invoice created at first
-        inv.setStatus("DRAFT");
         inv.setInvoiceRows(irl);
-        System.out.println("Add form add rows");
-        System.out.println("Arve seis: " +inv.toString());
+
         model.addAttribute("invoice", inv);
         model.addAttribute("contractId", id);
         return "invoices/add";
@@ -67,6 +58,16 @@ public class InvoiceController {
             return "redirect:/contracts/" +cid;
         }
         return "/invoices/add";
+    }
+
+    //Get view invoice page
+    @GetMapping("/contracts/{cid}/invoices/{iid}")
+    public String editInvoiceForm(@PathVariable Long cid, @PathVariable Long iid, Model model, Authentication auth) {
+        System.out.println("Invoice id: " +iid);
+        Invoice invoice = invoiceService.getInvoiceById(iid, auth.getName());
+        model.addAttribute("invoice", invoice);
+        model.addAttribute("contractId", cid);
+        return "invoices/view";
     }
 
     @ExceptionHandler

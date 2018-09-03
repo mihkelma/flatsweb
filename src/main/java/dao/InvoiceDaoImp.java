@@ -56,7 +56,7 @@ public class InvoiceDaoImp implements InvoiceDao {
         try {
             invoice = em.createQuery("SELECT i FROM Invoice i " +
                     "LEFT JOIN FETCH i.invoiceRows " +
-                    "WHERE i.invoiceRows.id = :id AND lower(i.user.username) = lower(:username) ", Invoice.class)
+                    "WHERE i.id = :id AND lower(i.user.username) = lower(:username) ", Invoice.class)
                     .setParameter("username", username)
                     .setParameter("id", id)
                     .getSingleResult();
@@ -83,27 +83,19 @@ public class InvoiceDaoImp implements InvoiceDao {
             invoice.setUser(user);
             invoice.setContract(contract);
             //invoice.setInvoiceRows(new ArrayList<>()); //working solution
-
             if (invoice.getDateCreated() == null) {
                 Date today = new Date(Calendar.getInstance().getTime().getTime());
                 invoice.setDateCreated(today);
             }
+
             //Set the status always to 0 - draft, when invoice created at first
             invoice.setStatus("DRAFT");
             //System.out.println(invoice.toString());
             for (int i =0; i < invoice.getInvoiceRows().size(); i++) {
                 invoice.getInvoiceRows().get(i).setUser(user);
                 invoice.getInvoiceRows().get(i).setInvoice(invoice);
-
             }
-
-
-            try {
-                em.persist(invoice);
-            } catch (Exception e) {
-                System.out.println("SQL error happened: " + e);
-            }
-
+            em.persist(invoice);
         }
     }
 

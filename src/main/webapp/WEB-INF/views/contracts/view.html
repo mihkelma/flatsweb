@@ -187,7 +187,7 @@
                                 <td th:text="${invoice.customerEmail}">271 päeva</td>
                                 <td th:text="${invoice.sendDate}">5</td>
                                 <td th:text="${invoice.sum}">360.00</td>
-                                <td><a th:href="@{/invoices/{id}(id= ${invoice.id})}" class="btn btn-outline-primary btn-sm">Vaata</a></td>
+                                <td><a th:href="@{/contracts/{cid}/invoices/{id}(id= ${invoice.id}, cid=${contract.id})}" class="btn btn-outline-primary btn-sm">Vaata</a></td>
                             </tr>
                             </tbody>
                         </table>

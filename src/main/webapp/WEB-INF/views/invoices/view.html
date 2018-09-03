@@ -32,7 +32,7 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
     <div class="container mb-3">
-        <h4 class="d-inline">Lisa arve
+        <h4 class="d-inline">Arve
         </h4>
     </div>
     <main role="main" class="container">
@@ -40,7 +40,7 @@
             <div class="col-sm-12 shadow rounded ccard">
                 <form class="mb-3 mt-3" th:action="@{/contracts/{id}/invoices(id=${contractId})}" th:object="${invoice}" method="post">
                     <div class="row">
-                        <div class="col-sm-1"></div>
+                        <div class="col-sm-1"><input type="hidden" th:field="*{id}" /></div>
                         <div class="col-sm-10">
                             <h4 th:field="*{ownerName}">POCOS OÜ</h4>
                             <div class="alert text-danger" role="alert">
@@ -77,13 +77,13 @@
                             <div class="form-group row">
                                 <label for="sendDate" class="col-sm-3 col-form-label col-form-label-sm">Väljastatud</label>
                                 <div class="col-sm-9">
-                                    <input type="date" class="form-control form-control-sm" id="sendDate" th:field="*{sendDate}" placeholder="10/12/2018">
+                                    <input type="date" class="form-control form-control-sm" id="sendDate" th:field="*{sendDate}" th:value="${#dates.format(invoice.sendDate, 'dd/MM/yyyy')}" placeholder="10/12/2018">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="invoiceTerm" class="col-sm-3 col-form-label col-form-label-sm">Maksetähtaeg</label>
                                 <div class="col-sm-9">
-                                    <input type="date" class="form-control form-control-sm" id="invoiceTerm" th:field="*{invoiceTerm}"  placeholder="10/12/2019">
+                                    <input type="date" class="form-control form-control-sm" id="invoiceTerm" th:field="*{invoiceTerm}" th:value="${#dates.format(invoice.invoiceTerm, 'dd/MM/yyyy')}" placeholder="10/12/2019">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -118,14 +118,14 @@
                                 </tr>
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>Tasuda:</td>
-                                        <td>300.00</td>
-                                        <!--<td th:text="${invoiceRow.sumPrice}">300.00</td>-->
-                                    </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Tasuda:</td>
+                                    <td>300.00</td>
+                                    <!--<td th:text="${invoiceRow.sumPrice}">300.00</td>-->
+                                </tr>
                                 </tfoot>
                             </table>
                             <a href="#" id="addbtn" class="btn btn-outline-primary btn-sm">Lisa rida</a>
