@@ -121,7 +121,7 @@
                             <td th:text="${contract.invoiceSendDate}">5</td>
                             <td th:text="${contract.price}">360.00</td>
                             <td th:text="${contract.contractObjectAddress}">Tehnika 27-11-1</td>
-                            <td><a href="/contracts/1" class="btn btn-outline-primary btn-sm">Vaata</a></td>
+                            <td><a href="/contracts/1" th:href="@{/contracts/{id}(id= ${contract.id})}" class="btn btn-outline-primary btn-sm">Vaata</a></td>
                         </tr>
                         </tbody>
                     </table>

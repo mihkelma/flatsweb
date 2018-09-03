@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "CONTRACTS")
+@Table(name = "contracts")
 public class Contract {
 
     @Id

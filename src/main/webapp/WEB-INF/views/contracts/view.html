@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Montserrat|Open+Sans:300|Oswald|Raleway:500|Roboto:300" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 5rem;
+            background-color: #f8f9fa;
+            font-family: "Roboto", sans-serif;
+        }
+        .ccard {
+            background-color: #fff !important;
+            border: 1px solid rgba(0,0,0,.125);
+            border-radius: .25rem;
+        }
+        .btn:focus,.btn:active {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+    <title>flats.ee</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <main role="main" class="container">
+        <div th:object="${contract}">
+            <div class="mb-3">
+                <h4 class="d-inline" th:text="*{contractNumber}">Objekt</h4>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 shadow rounded ccard p-3">
+                    <h4 >Andmed</h4>
+                    <div class="text-danger" role="alert">
+                        <small th:if="${info}" th:text="${info}">Veateade!</small>
+                    </div>
+                    <form class="mb-3 mt-3" th:action="@{/units/{uid}/contracts(uid= *{id})}"  method="post">
+                        <div class="form-group row">
+                            <input type="hidden" th:field="*{id}" />
+                            <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
+                            <div class="col-sm-6">
+                                <select id="unitType" class="form-control form-control-sm" th:field="*{contractType}">
+                                    <option selected value="1">Korter</option>
+                                    <option value="2">Tuba</option>
+                                    <option value="3">Garaaz</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="contractObjectAddress" class="col-sm-2 col-form-label col-form-label-sm">Objekt</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="contractObjectAddress" th:field="*{contractObjectAddress}" placeholder="Suur-Karja 18-70">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="contractObjectRoom" class="col-sm-2 col-form-label col-form-label-sm">Toa number</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="contractObjectRoom" th:field="*{contractObjectRoom}" placeholder="Tallinn">
+                            </div>
+                        </div>
+                        <div class="form-group row" id="priceDiv" style="display:none;">
+                            <label for="price" class="col-sm-2 col-form-label col-form-label-sm">Hind</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="price" th:field="*{price}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row" id="contractTermDiv">
+                            <label for="contractTerm" class="col-sm-2 col-form-label col-form-label-sm">Lepingu kehtivus</label>
+                            <div class="col-sm-6">
+                                <input type="date" class="form-control form-control-sm" id="contractTerm" th:field="*{contractTerm}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row" id="invoiceSendDateDiv">
+                            <label for="invoiceSendDate" class="col-sm-2 col-form-label col-form-label-sm">Arve kuupäev</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="invoiceSendDate" th:field="*{invoiceSendDate}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ownerName" class="col-sm-2 col-form-label col-form-label-sm">Omaniku nimi</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="ownerName" th:field="*{ownerName}" placeholder="78.60">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ownerCode" class="col-sm-2 col-form-label col-form-label-sm">Omaniku isikukood/ reg.kood</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="ownerCode" th:field="*{ownerCode}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ownerAddress" class="col-sm-2 col-form-label col-form-label-sm">Omaniku aadress</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="ownerAddress" th:field="*{ownerAddress}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ownerEmail" class="col-sm-2 col-form-label col-form-label-sm">Omaniku email</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="ownerEmail" th:field="*{ownerEmail}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ownerBankAccount" class="col-sm-2 col-form-label col-form-label-sm">Omaniku pangakonto</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="ownerBankAccount" th:field="*{ownerBankAccount}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ownerBankName" class="col-sm-2 col-form-label col-form-label-sm">Omaniku panga nimi</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="ownerBankName" th:field="*{ownerBankName}" placeholder="3">
+                            </div>
+                        </div>
+                        <!-- Customer section-->
+                        <div class="form-group row">
+                            <label for="customerName" class="col-sm-2 col-form-label col-form-label-sm">Kliendi nimi</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="customerName" th:field="*{customerName}" placeholder="78.60">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="customerCode" class="col-sm-2 col-form-label col-form-label-sm">Kliendi isikukood/ reg.kood</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="customerCode" th:field="*{customerCode}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="customerAddress" class="col-sm-2 col-form-label col-form-label-sm">Kliendi aadress</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="customerAddress" th:field="*{customerAddress}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="customerPhone" class="col-sm-2 col-form-label col-form-label-sm">Kliendi telefon</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="customerPhone" th:field="*{customerPhone}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="customerEmail" class="col-sm-2 col-form-label col-form-label-sm">Kliendi email</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-sm" id="customerEmail" th:field="*{customerEmail}" placeholder="3">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button th:type="submit" class="btn btn-outline-primary btn-sm" >Salvesta</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Invoice section -->
+        <div >
+            <div class="mt-5 mb-3">
+                <h4 class="d-inline">Arved</h4>
+                <a th:href="@{/contracts/{cid}/invoices/add(cid= *{id})}" class="d-inline float-right btn btn-outline-primary btn-sm">+ Lisa arve</a>
+            </div>
+            <div class="row" th:object="${invoices}">
+                <div class="col-sm-12 shadow rounded ccard p-3">
+                    <form class="mb-3 mt-3"   method="post">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Arve nr</th>
+                                <th scope="col">Olek</th>
+                                <th scope="col">Saaja nimi</th>
+                                <th scope="col">Saaja email</th>
+                                <th scope="col">Arve väljastamine</th>
+                                <th scope="col">Arve summa</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="invoice : ${invoices}">
+                                <th scope="row" th:text="${invoice.iNumber}">L123123113</th>
+                                <td th:text="${invoice.status}">Kehtiv</td>
+                                <td th:text="${invoice.customerName}">Otto Kapp</td>
+                                <td th:text="${invoice.customerEmail}">271 päeva</td>
+                                <td th:text="${invoice.sendDate}">5</td>
+                                <td th:text="${invoice.sum}">360.00</td>
+                                <td><a th:href="@{/invoices/{id}(id= ${invoice.id})}" class="btn btn-outline-primary btn-sm">Vaata</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</div>
+</body>
+</html>

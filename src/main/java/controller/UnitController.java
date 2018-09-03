@@ -36,7 +36,6 @@ public class UnitController {
     public String getUnitById(@PathVariable Long id, Authentication auth, Model model) {
         Unit tmp = unitService.getUnitById(id ,auth.getName());
         List<Contract> clist = contractService.getContractsByUnitId(id, auth.getName());
-        System.out.println("Lepingud: " + clist.get(0).getContractNumber());
         model.addAttribute("unit", tmp);
         model.addAttribute("contracts", clist);
         return "units/view";

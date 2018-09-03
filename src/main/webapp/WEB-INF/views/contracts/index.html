@@ -1,21 +1,93 @@
-<html lang="et" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
 <head>
-    <title>flats.ee</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <style>
-        body, table, input, button {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Montserrat|Open+Sans:300|Oswald|Raleway:500|Roboto:300" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 5rem;
+            background-color: #f8f9fa;
+            font-family: "Roboto", sans-serif;
+        }
+        .btn:focus,.btn:active {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        .hidden {
+            display: none;
+        }
+        .popover-body p:last-child {
+            margin-bottom: 0;
         }
     </style>
+    <title>flats.ee</title>
 </head>
 <body>
-<div sec:authorize="hasRole('ADMIN')">
-    <a href="/users">User</a>
+<div layout:fragment="content" th:remove="tag">
+    <div class="container mb-3">
+        <h4 class="d-inline">Minu lepingud
+        </h4>
+        <a href="/contracts/add" class="d-inline float-right btn btn-outline-primary btn-sm">+ Lisa leping</a>
+        <div class="dropdown float-right mr-2">
+            <a class="btn btn-sm btn-outline-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Olek
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="#">Aktiivne</a>
+                <a class="dropdown-item" href="#">Mitteaktiivne</a>
+            </div>
+        </div>
+    </div>
+    <main role="main" class="container">
+        <div class="card-columns">
+            <div class="card shadow" th:each="contract, iStat : ${contracts}">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <span class="d-inline"><a th:href="'/contracts/' + ${contract.id}" th:text="${contract.contractNumber}">Lepingu number</a></span>
+                        <a href="#" class="float-right" data-container="body" data-trigger="focus" tabindex="0" data-toggle="popover" data-placement="bottom" th:data-popover-content="'#a' + ${iStat.index}">...</a>
+                        <div th:id="'a' + ${iStat.index}" class="hidden">
+                            <div class="popover-body">
+                                <p><a th:href="'/contracts/' + ${contract.id}">Vaata detaile</a></p>
+                                <p><a th:href="'/contracts/delete/' + ${contract.id}">Kustuta</a></p>
+                            </div>
+                        </div>
+
+
+                    </h5>
+
+                    <p class="card-text mb-1"><small th:text="'Aadress: ' + ${contract.contractObjectAddress} +', ' +${contract.contractObjectRoom}">Aadress: Papikese 6-9, Tallinn</small></p>
+                    <p class="card-text mb-1"><small th:text="'Lepingu algus: ' + ${contract.created}">Algus: 12.12.2017</small></p>
+                    <p class="card-text mb-1"><small th:text="'Lepingu kehtivus: ' + ${contract.contractTerm}">Kehtivus: 12.12.2018</small></p>
+                    <p class="card-text mb-1"><small th:text="'Väärtus: ' + ${contract.price}">Väärtus: 300.00</small></p>
+                    <p class="card-text mb-1"><small th:text="'Klient: ' + ${contract.customerName}">Klient: Priit Pett</small></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="popover"]').popover({
+                html: true,
+                content: function() {
+                    var content = $(this).attr("data-popover-content");
+                    return $(content).children(".popover-body").html();
+                }
+            })
+        })
+    </script>
 </div>
-<h2 th:text="${message}"></h2>
-<form th:action="@{/logout}" method="POST">
-    <input value="Logout" type="submit">
-</form>
 </body>
 </html>

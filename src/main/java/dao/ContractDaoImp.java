@@ -49,7 +49,6 @@ public class ContractDaoImp implements ContractDao {
         try {
             Contract tmp;
             tmp = em.createQuery("SELECT c FROM Contract c " +
-                    "LEFT JOIN FETCH c.invoices ci " +
                     "WHERE c.id = :id AND lower(c.user.username) = lower(:username)", Contract.class)
                     .setParameter("id", id)
                     .setParameter("username", username)

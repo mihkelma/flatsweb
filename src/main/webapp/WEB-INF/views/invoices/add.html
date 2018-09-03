@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Montserrat|Open+Sans:300|Oswald|Raleway:500|Roboto:300" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 5rem;
+            background-color: #f8f9fa;
+            font-family: "Roboto", sans-serif;
+        }
+        .ccard {
+            background-color: #fff !important;
+            border: 1px solid rgba(0,0,0,.125);
+            border-radius: .25rem;
+        }
+        .btn:focus,.btn:active {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+    <title>flats.ee</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <div class="container mb-3">
+        <h4 class="d-inline">Lisa arve
+        </h4>
+    </div>
+    <main role="main" class="container">
+        <div class="row mb-5">
+            <div class="col-sm-12 shadow rounded ccard">
+                <form class="mb-3 mt-3" th:action="@{/contracts/{id}/invoices(id=${contractId})}" th:object="${invoice}" method="post">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <h4 th:field="*{ownerName}">POCOS OÜ</h4>
+                            <div class="alert text-danger" role="alert">
+                                <small th:if="${info}" th:text="${info}">In case alert is needed</small>
+                            </div>
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-5">
+                            <div class="form-group row">
+                                <label for="customerName" class="col-sm-3 col-form-label col-form-label-sm">Arve saaja</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="customerName" th:field="*{customerName}" placeholder="Priit Pett">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="customerAddress" class="col-sm-3 col-form-label col-form-label-sm">Aadress</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="customerAddress" th:field="*{customerAddress}" placeholder="Õismäe tee 154-231, Tallinn">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group row">
+                                <label for="iNumber" class="col-sm-3 col-form-label col-form-label-sm">Arve number</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="iNumber" th:field="*{iNumber}" placeholder="A1312313" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="sendDate" class="col-sm-3 col-form-label col-form-label-sm">Väljastatud</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control form-control-sm" id="sendDate" th:field="*{sendDate}" placeholder="10/12/2018">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="invoiceTerm" class="col-sm-3 col-form-label col-form-label-sm">Maksetähtaeg</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control form-control-sm" id="invoiceTerm" th:field="*{invoiceTerm}" placeholder="10/12/2019">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="customerReference" class="col-sm-3 col-form-label col-form-label-sm">Viitenumber</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="customerReference" th:field="*{customerReference}" placeholder="Peeter Pakiraam" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <table id="items" class="table table-sm">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Teenus</th>
+                                    <th scope="col">Kogus</th>
+                                    <th scope="col">Hind</th>
+                                    <th scope="col">Summa</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="invoiceRow, itemStat : *{invoiceRows}">
+                                    <td ></td>
+                                    <td><input th:field="*{invoiceRows[__${itemStat.index}__].title}" /></td>
+                                    <td><input th:field="*{invoiceRows[__${itemStat.index}__].quantity}" /></td>
+                                    <td><input th:field="*{invoiceRows[__${itemStat.index}__].unitPrice}" /></td>
+                                    <td><input th:field="*{invoiceRows[__${itemStat.index}__].rowPrice}" />300.00</td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Tasuda:</td>
+                                        <td>300.00</td>
+                                        <!--<td th:text="${invoiceRow.sumPrice}">300.00</td>-->
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <a href="#" id="addbtn" class="btn btn-outline-primary btn-sm">Lisa rida</a>
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                    <div class="form-group">
+                        <button th:type="submit" class="btn btn-outline-primary btn-sm" >Salvesta</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function($) {
+            var tmpid = $('#items tr:last').attr('id');
+            if ( tmpid == null)  {
+                tmpid = 1;
+            }
+
+            $("#addbtn").click(function() {
+
+                str1 = '<td>'+ tmpid +'</td>';
+                str2 = '<td><input id="invoiceRows'+ tmpid +'.title" name="invoiceRows['+ tmpid +'].title" value /></td>';
+                str3 = '<td><input id="invoiceRows'+ tmpid +'.quantity" name="invoiceRows['+ tmpid +'].quantity" value /></td>';
+                str4 = '<td><input id="invoiceRows'+ tmpid +'.price" name="invoiceRows['+ tmpid +'].unitPrice" value /></td>';
+                str5 = '<td><input id="invoiceRows'+ tmpid +'.price" name="invoiceRows['+ tmpid +'].sumPrice" value /></td>';
+                $('#items > tbody').append('<tr>'+str1+str2+str3+str4+str5+'</tr>');
+                tmpid++;
+
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
