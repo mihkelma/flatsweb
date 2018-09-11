@@ -1,4 +1,5 @@
 import model.Contract;
+import model.InvoiceRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,6 +9,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.EmailService;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class main {
@@ -30,7 +33,14 @@ public class main {
 //        System.out.println("Leping2 id: " + c2.getContractNumber());
 
 
-        LocalDate date = LocalDate.now();
-        System.out.println(date);
+        //LocalDate date = LocalDate.now();
+        //System.out.println(date);
+
+        Asi asi = new Asi();
+        asi.setX(2);
+        asi.setY(4);
+        asi.setSum(2);
+        System.out.println(asi.getSum());
+
     }
 }

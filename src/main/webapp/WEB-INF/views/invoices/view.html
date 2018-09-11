@@ -40,7 +40,7 @@
             <div class="col-sm-12 shadow rounded ccard">
                 <form class="mb-3 mt-3" th:action="@{/contracts/{id}/invoices(id=${contractId})}" th:object="${invoice}" method="post">
                     <div class="row">
-                        <div class="col-sm-1"><input type="hidden" th:field="*{id}" /></div>
+                        <div class="col-sm-1"></div>
                         <div class="col-sm-10">
                             <h4 th:field="*{ownerName}">POCOS OÜ</h4>
                             <div class="alert text-danger" role="alert">
@@ -54,6 +54,7 @@
                         <div class="col-sm-1"></div>
                         <div class="col-sm-5">
                             <div class="form-group row">
+                                <input type="hidden" th:field="*{id}" />
                                 <label for="customerName" class="col-sm-3 col-form-label col-form-label-sm">Arve saaja</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control form-control-sm" id="customerName" th:field="*{customerName}" placeholder="Priit Pett">
@@ -98,10 +99,10 @@
                     <div class="row mt-5">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-10">
-                            <table id="items" class="table table-sm">
+                            <table id="tblProducts" class="table table-sm">
                                 <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th>#</th>
                                     <th scope="col">Teenus</th>
                                     <th scope="col">Kogus</th>
                                     <th scope="col">Hind</th>
@@ -110,11 +111,11 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="invoiceRow, itemStat : *{invoiceRows}">
-                                    <td ></td>
+                                    <td ><input type="hidden" th:field="*{invoiceRows[__${itemStat.index}__].id}" /></td>
                                     <td><input th:field="*{invoiceRows[__${itemStat.index}__].title}" /></td>
-                                    <td><input th:field="*{invoiceRows[__${itemStat.index}__].quantity}" /></td>
-                                    <td><input th:field="*{invoiceRows[__${itemStat.index}__].unitPrice}" /></td>
-                                    <td><input th:field="*{invoiceRows[__${itemStat.index}__].rowPrice}" />300.00</td>
+                                    <td><input class="quantity" th:field="*{invoiceRows[__${itemStat.index}__].quantity}" /></td>
+                                    <td><input class="unitPrice" th:field="*{invoiceRows[__${itemStat.index}__].unitPrice}" /></td>
+                                    <td><input class="rowPrice" th:field="*{invoiceRows[__${itemStat.index}__].rowPrice}" disabled/></td>
                                 </tr>
                                 </tbody>
                                 <tfoot>
@@ -123,8 +124,7 @@
                                     <td></td>
                                     <td></td>
                                     <td>Tasuda:</td>
-                                    <td>300.00</td>
-                                    <!--<td th:text="${invoiceRow.sumPrice}">300.00</td>-->
+                                    <td><input id="sum" th:field="*{sum}" /></td>
                                 </tr>
                                 </tfoot>
                             </table>
@@ -149,22 +149,48 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript">
         $(document).ready(function($) {
-            var tmpid = $('#items tr:last').attr('id');
-            if ( tmpid == null)  {
-                tmpid = 1;
-            }
 
-            $("#addbtn").click(function() {
-
-                str1 = '<td>'+ tmpid +'</td>';
-                str2 = '<td><input id="invoiceRows'+ tmpid +'.title" name="invoiceRows['+ tmpid +'].title" value /></td>';
-                str3 = '<td><input id="invoiceRows'+ tmpid +'.quantity" name="invoiceRows['+ tmpid +'].quantity" value /></td>';
-                str4 = '<td><input id="invoiceRows'+ tmpid +'.price" name="invoiceRows['+ tmpid +'].unitPrice" value /></td>';
-                str5 = '<td><input id="invoiceRows'+ tmpid +'.price" name="invoiceRows['+ tmpid +'].sumPrice" value /></td>';
-                $('#items > tbody').append('<tr>'+str1+str2+str3+str4+str5+'</tr>');
+            var tmpid = 1;
+            $("#addbtn").click(function(e) {
+                e.preventDefault();
+                str1 = '<td><input type="hidden" id="id"/></td>\n<td><input class="title" id="invoiceRows'+ tmpid +'.title" name="invoiceRows['+ tmpid +'].title" value="Toode/ Teenus"/></td>';
+                str2 = '<td><input class="quantity" id="invoiceRows'+ tmpid +'.quantity" name="invoiceRows['+ tmpid +'].quantity" value="0.00"/></td>';
+                str3 = '<td><input class="unitPrice" id="invoiceRows'+ tmpid +'.unitPrice" name="invoiceRows['+ tmpid +'].unitPrice" value="0.00"/></td>';
+                str4 = '<td><input class="rowPrice" id="invoiceRows'+ tmpid +'.rowPrice" name="invoiceRows['+ tmpid +'].rowPrice" value="0" disabled/></td>';
+                $('#tblProducts > tbody').append('<tr>'+str1+str2+str3+str4+'</tr>');
                 tmpid++;
+            });
+
+            $('.pnm, .subtot, .grdtot').prop('readonly', true);
+            $(document).on('keyup change', '#tblProducts tr input', function () {
+                var $tblrows = $("#tblProducts tbody tr");
+                $tblrows.each(function (index) {
+                    var $tblrow = $(this);
+                    $tblrow.find('.quantity, .unitPrice').on('change', function () {
+
+                        var qty = $tblrow.find("input[name$='quantity']").val();
+                        var price = $tblrow.find("input[name$='unitPrice']").val();
+                        var subTotal = parseFloat(qty) * parseFloat(price);
+
+                        if (!isNaN(subTotal)) {
+                            $tblrow.find("input[name$='rowPrice']").val(subTotal.toFixed(2));
+                            var grandTotal = 0;
+
+                            $("input[name$='rowPrice']").each(function () {
+                                console.log("total calc");
+                                var stval = parseFloat($(this).val());
+                                grandTotal += isNaN(stval) ? 0 : stval;
+                            });
+
+                            $('#sum').val(grandTotal.toFixed(2));
+                        }
+                    });
+                });
 
             });
+
+
+
         });
     </script>
 </div>

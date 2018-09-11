@@ -72,10 +72,21 @@ public class InvoiceDaoImp implements InvoiceDao {
         //TODO
         if (invoice.getId() != null) {
 //            existing invoice
-//            User user = em.find(User.class, username);
-//            invoice.setUser(user);
+            User user = em.find(User.class, username);
+            Contract contract = em.find(Contract.class, cid);
+            //TODO: make method public, for other DAO's to use
+            Invoice old = getInvoiceById(invoice.getId(),username);
+            if (old.getUser().getUsername().equals(username)) {
+                invoice.setUser(user);
+            }
+            invoice.setContract(contract);
             //TODO
-
+            System.out.println("Merge invoice dao");
+            for (int i =0; i < invoice.getInvoiceRows().size(); i++) {
+                invoice.getInvoiceRows().get(i).setUser(user);
+                invoice.getInvoiceRows().get(i).setInvoice(invoice);
+                System.out.println("Arverida nr: " + invoice.getInvoiceRows().get(i).getId());
+            }
             em.merge(invoice);
         } else {                        //new invoice
             Contract contract = em.find(Contract.class, cid);

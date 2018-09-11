@@ -98,11 +98,16 @@ public class InvoiceRow {
     }
 
     public BigDecimal getRowPrice() {
-        return rowPrice;
+        return quantity.multiply(unitPrice);
     }
 
-    public void setRowPrice(BigDecimal rowPrice) {
-        this.rowPrice = rowPrice;
+    public void setRowPrice() {
+        if (unitPrice == null || quantity == null) {
+            System.out.println("Unitprice or qty is null");
+            this.rowPrice = new BigDecimal(0);
+        }
+        this.rowPrice = unitPrice.multiply(quantity);
+        System.out.println("rowprice: " + this.rowPrice);
     }
 
     @Override

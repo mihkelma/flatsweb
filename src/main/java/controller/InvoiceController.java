@@ -50,6 +50,7 @@ public class InvoiceController {
     //Save invoice
     @PostMapping("/contracts/{cid}/invoices")
     public String addInvoice(@Valid Invoice invoice, @PathVariable Long cid, Authentication auth) {
+        System.out.println("Saving invoice Ctrl");
         if (invoice != null) {
             //System.out.println("Invoircerow_item1: " + invoice.getInvoiceRows().get(0).getQuantity());
             //System.out.println("Invoircerow_item2: " + invoice.getInvoiceRows().get(0).getTitle());
