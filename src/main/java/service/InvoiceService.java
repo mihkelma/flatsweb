@@ -21,7 +21,6 @@ public class InvoiceService {
     }
 
     public void saveInvoice(Invoice invoice, Long cid, String username) {
-        System.out.println("Saving invoice in service");
         invoiceDao.saveInvoice(invoice, cid, username);
     }
 

@@ -1,5 +1,6 @@
 package controller;
 
+import model.Contract;
 import model.Invoice;
 import model.InvoiceRow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
+import service.ContractService;
 import service.InvoiceService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +29,9 @@ public class InvoiceController {
     @Autowired
     InvoiceService invoiceService;
 
+    @Autowired
+    ContractService contractService;
+
     @InitBinder
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -37,6 +42,10 @@ public class InvoiceController {
     @GetMapping("/contracts/{id}/invoices/add")
     public String addInvoiceForm(@PathVariable Long id, ModelMap model, Authentication auth) {
         Invoice inv = new Invoice();
+        Contract ctr = contractService.getContractById(id, auth.getName());
+        inv.setCustomerName(ctr.getCustomerName());
+        inv.setCustomerAddress(ctr.getCustomerAddress());
+
         List<InvoiceRow> irl = new ArrayList<>();
         InvoiceRow ir = new InvoiceRow();
         irl.add(ir);
@@ -50,11 +59,7 @@ public class InvoiceController {
     //Save invoice
     @PostMapping("/contracts/{cid}/invoices")
     public String addInvoice(@Valid Invoice invoice, @PathVariable Long cid, Authentication auth) {
-        System.out.println("Saving invoice Ctrl");
         if (invoice != null) {
-            //System.out.println("Invoircerow_item1: " + invoice.getInvoiceRows().get(0).getQuantity());
-            //System.out.println("Invoircerow_item2: " + invoice.getInvoiceRows().get(0).getTitle());
-            //System.out.println("Invoircerow_item3: " + invoice.getInvoiceRows().get(0).getUnitPrice());
             invoiceService.saveInvoice(invoice, cid, auth.getName());
             return "redirect:/contracts/" +cid;
         }
@@ -64,7 +69,6 @@ public class InvoiceController {
     //Get view invoice page
     @GetMapping("/contracts/{cid}/invoices/{iid}")
     public String editInvoiceForm(@PathVariable Long cid, @PathVariable Long iid, Model model, Authentication auth) {
-        System.out.println("Invoice id: " +iid);
         Invoice invoice = invoiceService.getInvoiceById(iid, auth.getName());
         model.addAttribute("invoice", invoice);
         model.addAttribute("contractId", cid);

@@ -39,7 +39,7 @@
         <div class="row mb-5">
             <div class="col-sm-12 shadow rounded ccard">
                 <form class="mb-3 mt-3" th:action="@{/contracts/{id}/invoices(id=${contractId})}" th:object="${invoice}" method="post">
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-10">
                             <h4 th:field="*{ownerName}">POCOS OÜ</h4>
@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="sendDate" class="col-sm-3 col-form-label col-form-label-sm">Väljastatud</label>
+                                <label for="sendDate" class="col-sm-3 col-form-label col-form-label-sm">Väljastamise kuupäev</label>
                                 <div class="col-sm-9">
                                     <input type="date" class="form-control form-control-sm" id="sendDate" th:field="*{sendDate}" th:value="${#dates.format(invoice.sendDate, 'dd/MM/yyyy')}" placeholder="10/12/2018">
                                 </div>
@@ -113,9 +113,9 @@
                                 <tr th:each="invoiceRow, itemStat : *{invoiceRows}">
                                     <td ><input type="hidden" th:field="*{invoiceRows[__${itemStat.index}__].id}" /></td>
                                     <td><input th:field="*{invoiceRows[__${itemStat.index}__].title}" /></td>
-                                    <td><input class="quantity" th:field="*{invoiceRows[__${itemStat.index}__].quantity}" /></td>
-                                    <td><input class="unitPrice" th:field="*{invoiceRows[__${itemStat.index}__].unitPrice}" /></td>
-                                    <td><input class="rowPrice" th:field="*{invoiceRows[__${itemStat.index}__].rowPrice}" disabled/></td>
+                                    <td><input class="quantity text-right" th:name="|invoiceRows[${itemStat.index}].quantity|"  th:id="|invoiceRows${itemStat.index}.quantity|" th:value="${#numbers.formatDecimal(invoiceRow.quantity,1,2)}"/></td>
+                                    <td><input class="unitPrice text-right" th:name="|invoiceRows[${itemStat.index}].unitPrice|" th:id="|invoiceRows${itemStat.index}.unitPrice|" th:value="${#numbers.formatDecimal(invoiceRow.unitPrice,1,2)}"/></td>
+                                    <td><input class="rowPrice text-right" th:name="|invoiceRows[${itemStat.index}].rowPrice|" th:id="|invoiceRows${itemStat.index}.rowPrice|" th:value="${#numbers.formatDecimal(invoiceRow.rowPrice,1,2)}"disabled/></td>
                                 </tr>
                                 </tbody>
                                 <tfoot>
@@ -124,7 +124,7 @@
                                     <td></td>
                                     <td></td>
                                     <td>Tasuda:</td>
-                                    <td><input id="sum" th:field="*{sum}" /></td>
+                                    <td><input id="sum" th:value="${#numbers.formatDecimal(sum,1,2)}"/></td>
                                 </tr>
                                 </tfoot>
                             </table>
@@ -150,13 +150,18 @@
     <script type="text/javascript">
         $(document).ready(function($) {
 
-            var tmpid = 1;
+            var tmpid = $('#tblProducts > tbody > tr').length;
+            console.log(tmpid);
+            if ( tmpid == null)  {
+                tmpid = 1;
+            }
+
             $("#addbtn").click(function(e) {
                 e.preventDefault();
-                str1 = '<td><input type="hidden" id="id"/></td>\n<td><input class="title" id="invoiceRows'+ tmpid +'.title" name="invoiceRows['+ tmpid +'].title" value="Toode/ Teenus"/></td>';
-                str2 = '<td><input class="quantity" id="invoiceRows'+ tmpid +'.quantity" name="invoiceRows['+ tmpid +'].quantity" value="0.00"/></td>';
-                str3 = '<td><input class="unitPrice" id="invoiceRows'+ tmpid +'.unitPrice" name="invoiceRows['+ tmpid +'].unitPrice" value="0.00"/></td>';
-                str4 = '<td><input class="rowPrice" id="invoiceRows'+ tmpid +'.rowPrice" name="invoiceRows['+ tmpid +'].rowPrice" value="0" disabled/></td>';
+                str1 = '<td></td>\n<td><input class="title" id="invoiceRows'+ tmpid +'.title" name="invoiceRows['+ tmpid +'].title" placeholder="Toode"/></td>';
+                str2 = '<td><input class="quantity text-right" id="invoiceRows'+ tmpid +'.quantity" name="invoiceRows['+ tmpid +'].quantity" placeholder="0.00" /></td>';
+                str3 = '<td><input class="unitPrice text-right" id="invoiceRows'+ tmpid +'.unitPrice" name="invoiceRows['+ tmpid +'].unitPrice" placeholder="0.00"/></td>';
+                str4 = '<td><input class="rowPrice text-right" id="invoiceRows'+ tmpid +'.rowPrice" name="invoiceRows['+ tmpid +'].rowPrice" placeholder="0.00" disabled/></td>';
                 $('#tblProducts > tbody').append('<tr>'+str1+str2+str3+str4+'</tr>');
                 tmpid++;
             });
@@ -167,17 +172,15 @@
                 $tblrows.each(function (index) {
                     var $tblrow = $(this);
                     $tblrow.find('.quantity, .unitPrice').on('change', function () {
-
-                        var qty = $tblrow.find("input[name$='quantity']").val();
-                        var price = $tblrow.find("input[name$='unitPrice']").val();
+                        var qty = $tblrow.find("input[id$='quantity']").val();
+                        var price = $tblrow.find("input[id$='unitPrice']").val();
                         var subTotal = parseFloat(qty) * parseFloat(price);
 
                         if (!isNaN(subTotal)) {
-                            $tblrow.find("input[name$='rowPrice']").val(subTotal.toFixed(2));
+                            $tblrow.find("input[id$='rowPrice']").val(subTotal.toFixed(2));
                             var grandTotal = 0;
 
-                            $("input[name$='rowPrice']").each(function () {
-                                console.log("total calc");
+                            $("input[id$='rowPrice']").each(function () {
                                 var stval = parseFloat($(this).val());
                                 grandTotal += isNaN(stval) ? 0 : stval;
                             });

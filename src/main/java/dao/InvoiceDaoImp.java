@@ -72,6 +72,7 @@ public class InvoiceDaoImp implements InvoiceDao {
         //TODO
         if (invoice.getId() != null) {
 //            existing invoice
+            System.out.println("InvoiceDao: merge");
             User user = em.find(User.class, username);
             Contract contract = em.find(Contract.class, cid);
             //TODO: make method public, for other DAO's to use
@@ -81,19 +82,17 @@ public class InvoiceDaoImp implements InvoiceDao {
             }
             invoice.setContract(contract);
             //TODO
-            System.out.println("Merge invoice dao");
             for (int i =0; i < invoice.getInvoiceRows().size(); i++) {
                 invoice.getInvoiceRows().get(i).setUser(user);
                 invoice.getInvoiceRows().get(i).setInvoice(invoice);
-                System.out.println("Arverida nr: " + invoice.getInvoiceRows().get(i).getId());
             }
             em.merge(invoice);
         } else {                        //new invoice
+            System.out.println("InvoiceDao: create");
             Contract contract = em.find(Contract.class, cid);
             User user = em.find(User.class, username);
             invoice.setUser(user);
             invoice.setContract(contract);
-            //invoice.setInvoiceRows(new ArrayList<>()); //working solution
             if (invoice.getDateCreated() == null) {
                 Date today = new Date(Calendar.getInstance().getTime().getTime());
                 invoice.setDateCreated(today);
@@ -101,7 +100,6 @@ public class InvoiceDaoImp implements InvoiceDao {
 
             //Set the status always to 0 - draft, when invoice created at first
             invoice.setStatus("DRAFT");
-            //System.out.println(invoice.toString());
             for (int i =0; i < invoice.getInvoiceRows().size(); i++) {
                 invoice.getInvoiceRows().get(i).setUser(user);
                 invoice.getInvoiceRows().get(i).setInvoice(invoice);

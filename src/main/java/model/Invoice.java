@@ -67,13 +67,12 @@ public class Invoice {
 
     public String getINumber() {
         //Contract starts with "L"
-        StringBuilder tmp = new StringBuilder("arve_");
+        StringBuilder tmp = new StringBuilder("A");
         //Get month and year "MMyy"
         long millis=System.currentTimeMillis();
         java.util.Date now = new java.util.Date(millis);
         SimpleDateFormat sDate = new SimpleDateFormat("ddMMyyyy");
         tmp.append(sDate.format(now));
-        tmp.append("_");
         //Add zeros
         if (baseId < 10) tmp.append("00000" + baseId);
         else if (baseId < 100) tmp.append("0000" + baseId);
