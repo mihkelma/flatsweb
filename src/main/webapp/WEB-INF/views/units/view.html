@@ -34,7 +34,7 @@
     <main role="main" class="container">
         <div th:object="${unit}">
             <div class="mb-3">
-                <h4 class="d-inline" th:text="*{unitType}">Objekt</h4>
+                <h4 class="d-inline" th:text="*{unitType.name}">Objekt</h4>
             </div>
             <div class="row">
                 <div class="col-sm-12 shadow rounded ccard p-3">
@@ -47,10 +47,11 @@
                             <input type="hidden" th:field="*{id}" />
                             <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
                             <div class="col-sm-6">
-                                <select id="unitType" class="form-control form-control-sm" th:field="*{unitType}">
-                                    <option selected value="1">Korter</option>
-                                    <option value="2">Tuba</option>
-                                    <option value="3">Garaaz</option>
+                                <select id="unitType" class="form-control form-control-sm" name="unitType">
+                                    <option th:each="type : ${allUnitTypes}"
+                                            th:value="${type.id}"
+                                            th:selected="${type.id == unit.unitType.id}"
+                                            th:text="${type.name}">Objekti tüüp</option>
                                 </select>
                             </div>
                         </div>
@@ -66,7 +67,7 @@
                                 <input type="text" class="form-control form-control-sm" id="propertyCity" th:field="*{city}" placeholder="Tallinn">
                             </div>
                         </div>
-                        <div class="form-group row" id="propertyRoomDiv" style="display:none;">
+                        <div class="form-group row" >
                             <label for="propertyRooms" class="col-sm-2 col-form-label col-form-label-sm">Tubade arv</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control form-control-sm" id="propertyRooms" th:field="*{rooms}" placeholder="3">

@@ -2,6 +2,7 @@ package controller;
 
 import model.Contract;
 import model.Unit;
+import model.UnitType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -32,12 +33,15 @@ public class UnitController {
         return "units/index";
     }
 
+    //Get view unit -id- page
     @GetMapping("/units/{id}")
     public String getUnitById(@PathVariable Long id, Authentication auth, Model model) {
         Unit tmp = unitService.getUnitById(id ,auth.getName());
+        List<UnitType> unitTypes = unitService.getAllUnitTypes();
         List<Contract> clist = contractService.getContractsByUnitId(id, auth.getName());
         model.addAttribute("unit", tmp);
         model.addAttribute("contracts", clist);
+        model.addAttribute("allUnitTypes", unitTypes);
         return "units/view";
     }
 
@@ -48,7 +52,7 @@ public class UnitController {
         return "units/add";
     }
 
-    //Save contract
+    //Save unit
     @PostMapping("/units")
     public String addUnit(@Valid Unit unit, Authentication auth) {
         //TODO: 1) Update will give error (A collection with cascade=”all-delete-orphan” was no longer referenced by the owning entity instance)

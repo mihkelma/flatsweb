@@ -2,6 +2,7 @@ package service;
 
 import dao.UnitDao;
 import model.Unit;
+import model.UnitType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,6 @@ public class UnitService {
     @Transactional
     public void saveUnit(Unit unit, String username) {
         System.out.println("Unit: " + unit.getUnitType());
-        if (unit.getUnitType().equals("1")) unit.setUnitType("Korter");
-        else if (unit.getUnitType().equals("2")) unit.setUnitType("Tuba");
-        else if (unit.getUnitType().equals("3")) unit.setUnitType("Garaaz");
         unitDao.saveUnit(unit, username);
     }
 
@@ -36,4 +34,7 @@ public class UnitService {
     }
 
 
+    public List<UnitType> getAllUnitTypes() {
+        return unitDao.getAllUnitTypes();
+    }
 }

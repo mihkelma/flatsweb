@@ -20,11 +20,15 @@ public class Unit {
     private Float size;
     private Float price;
     private String status;
-    private String unitType;
+    //private String unitType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
     private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="unittype")
+    private UnitType unitType;
 
 //    @OneToMany(mappedBy = "unit", cascade = CascadeType.MERGE, orphanRemoval = true)
 //    private List<Contract> contracts;
@@ -93,13 +97,11 @@ public class Unit {
         this.user = user;
     }
 
-    public String getUnitType() {
+    public UnitType getUnitType() {
         return unitType;
     }
 
-    public void setUnitType(String unitType) {
+    public void setUnitType(UnitType unitType) {
         this.unitType = unitType;
     }
-
-
 }

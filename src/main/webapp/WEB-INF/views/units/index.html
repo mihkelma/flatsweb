@@ -61,7 +61,7 @@
         <div class="card shadow" th:each="unit, iStat : ${units}">
             <div class="card-body">
                 <h5 class="card-title">
-                    <span class="d-inline"><a th:href="'/units/' + ${unit.id}" th:text="${unit.unitType}">Objekti tüüp</a></span>
+                    <span class="d-inline"><a th:href="'/units/' + ${unit.id}" th:text="${unit.unitType.name}">Objekti tüüp</a></span>
                     <a href="#" class="float-right" data-container="body" data-trigger="focus" tabindex="0" data-toggle="popover" data-placement="bottom" th:data-popover-content="'#a' + ${iStat.index}">...</a>
                     <div th:id="'a' + ${iStat.index}" class="hidden">
                         <div class="popover-body">

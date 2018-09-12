@@ -2,6 +2,7 @@ package dao;
 
 import model.Contract;
 import model.Unit;
+import model.UnitType;
 import model.User;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,8 @@ public class UnitDaoImp implements UnitDao {
     public List<Unit> getAllUserUnits(String username) {
         List<Unit> units;
         units = em.createQuery("SELECT u FROM Unit u " +
-                "LEFT JOIN FETCH u.user WHERE lower(u.user.username) = lower(:username)" , Unit.class)
+                "LEFT JOIN FETCH u.user " +
+                "LEFT JOIN FETCH u.unitType WHERE lower(u.user.username) = lower(:username)", Unit.class)
                 .setParameter("username", username)
                 .getResultList();
         if (units.isEmpty()) return null;
@@ -32,7 +34,7 @@ public class UnitDaoImp implements UnitDao {
         try {
             Unit unit;
             unit = em.createQuery("SELECT u FROM Unit u " +
-                    //"//LEFT JOIN FETCH u.contracts uc " +
+                    "LEFT JOIN FETCH u.unitType ut " +
                     "WHERE u.id = :id AND lower(u.user.username) = lower(:username)", Unit.class)
                     .setParameter("username", username)
                     .setParameter("id", id)
@@ -65,5 +67,16 @@ public class UnitDaoImp implements UnitDao {
         Unit unit = em.find(Unit.class, id);
         //TODO: instead of removing, change status and merge
         em.remove(unit);
+    }
+
+    @Override
+    public List<UnitType> getAllUnitTypes() {
+        List<UnitType> unitTypes;
+        try {
+            unitTypes = em.createQuery("SELECT ut FROM UnitType ut", UnitType.class).getResultList();
+        } catch (Exception e) {
+            unitTypes = null;
+        }
+        return unitTypes;
     }
 }
