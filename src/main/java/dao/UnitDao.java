@@ -11,4 +11,5 @@ public interface UnitDao {
     void saveUnit(Unit unit, String username);
     void deleteUnit(Long id, String username);
     List<UnitType> getAllUnitTypes();
+    UnitType getUnitTypeById(Integer id);
 }

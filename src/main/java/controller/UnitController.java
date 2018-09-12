@@ -4,12 +4,12 @@ import model.Contract;
 import model.Unit;
 import model.UnitType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import service.ContractService;
 import service.UnitService;
 
@@ -70,5 +70,11 @@ public class UnitController {
         System.out.println("Deleting unit");
         unitService.deleteUnit(id, auth.getName());
         return "redirect:/units";
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handle(Exception e) {
+        System.out.println("Returning HTTP 400 Bad Request: " + e);
     }
 }

@@ -37,4 +37,9 @@ public class UnitService {
     public List<UnitType> getAllUnitTypes() {
         return unitDao.getAllUnitTypes();
     }
+
+    public UnitType getUnitTypeById(Integer id) {
+        System.out.println("UnitService unitType search");
+        return unitDao.getUnitTypeById(id);
+    }
 }

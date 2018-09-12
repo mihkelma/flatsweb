@@ -79,4 +79,20 @@ public class UnitDaoImp implements UnitDao {
         }
         return unitTypes;
     }
+
+    @Override
+    public UnitType getUnitTypeById(Integer id) {
+        UnitType unitType;
+        try {
+            System.out.println("UnitType search: ");
+            unitType = em.createQuery("SELECT ut FROM UnitType ut WHERE ut.id = :id", UnitType.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+            System.out.println("UnitType found "+ unitType.getName());
+        } catch (Exception e) {
+            System.out.println("UnitType exception catched");
+            unitType = null;
+        }
+        return unitType;
+    }
 }
