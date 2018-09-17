@@ -3,12 +3,9 @@ package model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "contracts")
@@ -39,9 +36,11 @@ public class Contract {
     private String customerPhone;
     private String customerEmail;
     private String customerRefNumber;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date contractTerm;
     private Boolean VATRequired;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date contractSigned;        //TODO
     private String contractObjectAddress;

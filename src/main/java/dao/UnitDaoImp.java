@@ -1,6 +1,5 @@
 package dao;
 
-import model.Contract;
 import model.Unit;
 import model.UnitType;
 import model.User;
@@ -48,14 +47,11 @@ public class UnitDaoImp implements UnitDao {
     @Override
     @Transactional
     public void saveUnit(Unit unit, String username) {
-        System.out.println("Salvestan unit: " + unit.getId());
         User user = em.find(User.class, username);
         unit.setUser(user);
         if (unit.getId() != null) { //existing unit
-            System.out.println("Merging unit!");
             em.merge(unit);
         } else {            //new unit
-            System.out.println("New unit");
             unit.setStatus("Active");
             em.persist(unit);
         }
@@ -84,13 +80,10 @@ public class UnitDaoImp implements UnitDao {
     public UnitType getUnitTypeById(Integer id) {
         UnitType unitType;
         try {
-            System.out.println("UnitType search: ");
             unitType = em.createQuery("SELECT ut FROM UnitType ut WHERE ut.id = :id", UnitType.class)
                     .setParameter("id", id)
                     .getSingleResult();
-            System.out.println("UnitType found "+ unitType.getName());
         } catch (Exception e) {
-            System.out.println("UnitType exception catched");
             unitType = null;
         }
         return unitType;

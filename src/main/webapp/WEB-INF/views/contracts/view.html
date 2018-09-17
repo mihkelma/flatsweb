@@ -42,15 +42,15 @@
                     <div class="text-danger" role="alert">
                         <small th:if="${info}" th:text="${info}">Veateade!</small>
                     </div>
-                    <form class="mb-3 mt-3" th:action="@{/units/{uid}/contracts(uid= *{id})}"  method="post">
+                    <form class="mb-3 mt-3" th:action="@{/units/{uid}/contracts(uid= *{unit.id})}"  method="post">
                         <div class="form-group row">
                             <input type="hidden" th:field="*{id}" />
                             <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
                             <div class="col-sm-6">
-                                <select id="unitType" class="form-control form-control-sm" th:field="*{contractType}">
-                                    <option selected value="1">Korter</option>
-                                    <option value="2">Tuba</option>
-                                    <option value="3">Garaaz</option>
+                                <select id="unitType" class="form-control form-control-sm" th:field="*{contractType.id}">
+                                    <option th:each="type : ${allContractTypes}"
+                                            th:value="${type.id}"
+                                            th:text="${type.type}">Lepingu tüüp</option>
                                 </select>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                         <div class="form-group row" id="contractTermDiv">
                             <label for="contractTerm" class="col-sm-2 col-form-label col-form-label-sm">Lepingu kehtivus</label>
                             <div class="col-sm-6">
-                                <input type="date" class="form-control form-control-sm" id="contractTerm" th:field="*{contractTerm}" placeholder="3">
+                                <input type="date" class="form-control form-control-sm" id="contractTerm" th:field="*{contractTerm}" th:value="${#dates.format(contract.contractTerm, 'dd/MM/yyyy')}" placeholder="3">
                             </div>
                         </div>
                         <div class="form-group row" id="invoiceSendDateDiv">

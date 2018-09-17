@@ -1,6 +1,7 @@
 package dao;
 
 import model.Contract;
+import model.ContractType;
 import model.Unit;
 import model.User;
 import org.springframework.stereotype.Repository;
@@ -46,31 +47,32 @@ public class ContractDaoImp implements ContractDao {
 
     @Override
     public Contract getContractById(Long id, String username) {
+        Contract tmp;
         try {
-            Contract tmp;
             tmp = em.createQuery("SELECT c FROM Contract c " +
                     "WHERE c.id = :id AND lower(c.user.username) = lower(:username)", Contract.class)
                     .setParameter("id", id)
                     .setParameter("username", username)
                     .getSingleResult();
-            return tmp;
         } catch (NoResultException e) {
-            return null;
+            tmp = null;
         }
+        return tmp;
     }
 
     @Override
     @Transactional
     public void saveContract(Contract contract, Long cid, String username) {
-        System.out.println("Contract saving with id:" +contract.getId());
+
+        User user = em.find(User.class, username);
+        Unit unit = em.find(Unit.class, cid);
+
         if (contract.getId() != null) { //existing contract
-            //User user = em.find(User.class, username);
-            //TODO: merging without setting Invoices does not work (needs fix)
-            //contract.setInvoices(new ArrayList<Invoice>());
-            em.merge(contract);
-        } else {                        //new contract
-            User user = em.find(User.class, username);
-            Unit unit = em.find(Unit.class, cid);
+            contract.setUser(user);
+            contract.setUnit(unit);
+            Contract x = em.merge(contract);
+        }
+        else {                        //new contract
             contract.setUser(user);
             contract.setUnit(unit);
             em.persist(contract);
@@ -85,5 +87,17 @@ public class ContractDaoImp implements ContractDao {
 //        contract.setUser(user);
 //        em.merge(contract);
         em.remove(contract);
+    }
+
+    @Override
+    public List<ContractType> getAllContractTypes(String username) {
+        List<ContractType> contractTypes;
+        try {
+            contractTypes = em.createQuery("SELECT ct FROM ContractType ct", ContractType.class)
+                    .getResultList();
+        } catch (Exception e) {
+            contractTypes = null;
+        }
+        return contractTypes;
     }
 }

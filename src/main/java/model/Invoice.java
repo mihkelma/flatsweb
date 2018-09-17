@@ -42,7 +42,6 @@ public class Invoice {
     private String customerEmail;
     private String customerName;
     private String customerAddress;
-    private String customerPhone;
     private String customerReference;
     private String iNumber;
     private BigDecimal sum;
@@ -66,12 +65,12 @@ public class Invoice {
     }
 
     public String getINumber() {
-        //Contract starts with "L"
+        //Invoice starts with "AMMyyxxxxxx"
         StringBuilder tmp = new StringBuilder("A");
         //Get month and year "MMyy"
         long millis=System.currentTimeMillis();
         java.util.Date now = new java.util.Date(millis);
-        SimpleDateFormat sDate = new SimpleDateFormat("ddMMyyyy");
+        SimpleDateFormat sDate = new SimpleDateFormat("MMyy");
         tmp.append(sDate.format(now));
         //Add zeros
         if (baseId < 10) tmp.append("00000" + baseId);
@@ -222,14 +221,6 @@ public class Invoice {
         this.customerAddress = customerAddress;
     }
 
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
-    }
-
     public String getCustomerReference() {
         return customerReference;
     }
@@ -298,7 +289,6 @@ public class Invoice {
                 ", customerEmail='" + customerEmail + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", customerAddress='" + customerAddress + '\'' +
-                ", customerPhone='" + customerPhone + '\'' +
                 ", customerReference='" + customerReference + '\'' +
                 ", iNumber='" + iNumber + '\'' +
                 ", sum=" + sum +

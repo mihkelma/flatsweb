@@ -2,6 +2,7 @@ package service;
 
 import dao.ContractDao;
 import model.Contract;
+import model.ContractType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,9 @@ public class ContractService {
 
     public Contract getContractById(Long id, String username) {
         return contractDao.getContractById(id, username);
+    }
+
+    public List<ContractType> getAllContractTypes(String username) {
+        return contractDao.getAllContractTypes(username);
     }
 }

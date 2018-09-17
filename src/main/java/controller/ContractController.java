@@ -1,6 +1,7 @@
 package controller;
 
 import model.Contract;
+import model.ContractType;
 import model.Invoice;
 import model.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,8 @@ public class ContractController {
     public String editContractForm(@PathVariable Long id, Model model, Authentication auth) {
         Contract tmp = contractService.getContractById(id, auth.getName());
         List<Invoice> invoiceList = invoiceService.getInvoicesByContractId(id, auth.getName());
+        List<ContractType> contractTypes = contractService.getAllContractTypes(auth.getName());
+        model.addAttribute("allContractTypes", contractTypes);
         model.addAttribute("invoices", invoiceList);
         model.addAttribute("contract", tmp);
         return "contracts/view";

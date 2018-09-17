@@ -24,7 +24,6 @@ public class UnitService {
 
     @Transactional
     public void saveUnit(Unit unit, String username) {
-        System.out.println("Unit: " + unit.getUnitType());
         unitDao.saveUnit(unit, username);
     }
 
@@ -39,7 +38,6 @@ public class UnitService {
     }
 
     public UnitType getUnitTypeById(Integer id) {
-        System.out.println("UnitService unitType search");
         return unitDao.getUnitTypeById(id);
     }
 }

@@ -11,11 +11,12 @@ public class ContractType {
     @SequenceGenerator(name = "my_seq", sequenceName = "seq3", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq")
     private Long id;
-//    private String contractDefExtension;
-//    private Integer contractSendInvoiceDate;
-//    private Integer contractInvoiceTerm;
-    private Float contractPenalty;
-//    private Integer contractTerminationDays;
+    private String type;
+    //private Integer DefaultExtensionNotification;
+    //private Float DefaultPenaltyPerDay;
+    //private Integer TerminationDays;
+    //private Integer objectCheckingNotification;
+    //private Integer DefaultTerminationNotification;
 
     @OneToMany(mappedBy = "contractType", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contract> contracts;
@@ -28,45 +29,13 @@ public class ContractType {
         this.id = id;
     }
 
-//    public String getContractDefExtension() {
-//        return contractDefExtension;
-//    }
-//
-//    public void setContractDefExtension(String contractDefExtension) {
-//        this.contractDefExtension = contractDefExtension;
-//    }
-//
-//    public Integer getContractSendInvoiceDate() {
-//        return contractSendInvoiceDate;
-//    }
-//
-//    public void setContractSendInvoiceDate(Integer contractSendInvoiceDate) {
-//        this.contractSendInvoiceDate = contractSendInvoiceDate;
-//    }
-//
-//    public Integer getContractInvoiceTerm() {
-//        return contractInvoiceTerm;
-//    }
-//
-//    public void setContractInvoiceTerm(Integer contractInvoiceTerm) {
-//        this.contractInvoiceTerm = contractInvoiceTerm;
-//    }
-
-    public Float getContractPenalty() {
-        return contractPenalty;
+    public String getType() {
+        return type;
     }
 
-    public void setContractPenalty(Float contractPenalty) {
-        this.contractPenalty = contractPenalty;
+    public void setType(String type) {
+        this.type = type;
     }
-
-//    public Integer getContractTerminationDays() {
-//        return contractTerminationDays;
-//    }
-//
-//    public void setContractTerminationDays(Integer contractTerminationDays) {
-//        this.contractTerminationDays = contractTerminationDays;
-//    }
 
     public List<Contract> getContracts() {
         return contracts;

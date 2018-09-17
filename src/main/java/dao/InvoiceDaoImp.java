@@ -88,15 +88,14 @@ public class InvoiceDaoImp implements InvoiceDao {
             }
             em.merge(invoice);
         } else {                        //new invoice
-            System.out.println("InvoiceDao: create");
+            System.out.println("InvoiceDao: create, and sum" + invoice.getSum());
             Contract contract = em.find(Contract.class, cid);
             User user = em.find(User.class, username);
             invoice.setUser(user);
             invoice.setContract(contract);
-            if (invoice.getDateCreated() == null) {
-                Date today = new Date(Calendar.getInstance().getTime().getTime());
-                invoice.setDateCreated(today);
-            }
+
+            Date today = new Date(Calendar.getInstance().getTime().getTime());
+            invoice.setDateCreated(today);
 
             //Set the status always to 0 - draft, when invoice created at first
             invoice.setStatus("DRAFT");
