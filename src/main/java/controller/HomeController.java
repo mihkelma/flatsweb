@@ -58,7 +58,6 @@ public class HomeController {
     public String processRegistration(Model model, @Valid User user, BindingResult bindingResult, HttpServletRequest request) {
         // Lookup user in database by e-mail
         User userExists = userService.getUserByUsername(user.getUsername());
-        System.out.println("User: " + user.getUsername() + ", " + user.getFullName());
 
         //TODO: if user parameters are empty, show error on web
         if (userExists != null) {

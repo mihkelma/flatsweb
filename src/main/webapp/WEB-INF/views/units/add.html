@@ -40,7 +40,7 @@
         <div class="col-sm-12 shadow rounded ccard">
             <form class="mb-3 mt-3" th:action="@{/units}" th:object="${unit}" method="post">
                 <div class="alert text-danger" role="alert">
-                    <small th:if="${info}" th:text="${info}">In case alert is needed</small>
+                    <small th:if="${error}" th:text="${error}">In case alert is needed</small>
                 </div>
                 <div class="form-group row">
                     <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>

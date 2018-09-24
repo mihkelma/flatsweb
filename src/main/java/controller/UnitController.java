@@ -58,6 +58,7 @@ public class UnitController {
         if (bindingResult.hasErrors()) {
             List<UnitType> unitTypes = unitService.getAllUnitTypes();
             model.addAttribute("allUnitTypes", unitTypes);
+            model.addAttribute("error", "Viga andmete sisestamisel!");
             return "units/add";
         }
         unitService.saveUnit(unit, auth.getName());
