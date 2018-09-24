@@ -50,21 +50,21 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="contractObjectAddress" class="col-sm-2 col-form-label col-form-label-sm">Objekti aadress<sup>(a)</sup></label>
+                        <label for="objectAddress" class="col-sm-2 col-form-label col-form-label-sm">Objekti aadress<sup>(a)</sup></label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="contractObjectAddress" th:field="*{contractObjectAddress}" disabled>
+                            <input type="text" class="form-control form-control-sm" id="objectAddress" th:field="*{objectAddress}" disabled>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="contractObjectRoom" class="col-sm-2 col-form-label col-form-label-sm">Toa number<sup>(a)</sup></label>
+                        <label for="objectRoom" class="col-sm-2 col-form-label col-form-label-sm">Toa number<sup>(a)</sup></label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="contractObjectRoom" th:field="*{contractObjectRoom}" placeholder="1">
+                            <input type="text" class="form-control form-control-sm" id="objectRoom" th:field="*{objectRoom}" placeholder="1">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="isVATRequired" class="col-sm-2 col-form-label col-form-label-sm">Käibemaksukohustuslane<sup>(a)</sup></label>
+                        <label for="vat" class="col-sm-2 col-form-label col-form-label-sm">Käibemaksumäär<sup>(a)</sup></label>
                         <div class="col-sm-6">
-                            <input type="checkbox" id="isVATRequired" th:field="*{VATRequired}" th:checked="*{VATRequired}"/>
+                            <input type="text" id="vat" th:field="*{vat}" />
                         </div>
 
                     </div>

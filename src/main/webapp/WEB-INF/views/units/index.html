@@ -61,7 +61,7 @@
         <div class="card shadow" th:each="unit, iStat : ${units}">
             <div class="card-body">
                 <h5 class="card-title">
-                    <span class="d-inline"><a th:href="'/units/' + ${unit.id}" th:text="${unit.unitType.name}">Objekti tüüp</a></span>
+                    <span class="d-inline"><a th:href="'/units/' + ${unit.id}" th:text="${unit.unitType.type}">Objekti tüüp</a></span>
                     <a href="#" class="float-right" data-container="body" data-trigger="focus" tabindex="0" data-toggle="popover" data-placement="bottom" th:data-popover-content="'#a' + ${iStat.index}">...</a>
                     <div th:id="'a' + ${iStat.index}" class="hidden">
                         <div class="popover-body">
@@ -77,7 +77,6 @@
                 <p class="card-text mb-1"><small th:text="'Tubade arv: ' + ${unit.rooms}">Tubade arv: 2</small></p>
                 <p class="card-text mb-1"><small th:text="'Üldpind: ' + ${unit.size}">Suurus: 117.50m2</small></p>
                 <p class="card-text mb-1"><small th:text="'Olek: ' + ${unit.status}">Olek: Aktiivne</small></p>
-                <p class="card-text mb-1"><small th:text="'Ostuhind: ' + ${unit.price}">Ostuhind: 100000.00</small></p>
             </div>
         </div>
     </div>

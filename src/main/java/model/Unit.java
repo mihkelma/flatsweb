@@ -2,8 +2,10 @@ package model;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,13 +16,15 @@ public class Unit {
     @SequenceGenerator(name = "my_seq", sequenceName = "seq6", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq")
     private Long id;
+    @NotEmpty
     private String address;
+    @NotEmpty
     private String city;
+    @NotEmpty
+    private String postalCode;
     private Integer rooms;
-    private Float size;
-    private Float price;
+    private BigDecimal size;
     private String status;
-    //private String unitType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
@@ -57,6 +61,14 @@ public class Unit {
         this.city = city;
     }
 
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
     public Integer getRooms() {
         return rooms;
     }
@@ -65,20 +77,12 @@ public class Unit {
         this.rooms = rooms;
     }
 
-    public Float getSize() {
+    public BigDecimal getSize() {
         return size;
     }
 
-    public void setSize(Float size) {
+    public void setSize(BigDecimal size) {
         this.size = size;
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
     }
 
     public String getStatus() {

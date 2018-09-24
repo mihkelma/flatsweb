@@ -45,10 +45,10 @@
                 <div class="form-group row">
                     <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
                     <div class="col-sm-6">
-                        <select id="unitType" class="form-control form-control-sm" th:field="*{unitType}">
-                            <option selected value="1">Korter</option>
-                            <option value="2">Tuba</option>
-                            <option value="3">Garaaz</option>
+                        <select id="unitType" class="form-control form-control-sm" th:field="${unit.unitType.id}">
+                            <option th:each="type : ${allUnitTypes}"
+                                    th:value="${type.id}"
+                                    th:text="${type.type}">Objekti tüüp</option>
                         </select>
                     </div>
                 </div>
@@ -64,7 +64,13 @@
                         <input type="text" class="form-control form-control-sm" id="propertyCity" th:field="*{city}" placeholder="Tallinn">
                     </div>
                 </div>
-                <div class="form-group row" id="propertyRoomDiv" style="display:none;">
+                <div class="form-group row">
+                    <label for="postalCode" class="col-sm-2 col-form-label col-form-label-sm">Postiindeks</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control form-control-sm" id="postalCode" th:field="*{postalCode}" placeholder="3">
+                    </div>
+                </div>
+                <div class="form-group row" id="propertyRoomDiv">
                     <label for="propertyRooms" class="col-sm-2 col-form-label col-form-label-sm">Toa number</label>
                     <div class="col-sm-6">
                         <input type="text" class="form-control form-control-sm" id="propertyRooms" th:field="*{rooms}" placeholder="3">
@@ -74,12 +80,6 @@
                     <label for="propertySize" class="col-sm-2 col-form-label col-form-label-sm">Üldpind</label>
                     <div class="col-sm-6">
                         <input type="text" class="form-control form-control-sm" id="propertySize" th:field="*{size}" placeholder="78.60">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="purchasePrice" class="col-sm-2 col-form-label col-form-label-sm">Ostuhind</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control form-control-sm" id="purchasePrice" th:field="*{price}" placeholder="3">
                     </div>
                 </div>
                 <div class="form-group">

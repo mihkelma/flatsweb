@@ -11,7 +11,7 @@ public class UnitType {
     @SequenceGenerator(name = "my_seq", sequenceName = "seq5", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq")
     private Integer id;
-    private String name;
+    private String type;
 
     @OneToMany(mappedBy = "unitType", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Unit> units;
@@ -24,12 +24,12 @@ public class UnitType {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public List<Unit> getUnits() {

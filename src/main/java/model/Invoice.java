@@ -19,7 +19,7 @@ public class Invoice {
     private Long id;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
-    private Date dateCreated;
+    private Date created;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
@@ -37,7 +37,7 @@ public class Invoice {
     private String ownerIBAN;
     private String ownerBank;
     private String ownerNotes;
-    private Boolean VATRequired;
+    private BigDecimal vat;
     private String ownerSalesName;
     private String customerEmail;
     private String customerName;
@@ -49,7 +49,7 @@ public class Invoice {
     private static Integer baseId = 1;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id")
+    @JoinColumn(name = "contract")
     private Contract contract;
 
     //TODO: add, merge, remove invoiceRow
@@ -93,12 +93,12 @@ public class Invoice {
         this.id = id;
     }
 
-    public Date getDateCreated() {
-        return dateCreated;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     public Date getSendDate() {
@@ -181,12 +181,12 @@ public class Invoice {
         this.ownerNotes = ownerNotes;
     }
 
-    public Boolean getVATRequired() {
-        return VATRequired;
+    public BigDecimal getVat() {
+        return vat;
     }
 
-    public void setVATRequired(Boolean VATRequired) {
-        this.VATRequired = VATRequired;
+    public void setVat(BigDecimal vat) {
+        this.vat = vat;
     }
 
     public String getOwnerSalesName() {
@@ -273,7 +273,7 @@ public class Invoice {
     public String toString() {
         return "Invoice{" +
                 "id=" + id +
-                ", dateCreated=" + dateCreated +
+                ", created=" + created +
                 ", sendDate=" + sendDate +
                 ", invoiceTerm=" + invoiceTerm +
                 ", status='" + status + '\'' +
@@ -284,7 +284,7 @@ public class Invoice {
                 ", ownerIBAN='" + ownerIBAN + '\'' +
                 ", ownerBank='" + ownerBank + '\'' +
                 ", ownerNotes='" + ownerNotes + '\'' +
-                ", VATRequired=" + VATRequired +
+                ", vat=" + vat +
                 ", ownerSalesName='" + ownerSalesName + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
                 ", customerName='" + customerName + '\'' +

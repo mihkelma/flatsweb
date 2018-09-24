@@ -45,7 +45,12 @@ public class InvoiceController {
         Contract ctr = contractService.getContractById(id, auth.getName());
         inv.setCustomerName(ctr.getCustomerName());
         inv.setCustomerAddress(ctr.getCustomerAddress());
+        Calendar c = Calendar.getInstance();
+        inv.setCreated(c.getTime());
+        inv.setSendDate(c.getTime());
+        c.add(Calendar.DATE, 30);
 
+        inv.setInvoiceTerm(c.getTime());
         List<InvoiceRow> irl = new ArrayList<>();
         InvoiceRow ir = new InvoiceRow();
         irl.add(ir);

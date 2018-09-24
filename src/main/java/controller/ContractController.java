@@ -19,6 +19,7 @@ import service.UnitService;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 @Controller
@@ -49,8 +50,10 @@ public class ContractController {
     public String addContractForm(@PathVariable Long id, Model model, Authentication auth) {
         Contract tmp = new Contract();
         Unit unit = unitService.getUnitById(id, auth.getName());
-        tmp.setContractObjectAddress(unit.getAddress() + ", "+ unit.getCity());
+        tmp.setObjectAddress(unit.getAddress() + ", "+ unit.getCity());
         tmp.setOwnerEmail(auth.getName());
+        Calendar c = Calendar.getInstance();
+        tmp.setCreated(c.getTime());
         model.addAttribute("contract", tmp);
         model.addAttribute("unitId", id);
         return "contracts/add";

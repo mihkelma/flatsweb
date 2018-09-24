@@ -21,10 +21,10 @@ public class InvoiceRow {
     private BigDecimal unitPrice;
     @Transient
     private BigDecimal rowPrice;
-    private BigDecimal taxAmount;
+    private BigDecimal vat;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "invoiceid")
+    @JoinColumn(name = "invoice")
     private Invoice invoice;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -73,12 +73,12 @@ public class InvoiceRow {
         this.unitPrice = unitPrice;
     }
 
-    public BigDecimal getTaxAmount() {
-        return taxAmount;
+    public BigDecimal getVat() {
+        return vat;
     }
 
-    public void setTaxAmount(BigDecimal taxAmount) {
-        this.taxAmount = taxAmount;
+    public void setVat(BigDecimal vat) {
+        this.vat = vat;
     }
 
     public Invoice getInvoice() {
@@ -98,6 +98,11 @@ public class InvoiceRow {
     }
 
     public BigDecimal getRowPrice() {
+
+        if (unitPrice == null || quantity == null) {
+            //return new BigDecimal(0);
+            return null;
+        }
         return quantity.multiply(unitPrice);
     }
 
@@ -119,7 +124,7 @@ public class InvoiceRow {
                 ", quantity=" + quantity +
                 ", unitPrice=" + unitPrice +
                 ", rowPrice=" + rowPrice +
-                ", taxAmount=" + taxAmount +
+                ", vat=" + vat +
                 ", user=" + user.getUsername() +
                 '}';
     }

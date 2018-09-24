@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import service.ContractService;
 import service.UnitService;
@@ -44,20 +45,24 @@ public class UnitController {
     //Get new unit form page
     @GetMapping("/units/add")
     public String addUnitForm(Model model) {
+        List<UnitType> unitTypes = unitService.getAllUnitTypes();
+        model.addAttribute("allUnitTypes", unitTypes);
         model.addAttribute("unit", new Unit());
         return "units/add";
     }
 
     //Save unit
     @PostMapping("/units")
-    public String addUnit(@Valid Unit unit, Authentication auth) {
-        //TODO: 1) Update will give error (A collection with cascade=”all-delete-orphan” was no longer referenced by the owning entity instance)
+    public String addUnit(@Valid Unit unit, BindingResult bindingResult, Authentication auth, Model model) {
         //TODO: 2) add validation and error handling
-        if (unit != null) {
-            unitService.saveUnit(unit, auth.getName());
-            return "redirect:/units";
+        if (bindingResult.hasErrors()) {
+            List<UnitType> unitTypes = unitService.getAllUnitTypes();
+            model.addAttribute("allUnitTypes", unitTypes);
+            return "units/add";
         }
-        return "/units/add";
+        unitService.saveUnit(unit, auth.getName());
+        return "redirect:/units";
+
     }
 
     //Delete unit

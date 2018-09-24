@@ -39,12 +39,12 @@ public class Contract {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date contractTerm;
-    private Boolean VATRequired;
+    private BigDecimal vat;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date contractSigned;        //TODO
-    private String contractObjectAddress;
-    private String contractObjectRoom;
+    private String objectAddress;
+    private String objectRoom;
     @Transient
     private static Integer baseId = 1;
 
@@ -242,12 +242,12 @@ public class Contract {
         this.contractTerm = contractTerm;
     }
 
-    public Boolean getVATRequired() {
-        return VATRequired;
+    public BigDecimal getVat() {
+        return vat;
     }
 
-    public void setVATRequired(Boolean VATRequired) {
-        this.VATRequired = VATRequired;
+    public void setVat(BigDecimal vat) {
+        this.vat = vat;
     }
 
     public Date getContractSigned() {
@@ -258,20 +258,20 @@ public class Contract {
         this.contractSigned = contractSigned;
     }
 
-    public String getContractObjectAddress() {
-        return contractObjectAddress;
+    public String getObjectAddress() {
+        return objectAddress;
     }
 
-    public void setContractObjectAddress(String contractObjectAddress) {
-        this.contractObjectAddress = contractObjectAddress;
+    public void setObjectAddress(String objectAddress) {
+        this.objectAddress = objectAddress;
     }
 
-    public String getContractObjectRoom() {
-        return contractObjectRoom;
+    public String getObjectRoom() {
+        return objectRoom;
     }
 
-    public void setContractObjectRoom(String contractObjectRoom) {
-        this.contractObjectRoom = contractObjectRoom;
+    public void setObjectRoom(String objectRoom) {
+        this.objectRoom = objectRoom;
     }
 
     public BigDecimal getPrice() {

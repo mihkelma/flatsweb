@@ -36,11 +36,8 @@ public class main {
         //LocalDate date = LocalDate.now();
         //System.out.println(date);
 
-        Asi asi = new Asi();
-        asi.setX(2);
-        asi.setY(4);
-        asi.setSum(2);
-        System.out.println(asi.getSum());
+        String encoded=new BCryptPasswordEncoder().encode("user");
+        System.out.println(encoded);
 
     }
 }

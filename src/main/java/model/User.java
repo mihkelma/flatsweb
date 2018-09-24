@@ -22,7 +22,7 @@ public class User {
     private String fullName;
 
     @Column(name = "PASSWORD")
-    @Size(min=5, message="{register.error.passwordRequired}")
+    @Size(min=4, message="{register.error.passwordRequired}")
     private String password;
 
     @Column(name = "ENABLED")
@@ -33,7 +33,7 @@ public class User {
 
     //Merge - issue: https://stackoverflow.com/questions/13370221/jpa-hibernate-detached-entity-passed-to-persist
     @ManyToMany(cascade=CascadeType.MERGE)
-    @JoinTable(name="users_roles", joinColumns=@JoinColumn(name="username"), inverseJoinColumns=@JoinColumn(name="role_id"))
+    @JoinTable(name="users_roles", joinColumns=@JoinColumn(name="username"), inverseJoinColumns=@JoinColumn(name="role"))
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

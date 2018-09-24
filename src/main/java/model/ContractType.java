@@ -10,8 +10,8 @@ public class ContractType {
     @Id
     @SequenceGenerator(name = "my_seq", sequenceName = "seq3", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq")
-    private Long id;
-    private String type;
+    private Integer id;
+    private String contracttype;
     //private Integer DefaultExtensionNotification;
     //private Float DefaultPenaltyPerDay;
     //private Integer TerminationDays;
@@ -21,20 +21,20 @@ public class ContractType {
     @OneToMany(mappedBy = "contractType", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contract> contracts;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getContractType() {
+        return contracttype;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setContractType(String contracttype) {
+        this.contracttype = contracttype;
     }
 
     public List<Contract> getContracts() {
