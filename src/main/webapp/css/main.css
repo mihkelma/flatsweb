@@ -1,13 +1,23 @@
-
-/*
- * Extras
- */
-
-.icon {
-    width: 12px;
-    height: 12px;
+body {
+    padding-top: 5rem;
+    background-color: #f8f9fa;
+    font-family: "Roboto", sans-serif;
+}
+.ccard {
+    background-color: #fff !important;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
 }
 
-.icon-trash {
-    fill: #6c757d;
+input::-webkit-input-placeholder {
+    color: gainsboro !important;
+}
+input::-moz-placeholder {
+    color: gainsboro !important;
+}
+input:-moz-placeholder { /* Older versions of Firefox */
+    color: gainsboro !important;
+}
+input:-ms-input-placeholder {
+    color: gainsboro !important;
 }

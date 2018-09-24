@@ -9,24 +9,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
     <link href="https://fonts.googleapis.com/css?family=Lato|Montserrat|Open+Sans:300|Oswald|Raleway:500|Roboto:300" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding-top: 5rem;
-            background-color: #f8f9fa;
-            font-family: "Roboto", sans-serif;
-        }
-        .ccard {
-            background-color: #fff !important;
-            border: 1px solid rgba(0,0,0,.125);
-            border-radius: .25rem;
-        }
-        .btn:focus,.btn:active {
-            outline: none !important;
-            box-shadow: none !important;
-        }
-    </style>
     <title>flats.ee</title>
 </head>
 <body>
@@ -43,6 +27,7 @@
                     <small th:if="${error}" th:text="${error}">In case alert is needed</small>
                 </div>
                 <div class="form-group row">
+                    <input type="hidden" th:field="*{id}" />
                     <label for="unitType" class="col-sm-2 col-form-label col-form-label-sm">Tüüp</label>
                     <div class="col-sm-6">
                         <select id="unitType" class="form-control form-control-sm" th:field="${unit.unitType.id}">
@@ -67,11 +52,11 @@
                 <div class="form-group row">
                     <label for="postalCode" class="col-sm-2 col-form-label col-form-label-sm">Postiindeks</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control form-control-sm" id="postalCode" th:field="*{postalCode}" placeholder="3">
+                        <input type="text" class="form-control form-control-sm" id="postalCode" th:field="*{postalCode}" placeholder="11123">
                     </div>
                 </div>
                 <div class="form-group row" id="propertyRoomDiv">
-                    <label for="propertyRooms" class="col-sm-2 col-form-label col-form-label-sm">Toa number</label>
+                    <label for="propertyRooms" class="col-sm-2 col-form-label col-form-label-sm">Tubade arv</label>
                     <div class="col-sm-6">
                         <input type="text" class="form-control form-control-sm" id="propertyRooms" th:field="*{rooms}" placeholder="3">
                     </div>
