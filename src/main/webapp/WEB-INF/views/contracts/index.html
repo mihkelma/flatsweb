@@ -46,10 +46,10 @@
 
                     </h5>
 
-                    <p class="card-text mb-1"><small th:text="'Aadress: ' + ${contract.objectAddress} +', ' +${contract.objectRoom}">Aadress: Papikese 6-9, Tallinn</small></p>
-                    <p class="card-text mb-1"><small th:text="'Lepingu algus: ' + ${contract.created}">Algus: 12.12.2017</small></p>
-                    <p class="card-text mb-1"><small th:text="'Lepingu kehtivus: ' + ${contract.contractTerm}">Kehtivus: 12.12.2018</small></p>
-                    <p class="card-text mb-1"><small th:text="'Väärtus: ' + ${contract.price}">Väärtus: 300.00</small></p>
+                    <p class="card-text mb-1"><small th:text="'Aadress: ' + ${contract.objectAddress}">Aadress: Papikese 6-9, Tallinn</small></p>
+                    <p class="card-text mb-1"><small th:text="'Lepingu algus: ' + ${#dates.format(contract.created, 'dd/MM/yyyy')}">Algus: 12.12.2017</small></p>
+                    <p class="card-text mb-1"><small th:text="'Lepingu kehtivus: ' + ${#dates.format(contract.contractTerm, 'dd/MM/yyyy')}">Kehtivus: 12.12.2018</small></p>
+                    <p class="card-text mb-1"><small th:text="'Rendi summa: ' + ${contract.price}">Väärtus: 300.00</small></p>
                     <p class="card-text mb-1"><small th:text="'Klient: ' + ${contract.customerName}">Klient: Priit Pett</small></p>
                 </div>
             </div>

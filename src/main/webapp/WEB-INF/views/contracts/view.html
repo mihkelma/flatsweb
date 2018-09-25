@@ -60,7 +60,7 @@
                         <div class="form-group row">
                             <label for="created" class="col-sm-2 col-form-label col-form-label-sm">Lepingu algus</label>
                             <div class="col-sm-6">
-                                <input type="date" class="form-control form-control-sm" id="created" th:field="*{created}" th:value="${#dates.format(contract.created, 'dd/MM/yyyy')}"placeholder="15/04/2018">
+                                <input type="date" class="form-control form-control-sm" id="created" th:field="*{created}" th:value="${#dates.format(contract.created, 'dd/MM/yyyy')}" placeholder="15/04/2018">
                             </div>
                         </div>
                         <div class="form-group row" id="contractTermDiv">
