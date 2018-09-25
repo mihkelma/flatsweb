@@ -41,30 +41,41 @@
                 <form class="mb-3 mt-3" th:action="@{/units/{id}/contracts(id=${unitId})}" th:object="${contract}" method="post">
                     <h4>Lepingu andmed</h4>
                     <div class="alert text-danger" role="alert">
-                        <small th:if="${info}" th:text="${info}">In case alert is needed</small>
+                        <small th:if="${error}" th:text="${error}">In case alert is needed</small>
                     </div>
                     <div class="form-group row">
+                        <input type="hidden" th:field="*{id}" />
                         <label for="contractNumber" class="col-sm-2 col-form-label col-form-label-sm">Lepingu number</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="contractNumber" th:field="*{contractNumber}" disabled>
+                            <input type="text" class="form-control form-control-sm" id="contractNumber" th:field="*{contractNumber}" >
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="objectAddress" class="col-sm-2 col-form-label col-form-label-sm">Objekti aadress<sup>(a)</sup></label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="objectAddress" th:field="*{objectAddress}" disabled>
+                            <input type="text" class="form-control form-control-sm" id="objectAddress" th:field="*{objectAddress}" readonly>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="objectRoom" class="col-sm-2 col-form-label col-form-label-sm">Toa number<sup>(a)</sup></label>
+                        <label for="objectRoom" class="col-sm-2 col-form-label col-form-label-sm">Toa/ruumi number<sup>(a)</sup></label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="objectRoom" th:field="*{objectRoom}" placeholder="1">
+                            <input type="text" class="form-control form-control-sm" id="objectRoom" th:field="*{objectRoom}" placeholder="1a">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="contractType" class="col-sm-2 col-form-label col-form-label-sm">Lepingu tüüp</label>
+                        <div class="col-sm-6">
+                            <select id="contractType" class="form-control form-control-sm" th:field="${contract.contractType.id}">
+                                <option th:each="type : ${allContractTypes}"
+                                        th:value="${type.id}"
+                                        th:text="${type.contractType}">Lepingu tüüp</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="vat" class="col-sm-2 col-form-label col-form-label-sm">Käibemaksumäär<sup>(a)</sup></label>
                         <div class="col-sm-6">
-                            <input type="text" id="vat" th:field="*{vat}" />
+                            <input type="text" class="form-control form-control-sm" id="vat" th:field="*{vat}" placeholder="0.2"/>
                         </div>
 
                     </div>
@@ -72,6 +83,12 @@
                         <label for="price" class="col-sm-2 col-form-label col-form-label-sm">Üüritasu<sup>(a)</sup></label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control form-control-sm" id="price" th:field="*{price}" placeholder="300.00">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="created" class="col-sm-2 col-form-label col-form-label-sm">Lepingu algus</label>
+                        <div class="col-sm-6">
+                            <input type="date" class="form-control form-control-sm" id="created" th:field="*{created}" placeholder="15/04/2018">
                         </div>
                     </div>
                     <div class="form-group row">

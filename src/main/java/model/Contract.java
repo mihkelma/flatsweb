@@ -316,4 +316,35 @@ public class Contract {
     public int hashCode() {
         return 31;
     }
+
+    @Override
+    public String toString() {
+        return "Contract{" +
+                "id=" + id +
+                ", ownerName='" + ownerName + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", created=" + created +
+                ", invoiceSendDate=" + invoiceSendDate +
+                ", price=" + price +
+                ", contractNumber='" + contractNumber + '\'' +
+                ", modified=" + modified +
+                ", ownerCode='" + ownerCode + '\'' +
+                ", ownerAddress='" + ownerAddress + '\'' +
+                ", ownerPhone='" + ownerPhone + '\'' +
+                ", ownerEmail='" + ownerEmail + '\'' +
+                ", ownerBankAccount='" + ownerBankAccount + '\'' +
+                ", ownerBankName='" + ownerBankName + '\'' +
+                ", customerCode='" + customerCode + '\'' +
+                ", customerAddress='" + customerAddress + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", customerRefNumber='" + customerRefNumber + '\'' +
+                ", contractTerm=" + contractTerm +
+                ", vat=" + vat +
+                ", contractSigned=" + contractSigned +
+                ", objectAddress='" + objectAddress + '\'' +
+                ", objectRoom='" + objectRoom + '\'' +
+                ", contractType=" + contractType +
+                '}';
+    }
 }

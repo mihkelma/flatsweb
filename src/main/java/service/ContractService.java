@@ -26,7 +26,6 @@ public class ContractService {
 
     @Transactional
     public void saveContract(Contract contract, Long cid, String username) {
-        System.out.println("Contractservice save:" +contract.getId());
         long millis=System.currentTimeMillis();
         Date now = new Date(millis);
         if (contract.getId() == null) {        //if this is a new contract
@@ -45,7 +44,11 @@ public class ContractService {
         return contractDao.getContractById(id, username);
     }
 
-    public List<ContractType> getAllContractTypes(String username) {
-        return contractDao.getAllContractTypes(username);
+    public List<ContractType> getAllContractTypes() {
+        return contractDao.getAllContractTypes();
+    }
+
+    public void signContract(Long cid, String username) {
+        contractDao.signContract(cid, username);
     }
 }

@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Calendar;
 import java.util.List;
 
 @Repository
@@ -70,7 +71,7 @@ public class ContractDaoImp implements ContractDao {
         if (contract.getId() != null) { //existing contract
             contract.setUser(user);
             contract.setUnit(unit);
-            Contract x = em.merge(contract);
+            em.merge(contract);
         }
         else {                        //new contract
             contract.setUser(user);
@@ -90,7 +91,7 @@ public class ContractDaoImp implements ContractDao {
     }
 
     @Override
-    public List<ContractType> getAllContractTypes(String username) {
+    public List<ContractType> getAllContractTypes() {
         List<ContractType> contractTypes;
         try {
             contractTypes = em.createQuery("SELECT ct FROM ContractType ct", ContractType.class)
@@ -99,5 +100,15 @@ public class ContractDaoImp implements ContractDao {
             contractTypes = null;
         }
         return contractTypes;
+    }
+
+    @Override
+    @Transactional
+    public void signContract(Long cid, String username) {
+        Contract contract = em.find(Contract.class, cid);
+        Calendar c = Calendar.getInstance();
+        contract.setModified(c.getTime());
+        contract.setContractSigned(c.getTime());
+        em.merge(contract);
     }
 }

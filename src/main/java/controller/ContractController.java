@@ -50,10 +50,15 @@ public class ContractController {
     public String addContractForm(@PathVariable Long id, Model model, Authentication auth) {
         Contract tmp = new Contract();
         Unit unit = unitService.getUnitById(id, auth.getName());
+        System.out.println("Unit: " + unit.getAddress()+ ", " + unit.getCity());
         tmp.setObjectAddress(unit.getAddress() + ", "+ unit.getCity());
         tmp.setOwnerEmail(auth.getName());
+        List<ContractType> contractTypes = contractService.getAllContractTypes();
         Calendar c = Calendar.getInstance();
         tmp.setCreated(c.getTime());
+        c.add(Calendar.YEAR, 1);
+        tmp.setContractTerm(c.getTime());
+        model.addAttribute("allContractTypes", contractTypes);
         model.addAttribute("contract", tmp);
         model.addAttribute("unitId", id);
         return "contracts/add";
@@ -63,10 +68,17 @@ public class ContractController {
     @PostMapping("/units/{cid}/contracts")
     public String addContract(Contract contract, @PathVariable Long cid, Authentication auth) {
         if (contract != null) {
+            System.out.println("Ccontr: " + contract.toString());
             contractService.saveContract(contract, cid, auth.getName());
             return "redirect:/units/" +cid;
         }
-        return "/contracts/new";
+        return "contracts/new";
+    }
+
+    @PostMapping("/units/{uid}/contracts/{cid}/sign")
+    public String signContract(@PathVariable Long uid, @PathVariable Long cid, Authentication auth) {
+        contractService.signContract(cid, auth.getName());
+        return "redirect:/units/" +uid;
     }
 
     //Get view contract page
@@ -74,7 +86,7 @@ public class ContractController {
     public String editContractForm(@PathVariable Long id, Model model, Authentication auth) {
         Contract tmp = contractService.getContractById(id, auth.getName());
         List<Invoice> invoiceList = invoiceService.getInvoicesByContractId(id, auth.getName());
-        List<ContractType> contractTypes = contractService.getAllContractTypes(auth.getName());
+        List<ContractType> contractTypes = contractService.getAllContractTypes();
         model.addAttribute("allContractTypes", contractTypes);
         model.addAttribute("invoices", invoiceList);
         model.addAttribute("contract", tmp);
@@ -82,7 +94,7 @@ public class ContractController {
     }
 
     //Delete unit
-    @GetMapping("/contracts/delete/{id}")
+    @GetMapping("/contracts/{id}/delete")
     public String deleteContract(@PathVariable Long id, Authentication auth) {
         contractService.deleteContract(id, auth.getName());
         return "redirect:/contracts";

@@ -16,5 +16,7 @@ public interface ContractDao {
 
     void deleteContract(Long id, String username);
 
-    List<ContractType> getAllContractTypes(String username);
+    List<ContractType> getAllContractTypes();
+
+    void signContract(Long cid, String username);
 }
