@@ -94,7 +94,7 @@ public class HomeController {
             emailService.sendEmail(registrationEmail);
 
             userService.save(user);
-            model.addAttribute("info", "Konto aktiveerimiseks vaata palun oma postkasti ning kliki lingil");
+            model.addAttribute("error", "Konto aktiveerimiseks vaata palun oma postkasti ning kliki lingil");
         }
         return "login";
     }
@@ -119,7 +119,7 @@ public class HomeController {
             model.addAttribute("info", "Kasutaja on aktiveeritud, palun logi sisse");
         }
 
-        return "confirm";
+        return "login";
 
     }
 
