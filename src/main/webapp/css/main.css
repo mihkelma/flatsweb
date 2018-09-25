@@ -9,6 +9,13 @@ body {
     border-radius: .25rem;
 }
 
+.hidden {
+    display: none;
+}
+.popover-body p:last-child {
+    margin-bottom: 0;
+}
+
 input::-webkit-input-placeholder {
     color: gainsboro !important;
 }
