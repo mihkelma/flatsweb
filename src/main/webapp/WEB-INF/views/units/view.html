@@ -82,7 +82,6 @@
         </div>
         <div class="row" th:object="${clist}">
             <div class="col-sm-12 shadow rounded ccard p-3">
-                <form class="mb-3 mt-3"   method="post">
                     <table class="table">
                         <thead>
                         <tr>
@@ -91,7 +90,7 @@
                             <th scope="col">Klient</th>
                             <th scope="col">Kehtivus</th>
                             <th scope="col">Arve kuupäev</th>
-                            <th scope="col">Üür/ €</th>
+                            <th scope="col">Üür</th>
                             <th scope="col">Allkirjastatud</th>
                             <th scope="col"></th>
                         </tr>
@@ -105,11 +104,15 @@
                             <td th:text="${contract.invoiceSendDate}">5</td>
                             <td th:text="${contract.price}">360.00</td>
                             <td th:text="${#dates.format(contract.contractSigned, 'dd/MM/yyyy')}">25/04/2017</td>
-                            <td><a href="/contracts/1" th:href="@{/contracts/{id}(id= ${contract.id})}" class="btn btn-outline-primary btn-sm">Vaata</a></td>
+                            <td><a th:href="@{/contracts/{id}(id= ${contract.id})}" class="btn btn-outline-primary btn-sm">Vaata</a>
+                                <form th:if="${contract.contractSigned == null}" class="d-inline" th:action="@{/units/{uid}/contracts/{cid}/sign(uid= ${contract.unit.id}, cid=${contract.id})}"  method="post">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm" >Allkirjasta</button>
+                                </form>
+                                <a th:href="@{/contracts/{id}/delete(id= ${contract.id})}" class="btn btn-outline-danger btn-sm">Kustuta</a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
-                </form>
             </div>
         </div>
 
