@@ -31,6 +31,10 @@ public class HomeController {
     @Autowired
     private EmailService emailService;
 
+
+    //TODO: error management: http://blog.codeleak.pl/2014/06/better-error-messages-with-bean.html
+    //https://nixmash.com/post/five-thymeleaf-format-examples
+    //https://serverfault.com/questions/112795/how-to-run-a-server-on-port-80-as-a-normal-user-on-linux
     @GetMapping("/")
     public String index(Model model, Principal principal) {
         return "redirect:/units";
@@ -82,7 +86,7 @@ public class HomeController {
             //Email token sending, for account activation
             //Email - https://www.codebyamir.com/blog/user-account-registration-with-spring-boot
             //Registration - https://www.jackrutorial.com/2018/04/spring-boot-user-registration-login.html
-            String appUrl = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort();
+            String appUrl = request.getScheme() + "://" + request.getServerName();
 
             SimpleMailMessage registrationEmail = new SimpleMailMessage();
             registrationEmail.setTo(user.getUsername());
