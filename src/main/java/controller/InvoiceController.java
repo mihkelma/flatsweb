@@ -6,7 +6,6 @@ import model.InvoiceRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +19,8 @@ import service.ContractService;
 import service.InvoiceService;
 import service.PdfService;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
