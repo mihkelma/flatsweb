@@ -5,7 +5,11 @@ import model.Invoice;
 import model.InvoiceRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +18,12 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import service.ContractService;
 import service.InvoiceService;
+import service.PdfService;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -34,6 +40,9 @@ public class InvoiceController {
 
     @Autowired
     ContractService contractService;
+
+    @Autowired
+    PdfService pdfService;
 
     @InitBinder
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -159,6 +168,32 @@ public class InvoiceController {
 
         //saving invoice
         invoiceService.saveInvoice(inv, cid, auth.getName());
+        return "redirect:/contracts/" + cid;
+    }
+
+    @GetMapping("/contracts/{cid}/invoices/{iid}/generatepdf")
+    public ResponseEntity<String> generatePdf(@PathVariable Long cid, @PathVariable Long iid, Authentication auth) {
+        System.out.println("IContr pdf generation started...");
+        Invoice invoice = invoiceService.getInvoiceById(iid, auth.getName());
+        HttpHeaders headers = new HttpHeaders();
+
+        //https://stackoverflow.com/questions/20333394/return-a-stream-with-spring-mvcs-responseentity
+        //https://stackoverflow.com/questions/8913259/how-to-generate-a-downloadable-pdf-with-pdfbox-corrupted-pdf
+        ByteArrayResource output = null;
+        try {
+            output = new ByteArrayResource(pdfService.createInvoice(invoice));
+
+            headers.add("Content-Type", "application/force-download");
+            headers.add("Content-Disposition", "attachment; filename=\"" + invoice.getINumber() + "\"");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity(output, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/contracts/{cid}/invoices/{iid}/generateemail")
+    public String generatePdfAndEmail(@PathVariable Long cid, @PathVariable Long iid, Authentication auth) {
         return "redirect:/contracts/" + cid;
     }
 
