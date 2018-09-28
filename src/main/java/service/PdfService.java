@@ -46,7 +46,6 @@ public class PdfService {
         DecimalFormat decimalFormat = new DecimalFormat("##########.00");
 
         String fileName = invoice.getINumber() != null ? invoice.getINumber() : "arve_";
-        Integer fontSizeHeader = 12;
         Integer fontSizeNorm = 11;
         Integer fontSizeSmall = 10;
         String string;
@@ -109,14 +108,8 @@ public class PdfService {
         lastX += 60;
 
         string = invoice.getCustomerName();
-        if(string.length() > 40) {
-            Pattern p = Pattern.compile("[^,]+");
-            Matcher m = p.matcher(string);
-            while (m.find()) {
-                printTextTo(fontRegular, fontSizeNorm, (m.group()).trim(), lastX, lastY, contentStream);
-                lastY -= 15;
-                //System.out.println(m.group().trim() + " " + lastY +","+lastX);
-            }
+        if(string.length() > 40) {              //if field length > 40 chars, break field
+            breakField(fontRegular, fontSizeNorm, string, lastX, lastY, contentStream);
 
         } else {
             printTextTo(fontRegular, fontSizeNorm, string, lastX, lastY, contentStream);
@@ -130,12 +123,7 @@ public class PdfService {
 
         string = invoice.getCustomerAddress();
         if(string.length() > 40) {
-            Pattern p = Pattern.compile("[^,]+");
-            Matcher m = p.matcher(string);
-            while (m.find()) {
-                printTextTo(fontRegular, fontSizeNorm, (m.group()).trim(), lastX, lastY, contentStream);
-                lastY -= 15;
-            }
+            breakField(fontRegular, fontSizeNorm, string, lastX, lastY, contentStream);
         } else {
             printTextTo(fontRegular, fontSizeNorm, string, lastX, lastY, contentStream);
             lastY -= 15;
@@ -317,6 +305,15 @@ public class PdfService {
         document.close();
         return out.toByteArray();
 
+    }
+
+    private void breakField(PDTrueTypeFont fontRegular, Integer fontSizeNorm, String string, Float lastX, Float lastY, PDPageContentStream contentStream) throws IOException {
+        Pattern p = Pattern.compile("[^,]+");
+        Matcher m = p.matcher(string);
+        while (m.find()) {
+            printTextTo(fontRegular, fontSizeNorm, (m.group()).trim(), lastX, lastY, contentStream);
+            lastY -= 15;
+        }
     }
 
     private static void printTextTo(PDTrueTypeFont fontRegular, Integer fontSizeNorm, String string, Float lastX, Float lastY, PDPageContentStream contentStream) throws IOException {

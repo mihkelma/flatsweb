@@ -123,7 +123,6 @@ public class InvoiceController {
             inv.setContract(ct);
 
         }
-
         return null;
     }
 
