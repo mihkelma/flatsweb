@@ -20,6 +20,7 @@
         <div th:object="${contract}">
             <div class="mb-3">
                 <h4 class="d-inline" th:text="*{contractNumber}">Objekt</h4>
+
             </div>
             <div class="row">
                 <div class="col-sm-12 shadow rounded ccard p-3">
@@ -27,6 +28,7 @@
                     <div class="text-danger" role="alert">
                         <small th:if="${error}" th:text="${error}">Veateade!</small>
                     </div>
+
                     <form class="mb-3 mt-3" th:action="@{/units/{uid}/contracts(uid= *{unit.id})}"  method="post">
                         <div class="form-group row">
                             <input type="hidden" th:field="*{id}" />
@@ -153,7 +155,8 @@
         <div >
             <div class="mt-5 mb-3">
                 <h4 class="d-inline">Arved</h4>
-                <a th:href="@{/contracts/{cid}/invoices/add(cid= *{id})}" class="d-inline float-right btn btn-outline-primary btn-sm">+ Lisa arve</a>
+                <a th:href="@{/contracts/{cid}/invoices/add(cid= *{id})}" class="d-inline float-right btn btn-outline-primary btn-sm">+ Uus arve</a>
+                <a th:href="@{/contracts/{cid}/generateinvoice(cid= *{id})}" class="d-inline float-right btn btn-outline-primary btn-sm">+ Genereeri arve</a>
             </div>
             <div class="row" th:object="${invoices}">
                 <div class="col-sm-12 shadow rounded ccard p-3">

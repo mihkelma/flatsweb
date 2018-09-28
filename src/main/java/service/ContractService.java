@@ -48,7 +48,12 @@ public class ContractService {
         return contractDao.getAllContractTypes();
     }
 
+    @Transactional
     public void signContract(Long cid, String username) {
         contractDao.signContract(cid, username);
+    }
+
+    public List<Contract> getContractsByDateByStatus(String date, String status) {
+        return contractDao.getContractByDateByStatus(date, status);
     }
 }

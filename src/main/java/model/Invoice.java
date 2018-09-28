@@ -64,6 +64,29 @@ public class Invoice {
         this.iNumber = getINumber();
     }
 
+    public Invoice(Date created, Date sendDate, Date invoiceTerm, String status, String ownerName, String ownerAddress, String ownerPhone, String ownerEmail, String ownerIBAN, String ownerBank, String ownerNotes, BigDecimal vat, String ownerSalesName, String customerEmail, String customerName, String customerAddress, String customerReference, BigDecimal sum, List<InvoiceRow> invoiceRows) {
+        this.created = created;
+        this.sendDate = sendDate;
+        this.invoiceTerm = invoiceTerm;
+        this.status = status;
+        this.ownerName = ownerName;
+        this.ownerAddress = ownerAddress;
+        this.ownerPhone = ownerPhone;
+        this.ownerEmail = ownerEmail;
+        this.ownerIBAN = ownerIBAN;
+        this.ownerBank = ownerBank;
+        this.ownerNotes = ownerNotes;
+        this.vat = vat;
+        this.ownerSalesName = ownerSalesName;
+        this.customerEmail = customerEmail;
+        this.customerName = customerName;
+        this.customerAddress = customerAddress;
+        this.customerReference = customerReference;
+        this.iNumber = getINumber();
+        this.sum = sum;
+        this.invoiceRows = invoiceRows;
+    }
+
     public String getINumber() {
         //Invoice starts with "AMMyyxxxxxx"
         StringBuilder tmp = new StringBuilder("A");

@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -110,5 +112,21 @@ public class ContractDaoImp implements ContractDao {
         contract.setModified(c.getTime());
         contract.setContractSigned(c.getTime());
         em.merge(contract);
+    }
+
+    @Override
+    public List<Contract> getContractByDateByStatus(String date, String status) {
+        List<Contract> contracts;
+
+        try {
+            contracts = em.createQuery("SELECT c FROM Contract c " +
+                    "WHERE c.status ='' AND c.invoiceSendDate = :today ", Contract.class)
+                    .setParameter("today", date)
+                    .getResultList();
+        }
+        catch (Exception e) {
+            contracts = null;
+        }
+        return contracts;
     }
 }
