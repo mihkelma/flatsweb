@@ -23,6 +23,8 @@ public class UnitController {
     @Autowired
     private ContractService contractService;
 
+    //TODO: error management: http://blog.codeleak.pl/2014/06/better-error-messages-with-bean.html
+
     @GetMapping("/units")
     public String units(Authentication auth, Model model) {
         List<Unit> tmp = unitService.getAllUserUnits(auth.getName());

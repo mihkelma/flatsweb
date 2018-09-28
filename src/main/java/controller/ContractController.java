@@ -32,6 +32,7 @@ public class ContractController {
     @Autowired
     private InvoiceService invoiceService;
 
+    //TODO: error management: http://blog.codeleak.pl/2014/06/better-error-messages-with-bean.html
     @InitBinder
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
