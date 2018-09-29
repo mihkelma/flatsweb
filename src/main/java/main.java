@@ -1,4 +1,5 @@
 import model.Contract;
+import model.Invoice;
 import model.InvoiceRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -12,6 +13,9 @@ import service.EmailService;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Timer;
 
 public class main {
     public static void main(String[] args) {
@@ -36,8 +40,10 @@ public class main {
         //LocalDate date = LocalDate.now();
         //System.out.println(date);
 
-        String encoded=new BCryptPasswordEncoder().encode("user");
-        System.out.println(encoded);
+        //String encoded=new BCryptPasswordEncoder().encode("user");
+        //System.out.println(encoded);
+
+
 
     }
 }

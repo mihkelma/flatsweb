@@ -88,7 +88,7 @@ public class Invoice {
     }
 
     public String getINumber() {
-        //Invoice starts with "AMMyyxxxxxx"
+        //Invoice starts with "AMMyy"
         StringBuilder tmp = new StringBuilder("A");
         //Get month and year "MMyy"
         long millis=System.currentTimeMillis();
