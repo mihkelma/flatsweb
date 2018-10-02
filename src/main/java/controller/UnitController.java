@@ -48,8 +48,9 @@ public class UnitController {
     @GetMapping("/units/add")
     public String addUnitForm(Model model) {
         List<UnitType> unitTypes = unitService.getAllUnitTypes();
+        Unit unit = new Unit();
         model.addAttribute("allUnitTypes", unitTypes);
-        model.addAttribute("unit", new Unit());
+        model.addAttribute("unit", unit);
         return "units/add";
     }
 

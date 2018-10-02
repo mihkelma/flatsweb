@@ -25,6 +25,8 @@ public class Unit {
     private Integer rooms;
     private BigDecimal size;
     private String status;
+    @Transient
+    private String mapLink;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
