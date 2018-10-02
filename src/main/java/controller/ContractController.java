@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import service.ContractService;
@@ -17,6 +18,7 @@ import service.InvoiceService;
 import service.UnitService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -66,14 +68,18 @@ public class ContractController {
     }
 
     //Save contract
-    @PostMapping("/units/{cid}/contracts")
-    public String addContract(Contract contract, @PathVariable Long cid, Authentication auth) {
-        if (contract != null) {
-            System.out.println("Ccontr: " + contract.toString());
-            contractService.saveContract(contract, cid, auth.getName());
-            return "redirect:/units/" +cid;
+    @PostMapping("/units/{uid}/contracts")
+    public String addContract(@Valid Contract contract, BindingResult bindingResult, @PathVariable Long uid, Authentication auth, Model model) {
+        if (bindingResult.hasErrors()) {
+            List<ContractType> contractTypes = contractService.getAllContractTypes();
+            model.addAttribute("allContractTypes", contractTypes);
+            model.addAttribute("error", "Viga andmete sisestamisel!");
+            model.addAttribute("unitId", uid);
+            return "contracts/add";
         }
-        return "contracts/new";
+        contractService.saveContract(contract, uid, auth.getName());
+        return "redirect:/units/" +uid;
+
     }
 
     @PostMapping("/units/{uid}/contracts/{cid}/sign")

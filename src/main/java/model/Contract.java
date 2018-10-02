@@ -3,6 +3,8 @@ package model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,29 +22,44 @@ public class Contract {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date created;               //TODO
+    @NotNull
     private Integer invoiceSendDate;
+    @NotNull
     private BigDecimal price;
     private String contractNumber;
     @Temporal(TemporalType.DATE)
     private Date modified;              //TODO
+    @NotEmpty
     private String ownerCode;
+    @NotEmpty
     private String ownerAddress;
+    @NotEmpty
     private String ownerPhone;
+    @NotEmpty
     private String ownerEmail;
+    @NotEmpty
     private String ownerBankAccount;
+    @NotEmpty
     private String ownerBankName;
+    @NotEmpty
     private String customerCode;
+    @NotEmpty
     private String customerAddress;
+    @NotEmpty
     private String customerPhone;
+    @NotEmpty
     private String customerEmail;
     private String customerRefNumber;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
+    @NotNull
     private Date contractTerm;
+    @NotNull
     private BigDecimal vat;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date contractSigned;        //TODO
+    @NotEmpty
     private String objectAddress;
     private String objectRoom;
     @Transient
