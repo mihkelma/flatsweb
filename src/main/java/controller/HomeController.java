@@ -4,6 +4,7 @@ import model.Role;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -88,14 +89,12 @@ public class HomeController {
             //Registration - https://www.jackrutorial.com/2018/04/spring-boot-user-registration-login.html
             String appUrl = request.getScheme() + "://" + request.getServerName();
 
-            SimpleMailMessage registrationEmail = new SimpleMailMessage();
-            registrationEmail.setTo(user.getUsername());
-            registrationEmail.setSubject("Flats.ee konto aktiveerimine");
-            registrationEmail.setText("Konto aktiveerimiseks palun kliki alloleval lingil:\n"
-                    + appUrl + "/confirm?token=" + user.getConfirmationToken() + "\n\n Flats.ee meeskond");
-            registrationEmail.setFrom("noreply@flats.ee");
 
-            emailService.sendEmail(registrationEmail);
+            String subject = "Flats.ee konto aktiveerimine";
+            String text = "Konto aktiveerimiseks palun kliki alloleval lingil:\n " + appUrl +
+                      "/confirm?token=" + user.getConfirmationToken() + "\n\n Flats.ee meeskond";
+
+            emailService.sendEmail(user.getUsername(), subject, text, "noreply@flats.ee", null);
 
             userService.save(user);
             model.addAttribute("error", "Konto aktiveerimiseks vaata palun oma postkasti ning kliki lingil");
