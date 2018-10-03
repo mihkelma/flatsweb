@@ -72,14 +72,8 @@ public class UnitController {
     //Delete unit
     @GetMapping("/units/delete/{id}")
     public String deleteContract(@PathVariable Long id, Authentication auth) {
-        System.out.println("Deleting unit");
         unitService.deleteUnit(id, auth.getName());
         return "redirect:/units";
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handle(Exception e) {
-        System.out.println("Returning HTTP 400 Bad Request: " + e);
-    }
 }
