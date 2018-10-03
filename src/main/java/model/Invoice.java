@@ -43,6 +43,7 @@ public class Invoice {
     private String customerName;
     private String customerAddress;
     private String customerReference;
+    private String title;
     private String iNumber;
     private BigDecimal sum;
     @Transient
@@ -61,7 +62,7 @@ public class Invoice {
     private User user;
 
     public Invoice() {
-        this.iNumber = getINumber();
+        this.iNumber = getInvNumber();
     }
 
     public Invoice(Date created, Date sendDate, Date invoiceTerm, String status, String ownerName, String ownerAddress, String ownerPhone, String ownerEmail, String ownerIBAN, String ownerBank, String ownerNotes, BigDecimal vat, String ownerSalesName, String customerEmail, String customerName, String customerAddress, String customerReference, BigDecimal sum, List<InvoiceRow> invoiceRows) {
@@ -82,12 +83,12 @@ public class Invoice {
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerReference = customerReference;
-        this.iNumber = getINumber();
+        this.iNumber = getInvNumber();
         this.sum = sum;
         this.invoiceRows = invoiceRows;
     }
 
-    public String getINumber() {
+    public String getInvNumber() {
         //Invoice starts with "AMMyy"
         StringBuilder tmp = new StringBuilder("A");
         //Get month and year "MMyy"
@@ -282,6 +283,14 @@ public class Invoice {
 
     public void setSum(BigDecimal sum) {
         this.sum = sum;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public List<InvoiceRow> getInvoiceRows() {

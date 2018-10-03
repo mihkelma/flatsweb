@@ -182,7 +182,9 @@
                                 <td th:text="${invoice.sendDate}">5</td>
                                 <td th:text="${invoice.sum}">360.00</td>
                                 <td><a th:href="@{/contracts/{cid}/invoices/{id}(id= ${invoice.id}, cid=${contract.id})}" class="btn btn-outline-primary btn-sm">Vaata</a>
-                                    <a th:href="@{/contracts/{cid}/invoices/{iid}/generatepdf(iid= ${invoice.id}, cid=${contract.id})}" class="btn btn-outline-primary btn-sm">Pdf</a>
+                                    <a th:href="@{/contracts/{cid}/invoices/{iid}/openpdf(iid= ${invoice.id}, cid=${contract.id})}" class="btn btn-outline-primary btn-sm">Pdf</a>
+                                    <a th:href="@{/contracts/{cid}/invoices/{iid}/sendviaemail(iid= ${invoice.id}, cid=${contract.id})}" class="btn btn-outline-info btn-sm">Email</a>
+                                    <a th:href="@{/contracts/{cid}/invoices/{iid}/delete(iid= ${invoice.id}, cid=${contract.id})}" class="btn btn-outline-danger btn-sm">Kustuta</a>
                                 </td>
                             </tr>
                             </tbody>

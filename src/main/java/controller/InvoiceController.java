@@ -1,5 +1,6 @@
 package controller;
 
+import javassist.bytecode.ByteArray;
 import model.Contract;
 import model.Invoice;
 import model.InvoiceRow;
@@ -9,6 +10,8 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +19,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import service.ContractService;
+import service.EmailService;
 import service.InvoiceService;
 import service.PdfService;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -40,6 +45,9 @@ public class InvoiceController {
 
     @Autowired
     PdfService pdfService;
+
+    @Autowired
+    private EmailService emailService;
 
     @InitBinder
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -105,7 +113,7 @@ public class InvoiceController {
             inv.setSendDate(today.getTime());       //sets today as invoice send date TODO: get from contract
             today.add(Calendar.DATE,30);
             inv.setInvoiceTerm(today.getTime());    //sets invoice due date (+30days)
-            inv.setStatus("QUEUE");
+            inv.setStatus("OOTEL");
             inv.setOwnerName(ct.getOwnerName());
             inv.setOwnerAddress(ct.getOwnerAddress());
             inv.setOwnerPhone(ct.getOwnerPhone());
@@ -133,7 +141,7 @@ public class InvoiceController {
         inv.setSendDate(today.getTime());       //sets today as invoice send date TODO: get from contract
         today.add(Calendar.DATE,30);
         inv.setInvoiceTerm(today.getTime());    //sets invoice due date (+30days)
-        inv.setStatus("DRAFT");
+        inv.setStatus("VALMIS");
         if (contract.getOwnerName() != null) inv.setOwnerName(contract.getOwnerName());
         if (contract.getOwnerAddress() != null) inv.setOwnerAddress(contract.getOwnerAddress());
         if (contract.getOwnerPhone() != null) inv.setOwnerPhone(contract.getOwnerPhone());
@@ -144,6 +152,7 @@ public class InvoiceController {
         if (contract.getCustomerEmail() != null) inv.setCustomerEmail(contract.getCustomerEmail());
         if (contract.getCustomerAddress() != null) inv.setCustomerAddress(contract.getCustomerAddress());
         if (contract.getCustomerRefNumber() != null) inv.setCustomerReference(contract.getCustomerRefNumber());
+        if (contract.getObjectAddress() != null) inv.setTitle(contract.getObjectAddress());
         if (contract.getVat() != null) {
             inv.setVat(contract.getVat());
         }
@@ -167,7 +176,7 @@ public class InvoiceController {
         return "redirect:/contracts/" + cid;
     }
 
-    @GetMapping("/contracts/{cid}/invoices/{iid}/generatepdf")
+    @GetMapping("/contracts/{cid}/invoices/{iid}/openpdf")
     public ResponseEntity<String> generatePdf(@PathVariable Long cid, @PathVariable Long iid, Authentication auth) {
         System.out.println("IContr pdf generation started...");
         Invoice invoice = invoiceService.getInvoiceById(iid, auth.getName());
@@ -180,7 +189,7 @@ public class InvoiceController {
             output = new ByteArrayResource(pdfService.createInvoice(invoice));
 
             headers.add("Content-Type", "application/force-download");
-            headers.add("Content-Disposition", "attachment; filename=\"" + invoice.getINumber() + "\"");
+            headers.add("Content-Disposition", "attachment; filename=\"" + invoice.getiNumber() + "\"");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,14 +197,34 @@ public class InvoiceController {
         return new ResponseEntity(output, headers, HttpStatus.OK);
     }
 
-    @GetMapping("/contracts/{cid}/invoices/{iid}/generateemail")
+    @GetMapping("/contracts/{cid}/invoices/{iid}/sendviaemail")
     public String generatePdfAndEmail(@PathVariable Long cid, @PathVariable Long iid, Authentication auth) {
+        Integer invoiceType = 1;                // Type defines the email content
+        Invoice invoice = invoiceService.getInvoiceById(iid, auth.getName());
+        try {
+            pdfService.createInvoicePdf(invoice, auth.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String subject = "Arve number " + invoice.getiNumber() + ", (" + invoice.getTitle() + ")";
+        String text = "Tere " + invoice.getCustomerName() + "\n\nSaadame Teile eelmise perioodi arve.\n" +
+                "Täname õigeaegselt tasutud arve eest!\n\n" + "Soovides head,\n\n" + invoice.getOwnerName();
+        String filePath = "/tmp/" + invoice.getiNumber() + ".pdf";
+
+        emailService.sendEmail(invoice.getCustomerEmail(), subject, text,"noreply@flats.ee", filePath);
+
+        invoice.setStatus("VÄLJASTATUD");
+        invoiceService.saveInvoice(invoice, cid, auth.getName());
+
         return "redirect:/contracts/" + cid;
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handle(Exception e) {
-        System.out.println("Returning HTTP 400 Bad Request: " + e + ", cause: " + e.getLocalizedMessage());
+    //Delete invoice
+    @GetMapping("/contracts/{cid}/invoices/{iid}/delete")
+    public String deleteInvoice(@PathVariable Long cid, @PathVariable Long iid, Authentication auth) {
+        invoiceService.deleteInvoice(iid, auth.getName());
+        return "redirect:/contracts/" +cid;
     }
+
 }
