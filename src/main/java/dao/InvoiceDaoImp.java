@@ -72,7 +72,6 @@ public class InvoiceDaoImp implements InvoiceDao {
         //TODO
         if (invoice.getId() != null) {
 //            existing invoice
-            System.out.println("InvoiceDao: merge");
             User user = em.find(User.class, username);
             Contract contract = em.find(Contract.class, cid);
             //TODO: make method public, for other DAO's to use
@@ -98,7 +97,7 @@ public class InvoiceDaoImp implements InvoiceDao {
             invoice.setCreated(today);
 
             //Set the status always to 0 - draft, when invoice created at first
-            invoice.setStatus("DRAFT");
+            //invoice.setStatus("DRAFT");
             for (int i =0; i < invoice.getInvoiceRows().size(); i++) {
                 invoice.getInvoiceRows().get(i).setUser(user);
                 invoice.getInvoiceRows().get(i).setInvoice(invoice);

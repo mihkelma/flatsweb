@@ -178,7 +178,6 @@ public class InvoiceController {
 
     @GetMapping("/contracts/{cid}/invoices/{iid}/openpdf")
     public ResponseEntity<String> generatePdf(@PathVariable Long cid, @PathVariable Long iid, Authentication auth) {
-        System.out.println("IContr pdf generation started...");
         Invoice invoice = invoiceService.getInvoiceById(iid, auth.getName());
         HttpHeaders headers = new HttpHeaders();
 
@@ -189,7 +188,7 @@ public class InvoiceController {
             output = new ByteArrayResource(pdfService.createInvoice(invoice));
 
             headers.add("Content-Type", "application/force-download");
-            headers.add("Content-Disposition", "attachment; filename=\"" + invoice.getiNumber() + "\"");
+            headers.add("Content-Disposition", "attachment; filename=\"" + invoice.getiNumber() + ".pdf\"");
 
         } catch (Exception e) {
             e.printStackTrace();
