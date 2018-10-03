@@ -27,4 +27,8 @@ public class InvoiceService {
     public Invoice getInvoiceById(Long id, String username) {
         return invoiceDao.getInvoiceById(id, username);
     }
+
+    public void deleteInvoice(Long iid, String username) {
+        invoiceDao.deleteInvoice(iid, username);
+    }
 }

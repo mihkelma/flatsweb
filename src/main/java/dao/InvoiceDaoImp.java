@@ -110,11 +110,12 @@ public class InvoiceDaoImp implements InvoiceDao {
     @Transactional
     @Override
     public void deleteInvoice(Long id, String username) {
-        //TODO
+        Invoice invoice = em.find(Invoice.class, id);
+        em.remove(invoice);
     }
 
     @Override
     public void sendInvoice(Invoice invoice, String username) {
-
+        //TODO
     }
 }
