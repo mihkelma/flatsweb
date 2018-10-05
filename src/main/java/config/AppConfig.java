@@ -87,19 +87,17 @@ public class AppConfig {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         Properties mailProperties = new Properties();
 
-        sender.setHost("smtp.gmail.com");               // for gmail use smtp.gmail.com
+        sender.setHost(env.getProperty("spring.mail.host"));               //for gmail use smtp.gmail.com
         sender.setPort(587);
-        sender.setUsername("priitpat@gmail.com");
-        sender.setPassword("8eQ8vese");
-
+        sender.setUsername(env.getProperty("spring.mail.username"));
+        sender.setPassword(env.getProperty("spring.mail.password"));
         mailProperties.put("mail.smtp.auth", "true");
-        mailProperties.put("mail.debug", "true");
         mailProperties.put("mail.smtp.starttls.enable", "true");
         mailProperties.put("mail.smtp.port", "465");
         mailProperties.put("mail.smtp.socketFactory.port", "465");
         mailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         mailProperties.put("mail.smtp.socketFactory.fallback", "false");
-        mailProperties.put("mail.debug", "false");      // When true, prints out everything on screen
+        mailProperties.put("mail.debug", "false");      //When true, prints out everything on screen
         sender.setJavaMailProperties(mailProperties);
         return sender;
     }
