@@ -45,6 +45,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity4
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.2.RELEASE'
 
+    // https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0'
+
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
 
     // https://mvnrepository.com/artifact/javax.validation/validation-api

@@ -1,9 +1,14 @@
 package controller;
 
+import jobs.InvoiceJob;
 import model.Contract;
 import model.ContractType;
 import model.Invoice;
 import model.Unit;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerFactory;
+import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +30,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
 @Controller
 public class ContractController {
 
@@ -36,6 +45,8 @@ public class ContractController {
     private InvoiceService invoiceService;
     @Autowired
     private ScheduleService scheduleService;
+
+    SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
 
     //TODO: error management: http://blog.codeleak.pl/2014/06/better-error-messages-with-bean.html
     @InitBinder
@@ -110,10 +121,46 @@ public class ContractController {
         return "redirect:/contracts";
     }
 
+    //Generate invoices
     @GetMapping("/contracts/gis")
     public String gis(Authentication auth, Model model) {
         System.out.println("IKontroller, genereeri arveid link");
         scheduleService.generateInvoicesByDate();
+        model.addAttribute("contracts", contractService.getAllUserContracts(auth.getName()));
+        return "contracts/index";
+    }
+
+    //Generate invoices
+    @GetMapping("/contracts/schedule")
+    public String schedule(Authentication auth, Model model) {
+        System.out.println("IKontroller, Schedule");
+        try {
+            Scheduler sched = schedFact.getScheduler();
+            sched.start();
+
+            // define the job and tie it to our HelloJob class
+            JobDetail job = newJob(InvoiceJob.class)
+                    .withIdentity("myJob", "group1")
+                    .build();
+
+            // Trigger the job to run now, and then every 40 seconds
+            Trigger trigger = newTrigger()
+                    .withIdentity("myTrigger", "group1")
+                    .startNow()
+                    .withSchedule(simpleSchedule()
+                            .withIntervalInSeconds(40)
+                            .repeatForever())
+                    .build();
+
+            // Tell quartz to schedule the job using our trigger
+            sched.scheduleJob(job, trigger);
+
+        } catch (Exception e) {
+            System.out.println("Scheduler execution failed");
+        }
+
+
+        //scheduleService.generateContractInvoice();
         model.addAttribute("contracts", contractService.getAllUserContracts(auth.getName()));
         return "contracts/index";
     }
