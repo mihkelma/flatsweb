@@ -1,6 +1,5 @@
 package controller;
 
-import javassist.bytecode.ByteArray;
 import model.Contract;
 import model.Invoice;
 import model.InvoiceRow;
@@ -10,20 +9,14 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
-import service.ContractService;
-import service.EmailService;
-import service.InvoiceService;
-import service.PdfService;
+import service.*;
 
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -99,38 +92,6 @@ public class InvoiceController {
         return "invoices/view";
     }
 
-    public String generateInvoices(Authentication auth) {
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd");
-        String date = sdf.format(c.getTime());
-        System.out.println("Today is: " + date);
-
-        List<Contract> contractList = contractService.getContractsByDateByStatus(date, "AKTIIVNE");
-        for (Contract ct : contractList) {
-            Invoice inv = new Invoice();
-            Calendar today = Calendar.getInstance();
-            inv.setCreated(today.getTime());        //sets today as created day
-            inv.setSendDate(today.getTime());       //sets today as invoice send date TODO: get from contract
-            today.add(Calendar.DATE,30);
-            inv.setInvoiceTerm(today.getTime());    //sets invoice due date (+30days)
-            inv.setStatus("OOTEL");
-            inv.setOwnerName(ct.getOwnerName());
-            inv.setOwnerAddress(ct.getOwnerAddress());
-            inv.setOwnerPhone(ct.getOwnerPhone());
-            inv.setOwnerEmail(ct.getOwnerEmail());
-            inv.setOwnerIBAN(ct.getOwnerBankAccount());
-            inv.setOwnerBank(ct.getOwnerBankName());
-            inv.setCustomerName(ct.getCustomerName());
-            inv.setCustomerEmail(ct.getCustomerEmail());
-            inv.setCustomerAddress(ct.getCustomerAddress());
-            inv.setCustomerReference(ct.getCustomerRefNumber());
-            inv.setVat(ct.getVat());
-            inv.setContract(ct);
-
-        }
-        return null;
-    }
-
     @GetMapping("/contracts/{cid}/generateinvoice")
     public String generateInvoiceFromContract(@PathVariable Long cid, Authentication auth) {
 
@@ -157,7 +118,6 @@ public class InvoiceController {
             inv.setVat(contract.getVat());
         }
         inv.setContract(contract);
-        List<InvoiceRow> invoiceRows = new ArrayList<>();
         InvoiceRow ir = new InvoiceRow();
         LocalDate now = LocalDate.now();
         LocalDate lastMonth = now.minusMonths(1);
@@ -167,8 +127,7 @@ public class InvoiceController {
         if (contract.getVat() != null) { //if VAT is not zero
             ir.setVat(contract.getVat());
         }
-        invoiceRows.add(ir);
-        inv.setInvoiceRows(invoiceRows);
+        inv.addInvoiceRow(ir);
         inv.setSum(ir.getRowPrice());
 
         //saving invoice

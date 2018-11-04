@@ -301,6 +301,16 @@ public class Invoice {
         this.invoiceRows = invoiceRows;
     }
 
+    public void addInvoiceRow(InvoiceRow invoiceRow) {
+        invoiceRows.add(invoiceRow);
+        invoiceRow.setInvoice(this);
+    }
+
+    public void removeInvoiceRow(InvoiceRow invoiceRow) {
+        invoiceRows.remove(invoiceRow);
+        invoiceRow.setInvoice(null);
+    }
+
     @Override
     public String toString() {
         return "Invoice{" +

@@ -83,7 +83,7 @@ public class InvoiceDaoImp implements InvoiceDao {
             //TODO
             for (int i =0; i < invoice.getInvoiceRows().size(); i++) {
                 invoice.getInvoiceRows().get(i).setUser(user);
-                invoice.getInvoiceRows().get(i).setInvoice(invoice);
+                //invoice.getInvoiceRows().get(i).setInvoice(invoice);
             }
             em.merge(invoice);
         } else {                        //new invoice
@@ -100,7 +100,7 @@ public class InvoiceDaoImp implements InvoiceDao {
             //invoice.setStatus("DRAFT");
             for (int i =0; i < invoice.getInvoiceRows().size(); i++) {
                 invoice.getInvoiceRows().get(i).setUser(user);
-                invoice.getInvoiceRows().get(i).setInvoice(invoice);
+                //invoice.getInvoiceRows().get(i).setInvoice(invoice);
             }
             em.persist(invoice);
         }

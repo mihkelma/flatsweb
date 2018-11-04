@@ -114,6 +114,18 @@ public class InvoiceRow {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InvoiceRow )) return false;
+        return id != null && id.equals(((InvoiceRow) o).id);
+    }
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+
+    @Override
     public String toString() {
         return "InvoiceRow{" +
                 "id=" + id +
