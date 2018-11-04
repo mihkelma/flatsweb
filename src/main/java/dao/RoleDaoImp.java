@@ -1,4 +1,4 @@
-package ee.pocos.cland.dao;
+package dao;
 
 import model.Role;
 import org.springframework.stereotype.Repository;

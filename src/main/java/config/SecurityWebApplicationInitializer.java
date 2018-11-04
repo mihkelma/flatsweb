@@ -1,4 +1,4 @@
-package ee.pocos.cland.config;
+package config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

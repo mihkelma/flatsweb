@@ -1,4 +1,4 @@
-package ee.pocos.cland.config;
+package config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
