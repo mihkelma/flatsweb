@@ -66,10 +66,14 @@ public class AppConfig {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         //properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.format_sql", "true");
+        properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        properties.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+        properties.setProperty("spring.jpa.show-sql", env.getProperty("spring.jpa.show-sql"));
+
+        properties.setProperty("logging.level.org.hibernate.SQL", env.getProperty("logging.level.org.hibernate.SQL"));
+        properties.setProperty("logging.level.org.hibernate.type.descriptor.sql.BasicBinder", env.getProperty("logging.level.org.hibernate.type.descriptor.sql.BasicBinder"));
 
         // Setting C3P0 properties
         properties.setProperty(C3P0_MIN_SIZE, env.getProperty("hibernate.c3p0.min_size"));
