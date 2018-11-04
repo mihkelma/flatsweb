@@ -1,4 +1,4 @@
-package dao;
+package ee.pocos.cland.dao;
 
 import model.Unit;
 import model.UnitType;

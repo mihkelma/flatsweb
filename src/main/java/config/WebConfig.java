@@ -1,4 +1,4 @@
-package config;
+package ee.pocos.cland.config;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "controller" })
+@ComponentScan(basePackages = {"ee.pocos.cland.controller"})
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired

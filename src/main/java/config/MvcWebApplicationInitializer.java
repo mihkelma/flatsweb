@@ -1,4 +1,4 @@
-package config;
+package ee.pocos.cland.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
