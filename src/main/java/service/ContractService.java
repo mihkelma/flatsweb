@@ -32,6 +32,7 @@ public class ContractService {
             contract.setCreated(now);
         }
         contract.setModified(now);
+        contract.setStatus("aktiivne");
         contractDao.saveContract(contract, cid, username);
     }
 
@@ -53,7 +54,7 @@ public class ContractService {
         contractDao.signContract(cid, username);
     }
 
-    public List<Contract> getContractsByDateByStatus(String date, String status) {
+    public List<Contract> getContractsByDateByStatus(Integer date, String status) {
         return contractDao.getContractByDateByStatus(date, status);
     }
 }

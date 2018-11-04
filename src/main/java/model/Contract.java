@@ -62,6 +62,8 @@ public class Contract {
     @NotEmpty
     private String objectAddress;
     private String objectRoom;
+    private String status;
+
     @Transient
     private static Integer baseId = 1;
 
@@ -321,6 +323,14 @@ public class Contract {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

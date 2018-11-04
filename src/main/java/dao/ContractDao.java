@@ -21,5 +21,5 @@ public interface ContractDao {
 
     void signContract(Long cid, String username);
 
-    List<Contract> getContractByDateByStatus(String date, String status);
+    List<Contract> getContractByDateByStatus(Integer date, String status);
 }

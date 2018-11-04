@@ -15,6 +15,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import service.ContractService;
 import service.InvoiceService;
+import service.ScheduleService;
 import service.UnitService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,8 @@ public class ContractController {
     private UnitService unitService;
     @Autowired
     private InvoiceService invoiceService;
+    @Autowired
+    private ScheduleService scheduleService;
 
     //TODO: error management: http://blog.codeleak.pl/2014/06/better-error-messages-with-bean.html
     @InitBinder
@@ -105,6 +108,14 @@ public class ContractController {
     public String deleteContract(@PathVariable Long id, Authentication auth) {
         contractService.deleteContract(id, auth.getName());
         return "redirect:/contracts";
+    }
+
+    @GetMapping("/contracts/gis")
+    public String gis(Authentication auth, Model model) {
+        System.out.println("IKontroller, genereeri arveid link");
+        scheduleService.generateInvoicesByDate();
+        model.addAttribute("contracts", contractService.getAllUserContracts(auth.getName()));
+        return "contracts/index";
     }
 
     @ExceptionHandler

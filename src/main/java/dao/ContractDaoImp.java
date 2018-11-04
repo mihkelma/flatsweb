@@ -115,13 +115,15 @@ public class ContractDaoImp implements ContractDao {
     }
 
     @Override
-    public List<Contract> getContractByDateByStatus(String date, String status) {
+    public List<Contract> getContractByDateByStatus(Integer dayOfMonth, String status) {
         List<Contract> contracts;
 
+        System.out.println("Lepinguotsing kuupäevaga: " +dayOfMonth + " ja staatus: " + status);
         try {
-            contracts = em.createQuery("SELECT c FROM Contract c " +
-                    "WHERE c.status ='' AND c.invoiceSendDate = :today ", Contract.class)
-                    .setParameter("today", date)
+            contracts = em.createQuery("SELECT c FROM Contract c" +
+                    " WHERE lower(c.status) = lower(:status) AND c.invoiceSendDate = :dayOfMonth", Contract.class)
+                    .setParameter("status", status)
+                    .setParameter("dayOfMonth", dayOfMonth)
                     .getResultList();
         }
         catch (Exception e) {
