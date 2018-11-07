@@ -1,6 +1,8 @@
 package config;
 
+import org.apache.logging.log4j.Logger;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -32,8 +34,11 @@ import static org.hibernate.cfg.AvailableSettings.C3P0_MAX_STATEMENTS;
 @ComponentScan(basePackages = {"dao", "service", "config", "security"})
 public class AppConfig {
 
+
     @Autowired
     private Environment env;
+
+    private static final Logger logger = org.apache.logging.log4j.LogManager.getLogger(AppConfig.class);
 
     @Bean
     public DataSource dataSource() {
