@@ -92,6 +92,7 @@ public class InvoiceController {
         return "invoices/view";
     }
 
+    //Generate invoice manually based on contract data
     @GetMapping("/contracts/{cid}/generateinvoice")
     public String generateInvoiceFromContract(@PathVariable Long cid, Authentication auth) {
 
@@ -135,6 +136,7 @@ public class InvoiceController {
         return "redirect:/contracts/" + cid;
     }
 
+    //Generate pdf from invoice data and save it to browser
     @GetMapping("/contracts/{cid}/invoices/{iid}/openpdf")
     public ResponseEntity<String> generatePdf(@PathVariable Long cid, @PathVariable Long iid, Authentication auth) {
         Invoice invoice = invoiceService.getInvoiceById(iid, auth.getName());
@@ -160,7 +162,7 @@ public class InvoiceController {
         Integer invoiceType = 1;                // Type defines the email content
         Invoice invoice = invoiceService.getInvoiceById(iid, auth.getName());
         try {
-            pdfService.createInvoicePdf(invoice, auth.getName());
+            pdfService.createInvoicePdf(invoice);
         } catch (Exception e) {
             e.printStackTrace();
         }

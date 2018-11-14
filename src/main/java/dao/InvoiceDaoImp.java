@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -116,5 +117,21 @@ public class InvoiceDaoImp implements InvoiceDao {
     @Override
     public void sendInvoice(Invoice invoice, String username) {
         //TODO
+    }
+
+    @Override
+    public List<Invoice> getInvoicesByDate(Date sendDate) {
+        List<Invoice> invoices;
+        try {
+            invoices = em.createQuery("SELECT i FROM Invoice i " +
+                    "LEFT JOIN FETCH i.contract " +
+                    "WHERE i.invoice.sendDate = :sendDate " +
+                    "AND lower(i.status) = lower('created') ", Invoice.class)
+                    .setParameter("sendDate", sendDate.getTime())
+                    .getResultList();
+        } catch (Exception e) {
+            invoices = null;
+        }
+        return invoices;
     }
 }

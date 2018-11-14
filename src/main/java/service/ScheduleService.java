@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -23,23 +25,35 @@ public class ScheduleService {
     private InvoiceDao invoiceDao;
 
     @Autowired
-    private ContractDao contractDao;
+    private ContractService contractService;
+
+    @Autowired
+    private PdfService pdfService;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private InvoiceService invoiceService;
 
     private static final Logger logger = LogManager.getLogger(ScheduleService.class);
 
-    @Scheduled(cron = "0 41 23 * * *")
+    //Scheduled generation of invoices 1 day before send date
+    @Scheduled(cron = "0 07 1 * * *")
     public void generateInvoicesByDate() {
         Integer dateToday = LocalDate.now().getDayOfMonth();
-        String status = "aktiivne";
-        List<Contract> contractList = contractDao.getContractByDateByStatus(dateToday, status);
+        String status = "created";
+
+        List<Contract> contractList = contractService.getContractByDateByStatus(dateToday+1, status);
         for (Contract ct : contractList) {          //generating invoices
             Invoice inv = new Invoice();
             Calendar today = Calendar.getInstance();
             inv.setCreated(today.getTime());        //sets today as created day
-            inv.setSendDate(today.getTime());       //sets today as invoice send date TODO: get from contract
+            today.add(Calendar.DATE,1);
+            inv.setSendDate(today.getTime());       //sets today+1 as invoice send date TODO: get from contract
             today.add(Calendar.DATE,30);
             inv.setInvoiceTerm(today.getTime());    //sets invoice due date (+30days)
-            inv.setStatus("uus");
+            inv.setStatus("created");
             if (ct.getOwnerName() != null) inv.setOwnerName(ct.getOwnerName());
             if (ct.getOwnerAddress() != null) inv.setOwnerAddress(ct.getOwnerAddress());
             if (ct.getOwnerPhone() != null) inv.setOwnerPhone(ct.getOwnerPhone());
@@ -70,6 +84,34 @@ public class ScheduleService {
             //saving invoice
             invoiceDao.saveInvoice(inv, ct.getId(), ct.getUser().getUsername());
         }
+    }
+
+    //Scheduled job to create invoice pdf-s and send to the customer
+    @Scheduled(cron = "0 07 1 * * *")
+    public void createPdfAndEmailInvoice() {
+        Integer invoiceType = 1;                // Type defines the email content
+
+        logger.info("createPdfAndEmailInvoice started");
+        Calendar cal = Calendar.getInstance();
+        List<Invoice> invoices = invoiceDao.getInvoicesByDate(cal.getTime());
+        for (Invoice invoice : invoices) {
+            try {
+                pdfService.createInvoicePdf(invoice);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("Email sending started");
+            String subject = "Arve number " + invoice.getiNumber() + ", (" + invoice.getTitle() + ")";
+            String text = "Tere " + invoice.getCustomerName() + "\n\nSaadame Teile eelmise perioodi arve.\n" +
+                    "Täname õigeaegselt tasutud arve eest!\n\n" + "Soovides head,\n\n" + invoice.getOwnerName();
+            String filePath = "/tmp/" + invoice.getiNumber() + ".pdf";
+
+            emailService.sendEmail(invoice.getCustomerEmail(), subject, text,"noreply@flats.ee", filePath);
+
+            invoice.setStatus("sent");
+            invoiceService.saveInvoice(invoice, invoice.getContract().getId(), invoice.getUser().getUsername());
+        }
+
     }
 
 }

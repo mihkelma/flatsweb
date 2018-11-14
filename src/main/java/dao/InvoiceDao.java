@@ -2,6 +2,7 @@ package dao;
 
 import model.Invoice;
 
+import java.util.Date;
 import java.util.List;
 
 public interface InvoiceDao {
@@ -12,4 +13,6 @@ public interface InvoiceDao {
     void saveInvoice(Invoice invoice, Long cid, String username);
     void deleteInvoice(Long id, String username);
     void sendInvoice(Invoice invoice, String username);
+
+    List<Invoice> getInvoicesByDate(Date sendDate);
 }

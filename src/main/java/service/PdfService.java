@@ -29,7 +29,8 @@ public class PdfService {
     public byte[] createInvoice (Invoice invoice) throws IOException {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        PDDocument document = fillPdfTemplate(invoice);
+        PDDocument document = new PDDocument();
+        fillPdfTemplate(document, invoice);
         document.save(out);
         document.close();
         return out.toByteArray();
@@ -52,15 +53,15 @@ public class PdfService {
         contentStream.endText();
     }
 
-    public void createInvoicePdf(Invoice invoice, String username) throws IOException {
-        PDDocument document = fillPdfTemplate(invoice);
+    public void createInvoicePdf(Invoice invoice) throws IOException {
+        PDDocument document = new PDDocument();
+        fillPdfTemplate(document, invoice);
         String fileName = invoice.getiNumber();
         document.save("/tmp/"+ fileName + ".pdf");
         document.close();
     }
 
-    private PDDocument fillPdfTemplate(Invoice invoice) throws IOException {
-        PDDocument document = new PDDocument();
+    private PDDocument fillPdfTemplate(PDDocument document, Invoice invoice) throws IOException {
         PDPage page = new PDPage(PDRectangle.A4);
 
         document.addPage(page);
@@ -332,7 +333,6 @@ public class PdfService {
         contentStream.endText();
 
         contentStream.close();
-
         return document;
     }
 }
