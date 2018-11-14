@@ -33,7 +33,6 @@ public class Contract {
     private String ownerCode;
     @NotEmpty
     private String ownerAddress;
-    @NotEmpty
     private String ownerPhone;
     @NotEmpty
     private String ownerEmail;

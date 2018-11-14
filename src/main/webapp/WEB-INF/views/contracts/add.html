@@ -6,177 +6,202 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
-    <link href="https://fonts.googleapis.com/css?family=Lato|Montserrat|Open+Sans:300|Oswald|Raleway:500|Roboto:300" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>flats.ee</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/datepicker.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-<body>
-<div layout:fragment="content" th:remove="tag">
-    <div class="container mb-3">
-        <h4 class="d-inline">Lisa leping
-        </h4>
-    </div>
-    <main role="main" class="container">
-        <div class="row">
-            <div class="col-sm-12 shadow rounded ccard">
-                <form class="mb-3 mt-3" th:action="@{/units/{id}/contracts(id=${unitId})}" th:object="${contract}" method="post">
-                    <h4>Lepingu andmed</h4>
-                    <div class="alert text-danger" role="alert">
-                        <small th:if="${error}" th:text="${error}">In case alert is needed</small>
-                    </div>
-                    <div class="form-group row">
-                        <input type="hidden" th:field="*{id}" />
-                        <label for="contractNumber" class="col-sm-2 col-form-label col-form-label-sm">Lepingu number</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="contractNumber" th:field="*{contractNumber}" >
+<body class="bg-light">
+    <div layout:fragment="content" th:remove="tag">
+    <div class="container w80 shadow">
+        <div class="pt-5 pb-4 text-center">
+            <h2 th:text="'Üürileping #'+ ${contract.contractNumber}">Üürilepingu andmed</h2>
+        </div>
+        <div class="alert text-danger" role="alert">
+            <small th:if="${error}" th:text="${error}">In case alert is needed</small>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12 order-md-1">
+                <form class="needs-validation" novalidate th:action="@{/units/{id}/contracts(id=${unitId})}" th:object="${contract}" method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <input type="hidden" th:field="*{contractNumber}" />
+                            <label for="objectAddress">OBJEKTI AADRESS</label>
+                            <input type="email"  id="objectAddress" th:field="*{objectAddress}" placeholder="näit. Õismäe tee 142-200, Tallinn" readonly>
+                            <div class="invalid-feedback">
+                                Please enter a valid object address.
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="objectAddress" class="col-sm-2 col-form-label col-form-label-sm">Objekti aadress<sup>(a)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="objectAddress" th:field="*{objectAddress}" readonly>
+                        <div class="col-md-2 mb-2">
+                            <label for="objectRoom">Toa nr</label>
+                            <input type="text" id="objectRoom" th:field="*{objectRoom}" placeholder="1a" required>
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="objectRoom" class="col-sm-2 col-form-label col-form-label-sm">Toa/ruumi number<sup>(a)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="objectRoom" th:field="*{objectRoom}" placeholder="1a">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="contractType" class="col-sm-2 col-form-label col-form-label-sm">Lepingu tüüp</label>
-                        <div class="col-sm-6">
-                            <select id="contractType" class="form-control form-control-sm" th:field="${contract.contractType.id}">
+                        <div class="col-md-4 mb-2">
+                            <label for="contractType">Lepingu tüüp</label>
+                            <select class="custom-select d-block w-100" id="contractType" th:field="${contract.contractType.id}" required>
                                 <option th:each="type : ${allContractTypes}"
                                         th:value="${type.id}"
                                         th:text="${type.contractType}">Lepingu tüüp</option>
                             </select>
+                            <div class="invalid-feedback">
+                                Please select a valid contract type.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="vat" class="col-sm-2 col-form-label col-form-label-sm">Käibemaksumäär<sup>(a)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="vat" th:field="*{vat}" placeholder="0.2"/>
+                    <div class="row mb-4">
+                        <div class="col-md-3 mb-2">
+                            <label for="created">Lepingu algus</label>
+                            <input type="text" class="input-calendar" id="created" th:field="*{created}" placeholder="15/04/2018" data-toggle="datepicker" required>
+                            <div class="invalid-feedback">
+                                Please select a valid date.
+                            </div>
                         </div>
-
-                    </div>
-                    <div class="form-group row">
-                        <label for="price" class="col-sm-2 col-form-label col-form-label-sm">Üüritasu<sup>(a)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="price" th:field="*{price}" placeholder="300.00">
+                        <div class="col-md-3 mb-2">
+                            <label for="contractTerm">Lepingu lõpp</label>
+                            <input type="text" class="input-calendar" id="contractTerm" th:field="*{contractTerm}" placeholder="15/04/2018" data-toggle="datepicker" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid date.
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="created" class="col-sm-2 col-form-label col-form-label-sm">Lepingu algus</label>
-                        <div class="col-sm-6">
-                            <input type="date" class="form-control form-control-sm" id="created" th:field="*{created}" placeholder="15/04/2018">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="contractTerm" class="col-sm-2 col-form-label col-form-label-sm">Kehtivusaeg</label>
-                        <div class="col-sm-6">
-                            <input type="date" class="form-control form-control-sm" id="contractTerm" th:field="*{contractTerm}" placeholder="15/04/2018">
+                        <div class="col-md-3 mb-2">
+                            <label for="invoiceSendDate">Arve väljastamine</label>
+                            <input type="text" id="invoiceSendDate" th:field="*{invoiceSendDate}" placeholder="10" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid day of month.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="invoiceSendDate" class="col-sm-2 col-form-label col-form-label-sm">Arve kuupäev<sup>(a)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="invoiceSendDate" th:field="*{invoiceSendDate}" placeholder="10">
+                    <div class="row mb-4">
+                        <div class="col-md-3 mb-2">
+                            <label for="price">Renditasu</label>
+                            <input type="text" id="price" th:field="*{price}" placeholder="300.00" required>
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="vat">Käibemaksumäär</label>
+                            <input type="text" id="vat" th:field="*{vat}" placeholder="0.2" required>
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="form-group row">
-                        <label for="ownerName" class="col-sm-2 col-form-label col-form-label-sm">Omaniku nimi<sup>(a)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="ownerName" th:field="*{ownerName}" placeholder="Peeter Pakiraam">
+                    <h4>Üürileandja andmed</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label for="ownerName">Üürileandja nimi</label>
+                            <input type="text"  id="ownerName" th:field="*{ownerName}" placeholder="Peeter Pakiraam" required>
+                            <div class="invalid-feedback">
+                                Valid name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="ownerCode">Üürileandja isikukood/ reg.kood</label>
+                            <input type="text"  id="ownerCode" th:field="*{ownerCode}" placeholder="38232322122" required>
+                            <div class="invalid-feedback">
+                                Valid code is required.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="ownerCode" class="col-sm-2 col-form-label col-form-label-sm">Omaniku reg.kood/ isikukood<sup>(A)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="ownerCode" th:field="*{ownerCode}" placeholder="38232322122">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label for="ownerEmail">Üürileandja email</label>
+                            <input type="text"  id="ownerEmail" th:field="*{ownerEmail}" placeholder="peeter@pakiraam.ee" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="ownerAddress">Üürileandja aadress</label>
+                            <input type="text" id="ownerAddress" th:field="*{ownerAddress}" placeholder="Tõnismäe 79-20, Tallinn" required>
+                            <div class="invalid-feedback">
+                                Valid address is required.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="ownerAddress" class="col-sm-2 col-form-label col-form-label-sm">Omaniku aadress</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="ownerAddress" th:field="*{ownerAddress}" placeholder="Tõnismäe 79-20, Tallinn">
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-2">
+                            <label for="ownerBankAccount">Üürileandja pangakonto</label>
+                            <input type="text" id="ownerBankAccount" th:field="*{ownerBankAccount}" placeholder="EE192200221100150111" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="ownerBank">Üürileandja panga nimi</label>
+                            <input type="text" id="ownerBank" th:field="*{ownerBankName}" placeholder="Swedbank AS" required>
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="ownerPhone" class="col-sm-2 col-form-label col-form-label-sm">Omaniku telefon</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="ownerPhone" th:field="*{ownerPhone}" placeholder="5500391">
+                    <h4>Üürilevõtja andmed</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label for="customerName">Üürilevõtja nimi</label>
+                            <input type="text" id="customerName" th:field="*{customerName}" placeholder="Klient Kuusikult" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="customerCode">Üürilevõtja isikukood/ reg.kood</label>
+                            <input type="text" id="customerCode" th:field="*{customerCode}" placeholder="38232322122" required>
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="ownerEmail" class="col-sm-2 col-form-label col-form-label-sm">Omaniku email<sup>(A)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="ownerEmail" th:field="*{ownerEmail}" placeholder="peeter@pakiraam.ee">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="customerEmail">Üürilevõtja email</label>
+                            <input type="text" id="customerEmail" th:field="*{customerEmail}" placeholder="klient@kuusikult.ee" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="customerAddress">Üürilevõtja aadress</label>
+                            <input type="text" id="customerAddress" th:field="*{customerAddress}" placeholder="Sõpruse pst 178-11, Tallinn" required>
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="ownerBankAccount" class="col-sm-2 col-form-label col-form-label-sm">Omaniku pangakonto nr<sup>(A)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="ownerBankAccount" th:field="*{ownerBankAccount}" placeholder="EE192200221100150862">
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-2">
+                            <label for="customerPhone">Üürilevõtja telefon <span class="text-muted">(Optional)</span></label>
+                            <input type="text" id="customerPhone" th:field="*{customerPhone}" placeholder="55332211" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="ownerBank" class="col-sm-2 col-form-label col-form-label-sm">Omaniku pank<sup>(A)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="ownerBank" th:field="*{ownerBankName}" placeholder="Swedbank AS">
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row">
-                        <label for="customerName" class="col-sm-2 col-form-label col-form-label-sm">Kliendi nimi<sup>(A)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="customerName" th:field="*{customerName}" placeholder="Klient Kuusikult">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="customerCode" class="col-sm-2 col-form-label col-form-label-sm">Kliendi reg.kood/ isikukood</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="customerCode" th:field="*{customerCode}" placeholder="38232322122">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="customerAddress" class="col-sm-2 col-form-label col-form-label-sm">Kliendi aadress<sup>(A)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="customerAddress" th:field="*{customerAddress}" placeholder="Sõpruse pst 178-11, Tallinn">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="customerPhone" class="col-sm-2 col-form-label col-form-label-sm">Kliendi telefon</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="customerPhone" th:field="*{customerPhone}" placeholder="55332211">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="customerEmail" class="col-sm-2 col-form-label col-form-label-sm">Kliendi email<sup>(A)</sup></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" id="customerEmail" th:field="*{customerEmail}" placeholder="klient@kuusikult.ee">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button th:type="submit" class="btn btn-outline-primary btn-sm" >Salvesta</button>
-                    </div>
-
+                    <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Salvesta</button>
                 </form>
             </div>
-
         </div>
-    </main>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script th:src="@{/css/datepicker.js}"></script>
+    <script>
+        $( function() {
+            $('[data-toggle="datepicker"]').datepicker({
+                format: 'dd/mm/yyyy'
+            });
+            $('input').click(function() {
+                var label = $("label[for='" + $(this).attr('id') + "']");
+                label.addClass("label-focus");
+            })
+        });
+    </script>
+    </div>
 </body>
 </html>

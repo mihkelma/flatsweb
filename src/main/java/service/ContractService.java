@@ -57,4 +57,8 @@ public class ContractService {
     public List<Contract> getContractsByDateByStatus(Integer date, String status) {
         return contractDao.getContractByDateByStatus(date, status);
     }
+
+    public List<Contract> getContractByDateByStatus(int i, String status) {
+        return contractDao.getContractByDateByStatus(i,status);
+    }
 }
